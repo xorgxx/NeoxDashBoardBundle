@@ -1,0 +1,73 @@
+{% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
+
+{% set headerC = header|replace({' ': ''})|lower %}
+<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ name ~"-"~headerC }}" role="tabpanel" aria-labelledby="alert-{{ headerC }}-tab">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-{{ cards_per_row }} g-4 mb-5">
+            {% for item in data %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="row no-gutters align-items-center">
+                            <!-- Icon Column -->
+                            <div class="col-auto bg-dark" style="height: 100%">
+                                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
+                                    <a href="#" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:earth-americas" width="30" style="height: auto;" color="white"/>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Content Column -->
+                            <div class="col">
+                                <div class="p-2">
+                                    {% set parts = item.url |split('/') %}
+                                    {% set baseUrl = parts[0] ~ '//' ~ parts[2] %}
+                                    {{ baseUrl }}
+                                    {% if item.int is defined %}
+
+                                        <p>
+                                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="20" style="height: auto;" color="red"/>
+                                            {{ item.int }}
+                                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="20" style="height: auto;" color="red"/>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {#  ===== Add new link =====          #}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="row no-gutters align-items-center">
+                        <!-- Icon Column -->
+                        <div class="col-auto bg-dark" style="height: 100%">
+                            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
+                                <a href="#" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                                    <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:plus" width="25" style="height: auto;" color="green"/>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Content Column -->
+                        <div class="col">
+                            <div class="p-2">
+                                Add new link
+                                {% if name == "bell" %}
+                                    <p>
+                                        ...
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

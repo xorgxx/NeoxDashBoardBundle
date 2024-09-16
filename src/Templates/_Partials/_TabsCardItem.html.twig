@@ -1,0 +1,29 @@
+<div class="col-md-3 mb-3">
+    <div class="card h-100">
+        <div class="row no-gutters align-items-center">
+            <!-- Icon Column -->
+
+            <div class="col-auto bg-dark" style="height: 100%">
+                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
+                    <a href="#" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="mynaui:letter-{{ item.firstLetter }}-diamond" width="40" style="height: auto;transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="col">
+                <div class="p-2">
+                    {{ item.name }}
+                    {% if NeoxDashClass.icon == "bell" %}
+                        <p>
+                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="20" style="height: auto;" color="red"/>
+                            {{ random(0, 23) }}
+                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="20" style="height: auto;" color="red"/>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="container">
+
+    {% for class in  NeoxDashClass %}
+        <turbo-frame id="dashboard-{{ class.type.value }}">
+            <twig:NeoxDashBoard :NeoxDashClass="class"/>
+        </turbo-frame>
+
+    {% endfor %}
+</div>
+
+

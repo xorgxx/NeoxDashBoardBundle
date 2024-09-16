@@ -1,0 +1,75 @@
+{% macro navItemBottom(icon, color, bColor) %}
+    <li class="nav-item bg-opacity-50 {{ bColor }}" role="presentation">
+        <button class="nav-link" type="button" aria-selected="false">
+            <twig:ux:icon name="fa6-solid:{{ icon }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2"/>
+        </button>
+    </li>
+{% endmacro %}
+
+{% macro navItemBottomHeader(section, class, loop) %}
+    {% set headerC = section.name|replace({' ': ''})|lower %}
+    {% if loop.first %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ class.type.value ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
+                    aria-selected="true">{{ section.name }}</button>
+        </li>
+    {% else %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ class.type.value ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
+                    aria-selected="false">{{ section.name }}</button>
+        </li>
+    {% endif %}
+{% endmacro %}
+
+{% macro navItemMenu(class) %}
+    <li class="nav-item ms-auto dropdown">
+        <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+            <twig:ux:icon name="fa6-solid:bars" width="16" height="16" color="red" class="mx-2"/>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item"
+                   id="delayedInput"
+                   type="text"
+                   data-model="query"
+                   data-action="live#action"
+                   data-live-action-param="refresh"
+                   data-live-query-param="{{ class.type.value }}"
+                   href="#">Configuration</a>
+            </li>
+            <li>
+                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/modal') }}
+                    class="dropdown-item"
+                   id="dzsefr"
+                   type="text"
+                   href="#"
+                >Add new tab ...</a>
+
+            </li>
+            <li><a class="dropdown-item" href="#">Add new link ...</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Misc</a></li>
+        </ul>
+    </li>
+
+
+    {#    {% component BootstrapModal with {id: 'new-class', title: 'Add new Class'} %} #}
+    <twig:BootstrapModal id="new-class" title="this.title" >
+        {% block modal_header %}
+            <h2>{{ title }}</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        {% endblock %}
+
+        {% block modal_body %}
+            <h4>test is good !!</h4>
+            {#            <twig:NewCategoryForm /> #}
+        {% endblock %}
+    </twig:BootstrapModal>
+    {#    {% endcomponent %} #}
+
+
+
+
+{% endmacro %}

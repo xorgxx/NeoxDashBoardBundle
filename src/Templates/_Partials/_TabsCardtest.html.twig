@@ -1,0 +1,82 @@
+{% set sectionC             = section.name|replace({' ': ''})|lower %}
+{% set sectionId            = NeoxDashClass.name ~ "-" ~ sectionC %}
+{% set columns_per_row      = section.row %}
+{% set rows_per_carousel    = section.colonne %}
+{% set cards_per_row        = 12 %}
+
+<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-{{ cards_per_row }} g-4 mb-5">
+            <div id="carousel{{ sectionId }}" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+                <div class="carousel-indicators" style="bottom: -40px">
+                    {% for i in 0..((section.NeoxDashDomains|length // (columns_per_row * rows_per_carousel))) %}
+                        <button type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}"></button>
+                    {% endfor %}
+                </div>
+
+                <div class="carousel-inner">
+                    {% for row in section.NeoxDashDomains|batch(columns_per_row * rows_per_carousel, '') %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer|default(20000) }}">
+
+                            <div class="container">
+                                {% for rowSet in row|batch(columns_per_row) %}
+                                    <div class="row justify-content-center">
+
+                                        {% for item in rowSet %}
+                                            {% if item is not empty %}
+                                                {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if loop.last and loop.parent.loop.last %}
+                                            <div class="col-md-2 mb-3">
+                                                <div class="card h-100">
+                                                    <div class="row no-gutters align-items-center">
+
+                                                        <!-- Icon Column -->
+                                                        <div class="col-auto bg-success" style="height: 100%">
+                                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
+                                                                <a href="#" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                                                                    <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:plus" width="26" style="height: auto;" color="black"/>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Content Column -->
+                                                        <div class="col">
+                                                            <div class="p-2">
+                                                                Add new link
+                                                                {% if NeoxDashClass.icon == "bell" %}
+                                                                    <p>
+                                                                        ...
+                                                                    </p>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button class="carousel-control-prev" style="top: unset !important; bottom: -30px !important" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" style=" top: unset !important; bottom: -30px !important" type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
