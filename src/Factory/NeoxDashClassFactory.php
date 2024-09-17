@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Factory;
+namespace NeoxDashBoard\NeoxDashBoardBundle\Factory;
 
-use App\Entity\NeoxDashClass;
-use App\Model\Enum\NeoxDashTypeEnum;
+use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
+use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

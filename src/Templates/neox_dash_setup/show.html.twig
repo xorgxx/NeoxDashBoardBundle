@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NeoxDashSetup{% endblock %}
+
+{% block body %}
+    <h1>NeoxDashSetup</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ neox_dash_setup.id }}</td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>{{ neox_dash_setup.logo }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ neox_dash_setup.country }}</td>
+            </tr>
+            <tr>
+                <th>Weather</th>
+                <td>{{ neox_dash_setup.weather }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_neox_dash_setup_index') }}">back to list</a>
+
+    <a href="{{ path('app_neox_dash_setup_edit', {'id': neox_dash_setup.id}) }}">edit</a>
+
+    {{ include('neox_dash_setup/_delete_form.html.twig') }}
+{% endblock %}

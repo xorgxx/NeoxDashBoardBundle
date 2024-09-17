@@ -1,5 +1,11 @@
 <div {{ attributes }}>
-    {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+    {% if NeoxDashClass.mode == 'accord' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_TabsAccord.html.twig' %}
+    {% elseif NeoxDashClass.mode == 'simple' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+    {% else %}
+        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+    {% endif %}
 </div>
 
 

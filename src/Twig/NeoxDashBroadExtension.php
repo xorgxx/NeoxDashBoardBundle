@@ -9,10 +9,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use NeoxMake\NeoxMakeBundle\Service\ReflectionHelper;
 
 #[AllowDynamicProperties]
 class NeoxDashBroadExtension extends AbstractExtension
@@ -42,7 +44,7 @@ class NeoxDashBroadExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-//            new TwigFunction('HeaderTitle', array($this, 'HeaderTitle'), array(
+//            new TwigFunction('getNeoxDashBoard', $this->getNeoxDashBoard(), array(
 //                'is_safe'           => array('html'),
 //                'needs_environment' => true,
 //            )),

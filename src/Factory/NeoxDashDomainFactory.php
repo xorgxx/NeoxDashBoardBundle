@@ -1,8 +1,8 @@
 <?php
 
-    namespace App\Factory;
+    namespace NeoxDashBoard\NeoxDashBoardBundle\Factory;
 
-    use App\Entity\NeoxDashDomain;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
     use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
     /**

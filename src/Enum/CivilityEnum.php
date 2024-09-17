@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Enum;
+namespace NeoxDashBoard\NeoxDashBoardBundle\Enum;
 
 
 # src/Enum/AppEnvironment.php

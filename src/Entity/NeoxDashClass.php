@@ -31,6 +31,8 @@ class NeoxDashClass
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $icon = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $mode = null;
 
     public function __construct()
     {
@@ -104,6 +106,17 @@ class NeoxDashClass
     {
         $this->icon = $icon;
 
+        return $this;
+    }
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?string $mode): NeoxDashClass
+    {
+        $this->mode = $mode;
         return $this;
     }
 

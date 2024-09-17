@@ -1,5 +1,5 @@
 {% set sectionC             = section.name|replace({' ': ''})|lower %}
-{% set sectionId            = NeoxDashClass.name ~ "-" ~ sectionC %}
+{% set sectionId            = NeoxDashClass.id ~ "-" ~ sectionC %}
 {% set columns_per_row      = section.row %}
 {% set rows_per_carousel    = section.colonne %}
 {% set cards_per_row        = 12 %}
@@ -46,7 +46,7 @@
                                                         <!-- Content Column -->
                                                         <div class="col">
                                                             <div class="p-2">
-                                                                Add new link
+                                                                Add new
                                                                 {% if NeoxDashClass.icon == "bell" %}
                                                                     <p>
                                                                         ...

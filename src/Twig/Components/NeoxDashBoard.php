@@ -24,9 +24,6 @@
         #[LiveProp(writable: true)]
         public ?string $query    = null;
 
-        #[LiveProp(writable: true)]
-        public string $currentContent = 'tabs'; // Ajoute une propriété pour contrôler le contenu
-
 
         public function __construct(private readonly EntityManagerInterface $entityManager, private readonly RequestStack $requestStack ){}
 
@@ -39,14 +36,7 @@
         #[LiveAction]
         public function refresh(#[LiveArg] string $query="link"): void
         {
-            $this->NeoxDashClass = $this->entityManager->getRepository(NeoxDashClass::class)->findOneBy(["name" => $query]) ;
+            $this->NeoxDashClass = $this->entityManager->getRepository(NeoxDashClass::class)->findOneBy(["id" => $query]) ;
         }
 
-        #[LiveAction]
-        public function changeContent(#[LiveArg] string $content): void
-        {
-            $this->currentContent = $content; // Change la valeur de currentContent
-            // Sauvegarder la valeur dans la session
-            $this->requestStack->getSession()->set('current_content', $content);
-        }
     }

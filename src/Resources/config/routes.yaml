@@ -1,0 +1,12 @@
+app_neox_dash_setup_index:
+    path: /neox/dash/setup
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::index
+    methods: [GET]
+app_neox_dash_setup_new:
+    path: /neox/dash/setup
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::new
+    methods: [GET, POST]
+app_neox_dash_setup_edit:
+    path: /neox/dash/setup
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::edit
+    methods: [GET, POST]

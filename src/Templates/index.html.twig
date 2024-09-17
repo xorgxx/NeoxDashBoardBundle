@@ -1,11 +1,15 @@
+<div class=" sticky-top">
+    {% include '@NeoxDashBoardBundle/_Partials/header/Inc-Header.html.twig' %}
+</div>
+
 <div class="container">
-
-    {% for class in  NeoxDashClass %}
-        <turbo-frame id="dashboard-{{ class.type.value }}">
-            <twig:NeoxDashBoard :NeoxDashClass="class"/>
-        </turbo-frame>
-
-    {% endfor %}
+{#    <div class="accordion" id="accordionExample">#}
+        {% for class in  NeoxDashClass %}
+            <turbo-frame id="dashboard-{{ class.type.value }}">
+                <twig:NeoxDashBoard :NeoxDashClass="class"/>
+            </turbo-frame>
+        {% endfor %}
+{#    </div>#}
 </div>
 
 

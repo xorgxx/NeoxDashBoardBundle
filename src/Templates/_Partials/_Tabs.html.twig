@@ -1,27 +1,31 @@
 {% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
+{% if NeoxDashClass %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        {# Item Title ============== #}
+        {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }}
+
+        {# Item TABS Title ========= #}
+        {% for section in NeoxDashClass.NeoxDashSections %}
+            {% if section %}
+                {{ neox_macro.navItemBottomHeader(section, NeoxDashClass, loop) }}
+            {% endif %}
+        {% endfor %}
+
+        {# Item ADD Tab Title ======== #}
+        {{ neox_macro.navItemBottomStd("plus", 'green') }}
+
+        {# Item Main Menu ========= #}
+        {{ neox_macro.navItemMenu(NeoxDashClass) }}
+
+    </ul>
+    <div class="tab-content mt-4" id="myTabContent">
+
+        {% for section in NeoxDashClass.NeoxDashSections %}
+
+            {% include'@NeoxDashBoardBundle/_Partials/_TabsCardtest.html.twig' %}
+
+        {% endfor %}
+    </div>
+{% endif %}
 
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    {# Item Title ==============#}
-    {{ neox_macro.navItemBottom(NeoxDashClass.icon, 'white', 'bg-dark')  }}
-
-    {# Item TABS Title =========#}
-    {% for section in NeoxDashClass.NeoxDashSections %}
-        {{ neox_macro.navItemBottomHeader(section, NeoxDashClass, loop) }}
-    {% endfor %}
-
-    {# Item ADD Tab Title ========#}
-    {{ neox_macro.navItemBottom("plus", 'green')  }}
-
-    {# Item Main Menu =========#}
-    {{ neox_macro.navItemMenu(NeoxDashClass)  }}
-
-</ul>
-<div class="tab-content mt-4" id="myTabContent">
-
-    {% for section in NeoxDashClass.NeoxDashSections %}
-
-        {% include'@NeoxDashBoardBundle/_Partials/_TabsCardtest.html.twig'%}
-
-    {% endfor %}
-</div>
