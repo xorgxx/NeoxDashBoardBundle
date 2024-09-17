@@ -2,9 +2,9 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Twig\Components;
 
-    use App\Entity\NeoxDashClass;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use Doctrine\ORM\EntityManagerInterface;
-    use phpDocumentor\Reflection\Types\Collection;
+//    use phpDocumentor\Reflection\Types\Collection;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\RequestStack;
     use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;

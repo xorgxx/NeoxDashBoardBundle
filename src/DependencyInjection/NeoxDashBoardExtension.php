@@ -46,8 +46,7 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
         $container->prependExtensionConfig('framework', [
             'asset_mapper' => [
                 'paths' => [
-                    __DIR__.'/../../assets/dist/' => "@xorgxx/neox-dashboard-bundle",
-//                    '%kernel.project_dir%/vendor/xorgxx/neox-dashboard-bundle/assets/dist/',
+                    __DIR__.'/../../assets/controllers/' => "@xorgxx/neox-dashboard-bundle",
                 ],
             ],
         ]);
