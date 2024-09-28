@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
-#[Broadcast]
 class NeoxDashDomain
 {
     #[ORM\Id]

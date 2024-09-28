@@ -4,7 +4,7 @@
         <div class="accordion-item bg-transparent">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ NeoxDashClass.id }}"
-                        aria-expanded="{{ NeoxDashClass.id == 37 ? "true" : "false" }}" aria-controls="collapseOne{{ NeoxDashClass.id }}">
+                        aria-expanded="{{ loopn.first|default(true) ? "true" : "false" }}" aria-controls="collapseOne{{ NeoxDashClass.id }}">
                     {# Item Title ============== #}
                     {{ neox_macro.navItemBottomSimple(NeoxDashClass, 'black', 'bg-dark') }}
                 </button>
@@ -23,7 +23,7 @@
                         {% endfor %}
 
                         {# Item ADD Tab Title ======== #}
-                        {{ neox_macro.navItemBottomStd("plus", 'green') }}
+                        {{ neox_macro.navItemBottomStd(NeoxDashClass, "plus", 'green') }}
 
                         {# Item Main Menu ========= #}
                         {{ neox_macro.navItemMenu(NeoxDashClass) }}

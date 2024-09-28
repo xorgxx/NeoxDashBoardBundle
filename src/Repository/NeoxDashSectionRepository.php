@@ -40,4 +40,15 @@ class NeoxDashSectionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function toggleFieldValue($id)
+    {
+        return $this->createQueryBuilder('n')
+            ->update(NeoxDashSection::class, 'n')  // Mise à jour de l'entité NeoxDashSection
+            ->set('n.edit', 'NOT n.edit')  // Inverse la valeur du champ 'edit'
+            ->where('n.id = :id')  // Filtre pour l'ID donné
+            ->setParameter('id', $id)  // Définir le paramètre 'id' pour la requête
+            ->getQuery()  // Générer la requête
+            ->execute();  // Exécuter la requête
+    }
 }

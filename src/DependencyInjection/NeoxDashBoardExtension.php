@@ -26,6 +26,11 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
         // foreach ($config as $key => $value) {
         //    $container->setParameter( 'neox_dashboard.' . $key, $value);
         // }
+
+        // Ajoutez le chemin des traductions
+        $container->setParameter('translator.paths', [
+            '%kernel.project_dir%/src/NeoxDashboardBundle/translations',
+        ]);
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -46,7 +51,7 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
         $container->prependExtensionConfig('framework', [
             'asset_mapper' => [
                 'paths' => [
-                    __DIR__.'/../../assets/controllers/' => "@xorgxx/neox-dashboard-bundle",
+                    __DIR__.'/../../assets/dist/' => "@xorgxx/neox-dashboard-bundle",
                 ],
             ],
         ]);

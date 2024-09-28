@@ -2,7 +2,9 @@
 
 namespace NeoxDashBoard\NeoxDashBoardBundle\Entity;
 
+use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
 use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
+use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
 use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashClassRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,9 +33,13 @@ class NeoxDashClass
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $icon = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $mode = null;
+    #[ORM\Column(length: 100, enumType: NeoxStyleEnum::class, nullable: true)]
+    private ?NeoxStyleEnum $mode = null;
 
+    #[ORM\ManyToOne(inversedBy: 'class')]
+    private ?NeoxDashSetup $neoxDashSetup = null;
+    
+    
     public function __construct()
     {
         $this->neoxDashSections = new ArrayCollection();
@@ -109,15 +115,26 @@ class NeoxDashClass
         return $this;
     }
 
-    public function getMode(): ?string
+    public function getMode(): ?NeoxStyleEnum
     {
         return $this->mode;
     }
 
-    public function setMode(?string $mode): NeoxDashClass
+    public function setMode(?NeoxStyleEnum $mode): NeoxDashClass
     {
         $this->mode = $mode;
         return $this;
     }
 
+    public function getNeoxDashSetup(): ?NeoxDashSetup
+    {
+        return $this->neoxDashSetup;
+    }
+
+    public function setNeoxDashSetup(?NeoxDashSetup $neoxDashSetup): static
+    {
+        $this->neoxDashSetup = $neoxDashSetup;
+
+        return $this;
+    }
 }

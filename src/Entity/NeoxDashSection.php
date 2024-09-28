@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: NeoxDashSectionRepository::class)]
-#[Broadcast]
 class NeoxDashSection
 {
     #[ORM\Id]
@@ -17,14 +16,17 @@ class NeoxDashSection
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?int $row = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $row = 3;
 
-    #[ORM\Column]
-    private ?int $colonne = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $colonne = 5;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $edit = false;
 
     /**
      * @var Collection<int, NeoxDashDomain>
@@ -140,4 +142,15 @@ class NeoxDashSection
         return $this;
     }
 
+    public function getEdit(): ?bool
+    {
+        return $this->edit;
+    }
+
+    public function setEdit(?bool $edit): static
+    {
+        $this->edit = $edit;
+        return $this;
+    }
+    
 }

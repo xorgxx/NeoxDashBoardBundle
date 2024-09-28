@@ -1,12 +1,39 @@
+
 app_neox_dash_setup_index:
-    path: /neox/dash/setup
+    path: /neox/dash/setup/
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::index
     methods: [GET]
 app_neox_dash_setup_new:
-    path: /neox/dash/setup
+    path: /neox/dash/setup/new
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::new
     methods: [GET, POST]
 app_neox_dash_setup_edit:
-    path: /neox/dash/setup
+    path: /neox/dash/setup/{id}
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::edit
+    methods: [GET, POST]
+
+app_neox_dash_class_index:
+    path: /neox/dash/class/
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::index
+    methods: [GET]
+app_neox_dash_class_new:
+    path: /neox/dash/class/new
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::new
+    methods: [GET, POST]
+app_neox_dash_class_edit:
+    path: /neox/dash/class/{id}
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::edit
+    methods: [GET, POST]
+    
+app_neox_dash_section_index:
+    path: /neox/dash/section/
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::index
+    methods: [GET]
+app_neox_dash_section_new:
+    path: /neox/dash/section/new/{id}
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::new
+    methods: [GET, POST]
+app_neox_dash_section_edit:
+    path: /neox/dash/section/{id}
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::edit
     methods: [GET, POST]

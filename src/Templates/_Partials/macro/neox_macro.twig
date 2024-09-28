@@ -1,73 +1,103 @@
 {% macro navItemBottomSimple(class, color, bColor) %}
 
-            <twig:ux:icon name="fa6-solid:{{ class.icon}}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2"/>
-            <span style="color:{{ color|default('red') }}">{{ class.name }}</span>
+    <twig:ux:icon name="fa6-solid:{{ class.icon }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+    <span style="color:{{ color|default('red') }}" >{{ class.name }}</span >
 
 {% endmacro %}
 
 {% macro navItemBottom(class, color, bColor) %}
-    <li class="nav-item bg-opacity-50 {{ bColor }}" role="presentation">
+    <li class="nav-item bg-opacity-50 {{ bColor }}" role="presentation" >
 
-        <button class="nav-link" type="button" aria-selected="false" class="text-red">
-            <twig:ux:icon name="fa6-solid:{{ class.icon}}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2"/>
-            <span style="color:{{ color|default('red') }}">{{ class.name }}</span>
-        </button>
-    </li>
+        <button class="nav-link" type="button" aria-selected="false" class="text-red" >
+            <twig:ux:icon name="fa6-solid:{{ class.icon }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+            <span style="color:{{ color|default('red') }}" >{{ class.name }}</span >
+        </button >
+    </li >
 {% endmacro %}
 
-{% macro navItemBottomStd(class, color, bColor) %}
-    <li class="nav-item bg-opacity-50 {{ bColor }}" role="presentation">
-        <button class="nav-link" type="button" aria-selected="false">
-            <twig:ux:icon name="fa6-solid:{{ class }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2"/>
-        </button>
-    </li>
+{% macro navItemBottomStd(class, plus, color, bcolor) %}
+    <li class="nav-item bg-opacity-50 {{ bColor|default('green') }}" role="presentation" >
+        <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+            title: 'New Section' ,
+            text: 'Do you want to continue' ,
+            idElement: "live-NeoxDashBoard@" ~ class.id,
+            url: path('app_neox_dash_section_new', { id: class.id })
+
+        }) }}
+            data-modal="modal"
+            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+            class="nav-link"
+            type="button"
+            aria-selected="false" >
+            <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+        </button >
+    </li >
 {% endmacro %}
 
 {% macro navItemBottomHeader(section, class, loop) %}
     {% set headerC = section.name|replace({' ': ''})|lower %}
-    {% if loop.first %}
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ class.id ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
-                    aria-selected="true">{{ section.name }}</button>
-        </li>
-    {% else %}
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ class.id ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
-                    aria-selected="false">{{ section.name }}</button>
-        </li>
-    {% endif %}
+    <li class="nav-item" role="presentation" >
+        <button class="nav-link {{ loop.first? 'active' : '' }}" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ section.id ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
+            aria-selected="{{ loop.first? 'true' : '' }}" >{{ section.name }} <span class="text-danger">{{ section.edit? '*' : '' }}</span></button >
+
+    </li >
 {% endmacro %}
 
 {% macro navItemMenu(class) %}
-    <li class="nav-item ms-auto dropdown">
-        <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-            <twig:ux:icon name="fa6-solid:bars" width="16" height="16" color="red" class="mx-2"/>
-        </a>
-        <ul class="dropdown-menu">
-            <li>
-                <a class="dropdown-item"
-                   id="delayedInput"
-                   type="text"
-                   data-model="query"
-                   data-action="live#action"
-                   data-live-action-param="refresh"
-                   data-live-query-param="{{ class.id }}"
-                   href="#">Configuration</a>
-            </li>
-            <li>
-                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/modal') }}
-                    class="dropdown-item"
-                   id="dzsefr"
-                   type="text"
-                   href="#"
-                >Add new tab ...</a>
+    <li class="nav-item ms-auto dropdown" >
+        <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" >
+            <twig:ux:icon name="fa6-solid:bars" width="16" height="16" color="red" class="mx-2" />
+        </a >
+        <ul class="dropdown-menu" >
+            <li >
+                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+                    title: 'Edit class' ,
+                    text: 'Do you want to continue' ,
+                    idElement: "live-NeoxDashBoard@" ~ class.id,
+                    url: path('app_neox_dash_class_edit', { id: class.id })
 
-            </li>
-            <li><a class="dropdown-item" href="#">Add new ...</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Misc</a></li>
-        </ul>
-    </li>
+                }) }}
+                    data-modal="modal"
+                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                    class="dropdown-item"
+                    href="#"
+                >
+                    Setup ...
+                </a >
+            </li >
+            <li >
+                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+                    title: 'New Section' ,
+                    text: 'Do you want to continue' ,
+                    idElement: "live-NeoxDashBoard@" ~ class.id,
+                    url: path('app_neox_dash_section_new', { id: class.id })
+
+                }) }}
+                    data-modal="modal"
+                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                    class="dropdown-item"
+                    href="#"
+                >
+                    New Tab ...
+                </a >
+
+            </li >
+            <li ><a class="dropdown-item" href="#" >Add Link ...</a ></li >
+            <li >
+                <hr class="dropdown-divider" >
+            </li >
+{#            <li >#}
+{#                <a#}
+{#                    class="dropdown-item"#}
+{#                    id="delayedInput"#}
+{#                    href="#"#}
+{#                    data-action="live#action"#}
+{#                    data-live-action-param="mode"#}
+{#                    data-live-query-param="145"#}
+{#                >#}
+{#                    Edit mode#}
+{#                </a>#}
+{#            </li >#}
+        </ul >
+    </li >
 {% endmacro %}

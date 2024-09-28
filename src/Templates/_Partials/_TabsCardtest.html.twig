@@ -1,27 +1,103 @@
 {% set sectionC             = section.name|replace({' ': ''})|lower %}
-{% set sectionId            = NeoxDashClass.id ~ "-" ~ sectionC %}
+{% set sectionId            = section.id ~ "-" ~ sectionC %}
 {% set columns_per_row      = section.row %}
 {% set rows_per_carousel    = section.colonne %}
 {% set cards_per_row        = 12 %}
 
-<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-{{ cards_per_row }} g-4 mb-5">
-            <div id="carousel{{ sectionId }}" class="carousel carousel-dark slide" data-bs-ride="carousel">
+<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
+    <div class="container" >
+        <div class="row row-cols-1 row-cols-md-{{ cards_per_row }} g-4 mb-5" >
 
-                <div class="carousel-indicators" style="bottom: -40px">
+            {#   ===== EDITION MENU ======     #}
+            <div class="d-flex justify-content-between align-items-center" >
+                <div class="left-item" >
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm"
+                        id="delayedInput"
+                        data-action="live#action"
+                        data-live-action-param="mode"
+                        data-live-query-param="{{ section.id }}"
+                    >
+                        {% if section.edit %}
+                            <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+                        {% else %}
+                            <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('white') }}" class="mx-2" />
+                        {% endif %}
+
+                    </button >
+                </div >
+                {% if section.edit %}
+                    <div class="ml-auto d-flex" >
+                        <div class="right-item" >
+                            <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+                                title: 'New Section' ,
+                                text: 'Do you want to continue' ,
+                                idElement: "live-NeoxDashBoard@" ~ NeoxDashClass.id,
+                                url: path('app_neox_dash_section_edit', { id: section.id })
+
+                            }) }}
+                                data-modal="modal"
+                                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                                class="nav-link"
+                                type="button"
+                                aria-selected="false" >
+                                <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+                            </button >
+                        </div >
+                        <div class="right-item" >
+                            <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+                                title: 'Edit Section' ,
+                                text: 'Do you want to continue' ,
+                                idElement: "live-NeoxDashBoard@" ~ NeoxDashClass.id,
+                                url: path('app_neox_dash_section_edit', { id: section.id })
+
+                            }) }}
+                                data-modal="modal"
+                                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                                class="nav-link"
+                                type="button"
+                                aria-selected="false" >
+                                <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
+                            </button >
+                        </div >
+
+                    </div >
+                {% else %}
+                    <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+                        title: 'New Domain' ,
+                        text: 'Do you want to continue' ,
+                        idElement: "live-NeoxDashBoard@" ~ NeoxDashClass.id,
+                        url: path('app_neox_dash_section_new', { id: section.id })
+
+                    }) }}
+                        data-modal="modal"
+                        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                        class="btn btn-success btn-sm"
+                        type="button"
+                        aria-selected="false" >
+                        <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('darkgreen') }}" class="mx-2" />
+                        Add domain
+                    </button >
+                {% endif %}
+            </div >
+
+            {#   ===== CAROUSEL ======     #}
+            <div id="carousel{{ sectionId }}" class="carousel carousel-dark slide" data-bs-ride="carousel" >
+
+                <div class="carousel-indicators" style="bottom: -40px" >
                     {% for i in 0..((section.NeoxDashDomains|length // (columns_per_row * rows_per_carousel))) %}
-                        <button type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}"></button>
+                        <button type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}" ></button >
                     {% endfor %}
-                </div>
+                </div >
 
-                <div class="carousel-inner">
+                <div class="carousel-inner" >
                     {% for row in section.NeoxDashDomains|batch(columns_per_row * rows_per_carousel, '') %}
-                        <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer|default(20000) }}">
+                        <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer|default(20000) }}" >
 
-                            <div class="container">
+                            <div class="container" >
                                 {% for rowSet in row|batch(columns_per_row) %}
-                                    <div class="row justify-content-center">
+                                    <div class="row justify-content-center" >
 
                                         {% for item in rowSet %}
                                             {% if item is not empty %}
@@ -29,54 +105,24 @@
                                             {% endif %}
                                         {% endfor %}
 
-                                        {% if loop.last and loop.parent.loop.last %}
-                                            <div class="col-md-2 mb-3">
-                                                <div class="card h-100">
-                                                    <div class="row no-gutters align-items-center">
-
-                                                        <!-- Icon Column -->
-                                                        <div class="col-auto bg-success" style="height: 100%">
-                                                            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
-                                                                <a href="#" class="d-flex align-items-center justify-content-center p-2 hover-color">
-                                                                    <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:plus" width="26" style="height: auto;" color="black"/>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Content Column -->
-                                                        <div class="col">
-                                                            <div class="p-2">
-                                                                Add new
-                                                                {% if NeoxDashClass.icon == "bell" %}
-                                                                    <p>
-                                                                        ...
-                                                                    </p>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-
-                                    </div>
+                                    </div >
 
                                 {% endfor %}
 
-                            </div>
-                        </div>
+                            </div >
+                        </div >
                     {% endfor %}
-                </div>
+                </div >
 
-                <button class="carousel-control-prev" style="top: unset !important; bottom: -30px !important" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" style=" top: unset !important; bottom: -30px !important" type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+                <button class="carousel-control-prev" style="top: unset !important; bottom: -30px !important" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="prev" >
+                    <span class="carousel-control-prev-icon" aria-hidden="true" ></span >
+                    <span class="visually-hidden" >Previous</span >
+                </button >
+                <button class="carousel-control-next" style=" top: unset !important; bottom: -30px !important" type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="next" >
+                    <span class="carousel-control-next-icon" aria-hidden="true" ></span >
+                    <span class="visually-hidden" >Next</span >
+                </button >
+            </div >
+        </div >
+    </div >
+</div >

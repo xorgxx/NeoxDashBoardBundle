@@ -1,4 +1,35 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{# templates/form/your_form.html.twig #}
+<div id="formNeox" >
+    {{ form_start(form, { 'attr': { 'class': 'form-horizontal' } }) }}
+    {{ form_row(form.logo) }}
+    {{ form_row(form.home) }}
+    {{ form_row(form.country) }}
+    {{ form_row(form.weather) }}
+    {{ form_row(form.search) }}
+
+
+{#     <div class="row mb-3">#}
+{#        {{ form_label(form.country, null, {'label_attr': {'class': 'col-sm-3 col-form-label text-start'}}) }}#}
+{#        <div class="col-sm-9">#}
+{#            {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}#}
+{#            {{ form_errors(form.country) }}#}
+{#        </div>#}
+{#     </div> #}
+
+
+{#    <div class="row mb-3" >#}
+{#        {{ form_label(form.weather, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}#}
+{#        <div class="col-sm-10" >#}
+{#            {{ form_widget(form.weather, {'attr': {'class': 'form-control'}}) }}#}
+{#            {{ form_errors(form.weather) }}#}
+{#        </div >#}
+{#    </div >#}
+
+{#    <div class="row mb-3" >#}
+{#        <div class="col-sm-10 offset-sm-2" >#}
+{#            <button class="btn" >{{ button_label|default('Save') }}</button >#}
+{#        </div >#}
+{#    </div >#}
+
+    {{ form_end(form) }}
+</div >
