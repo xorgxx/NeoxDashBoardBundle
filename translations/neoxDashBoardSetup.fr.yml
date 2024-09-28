@@ -1,0 +1,47 @@
+# src/Acme/DemoBundle/Resources/translations/messages.fr.yml
+neoxDashBoardSetup:
+    home:
+        title: Post
+        sub-title: Interface
+    setup-tool:
+        title: Menu
+    DarkMode:
+        dark: Sombre
+        light: claire
+    seo:
+        title: '%name_projet% Bienvenue | Creation de site web, mobile, application station'
+        description: |
+            %name_projet% est une agence digitale fondée en 2010. Design, UX, Développement web et
+            Référencement SEO sur mesure. Développez votre stratégie digitale, créez votre Site Internet
+            et améliorez votre visibilité sur Google avec notre agence web.
+        image: '%web_site%/images/logo/logoWhite.png' # This one is shared by open graph and twitter only
+
+    form:
+        action.label: Action
+        add.label: Ajouter
+        view.label: Voir
+        update.label: Modifier
+        delete.label: Supprimer
+        delete.msg.label: Êtes-vous sûr de bien vouloir supprimer cet élément ?
+        pin.publish.1: Êtes-vous sûr de bien vouloir de-publier cet élément ?
+        pin.publish.0: Êtes-vous sûr de bien vouloir publier cet élément ?
+        save.label: Enregistrer
+        home:
+            title: Post Manager
+            title-edit: Edit Post
+            title-new: New Post
+        id:
+            label: id
+            placeholder: Saisir nom un pour le tags ...
+        main :
+            label       : Accueil
+            placeholder : Saisir le nom de la route de l'accueil
+        logo :
+            label       : Logo
+            placeholder : Saisir le chemin du logo
+        country:
+            label: Pays
+            placeholder: Saisir votre pays ... 
+        weather:
+            label: météo
+            placeholder: Saisir pour la météo ...
