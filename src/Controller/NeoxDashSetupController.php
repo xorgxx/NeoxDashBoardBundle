@@ -32,19 +32,12 @@
         public function new(Request $request): Response | JsonResponse
         {
             // Determine the template to use for rendering
-            $setup = [
-                // full html form
-                "new"   => '@NeoxDashBoardBundle/neox_dash_setup/new.html.twig',
-                // only form
-                "_form" => '@NeoxDashBoardBundle/neox_dash_setup/_form.html.twig',
-                // name route without _index | _new ....
-                "route" => 'app_neox_dash_setup'
-            ];
+            $formHandlerService = $this->setInit("new");
             // build entity
-            $neoxDashSetup = new NeoxDashSetup();
+            $neoxDashSetup      = new NeoxDashSetup();
 
             // build Form entity Generic
-            $form = $this->formHandlerService->handleCreateForm($neoxDashSetup, NeoxDashSetupType::class, $setup);
+            $form = $formHandlerService->handleCreateForm($neoxDashSetup, NeoxDashSetupType::class);
 
             // Build form
             $form->handleRequest($request);
@@ -53,21 +46,16 @@
              * Call to the generic form management service, with support for turbo-stream
              * For kipping this code flexible to return your need
              */
-            [$return, $form]  = $this->formHandlerService->handleForm($request, $form, $neoxDashSetup, $setup);
+            [$return, $form]  = $formHandlerService->handleForm($request, $form, $neoxDashSetup);
             return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($setup["route"] . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true) : $this->render($setup["_form"], [
+                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
+                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
                     'form' => $form->createView(),
                 ]),
-//                "ajax" => $return["submit"]
-//                    ? new JsonResponse(["status" => "ok"]) // Example response for AJAX
-//                    : $this->render($setup["_form"], [
-//                        'form' => $form->createView(),
-//                    ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($setup["new"], [
+                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
                     'form' => $form->createView(),
                 ]),
-                default     => $this->render($setup["new"], [ 'form' => $form->createView(), ]),
+                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
             };
 
         }
@@ -85,17 +73,10 @@
         {
             
             // Determine the template to use for rendering
-            $setup = [
-                // full html form
-                "new"   => '@NeoxDashBoardBundle/neox_dash_setup/edit.html.twig',
-                // only form
-                "_form" => '@NeoxDashBoardBundle/neox_dash_setup/_form.html.twig',
-                // name route without _index | _new ....
-                "route" => 'app_neox_dash_setup'
-            ];
+            $formHandlerService = $this->setInit("new");
 
             // build Form entity Generic
-            $form = $this->formHandlerService->handleCreateForm($neoxDashSetup, NeoxDashSetupType::class, $setup);
+            $form = $formHandlerService->handleCreateForm($neoxDashSetup, NeoxDashSetupType::class);
 
             // Merge form
             $form->handleRequest($request);
@@ -104,16 +85,16 @@
              * Call to the generic form management service, with support for turbo-stream
              * For kipping this code flexible to return your need
              */
-            [$return, $form] = $this->formHandlerService->handleForm($request, $form, $neoxDashSetup, $setup);
+            [$return, $form] = $formHandlerService->handleForm($request, $form, $neoxDashSetup);
             return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($setup["route"] . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true) : $this->render($setup["_form"], [
+                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
+                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
                     'form' => $form->createView(),
                 ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($setup["new"], [
+                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
                     'form' => $form->createView(),
                 ]),
-                default     => $this->render($setup["new"], [ 'form' => $form->createView(), ]),
+                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
             };
         }
 
@@ -126,5 +107,22 @@
             }
 
             return $this->redirectToRoute('app_neox_dash_setup_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        /**
+         * @return IniHandleNeoxDashModel
+         */
+        public function setInit(string $name = "new", array $params = []): FormHandlerService
+        {
+            $o = $this->formHandlerService
+                ->createNewHandleNeoxDashModel()
+                ->setNew("@NeoxDashBoardBundle/neox_dash_setup/$name.html.twig")
+                ->setForm('@NeoxDashBoardBundle/neox_dash_setup/_form.html.twig')
+                ->setRoute('app_neox_dash_setup')
+                ->setParams($params)
+            ;
+
+            // Determine the template to use for rendering
+            return $this->formHandlerService->setHandleNeoxDashModel($o);
         }
     }

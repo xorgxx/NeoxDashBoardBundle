@@ -23,20 +23,16 @@ class NeoxDashDomain
     #[ORM\Column(type: Types::TEXT)]
     private ?string $url = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $color = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'neoxDashDomains')]
     #[ORM\JoinColumn(nullable: false)]
     private ?NeoxDashSection $section = null;
-
-    #[ORM\Column(length: 1)]
-    private ?string $firstLetter = null;
-
-
+    
     public function __construct()
     {
     }
@@ -86,7 +82,7 @@ class NeoxDashDomain
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+    public function setSlug(?string $slug): static
     {
         $this->slug = $slug;
 
@@ -104,18 +100,5 @@ class NeoxDashDomain
 
         return $this;
     }
-
-    public function getFirstLetter(): ?string
-    {
-        return $this->firstLetter;
-    }
-
-    public function setFirstLetter(string $firstLetter): static
-    {
-        $this->firstLetter = $firstLetter;
-
-        return $this;
-    }
-
 
 }

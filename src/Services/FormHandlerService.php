@@ -3,6 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Services;
 
     use Doctrine\ORM\EntityManagerInterface;
+    use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
     use Symfony\Component\Form\FormFactoryInterface;
     use Symfony\Component\Form\FormInterface;
     use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,8 +15,32 @@
     class FormHandlerService
     {
 
+        public ?IniHandleNeoxDashModel $iniHandleNeoxDashModel = null;
+
+
         public function __construct(readonly EntityManagerInterface $entityManager, readonly FormFactoryInterface $formFactory, readonly RouterInterface $router)
         {
+        }
+
+
+        // Retourne l'instance actuelle de iniHandleNeoxDashModel
+        public function getIniHandleNeoxDashModel(): ?iniHandleNeoxDashModel
+        {
+            return $this->iniHandleNeoxDashModel;
+        }
+
+        // Crée et retourne une nouvelle instance de iniHandleNeoxDashModel
+        public function createNewHandleNeoxDashModel(): iniHandleNeoxDashModel
+        {
+            $this->iniHandleNeoxDashModel = new iniHandleNeoxDashModel();  // Crée et stocke la nouvelle instance
+            return $this->iniHandleNeoxDashModel;
+        }
+
+        // Définis une instance de iniHandleNeoxDashModel dans la propriété
+        public function setHandleNeoxDashModel(iniHandleNeoxDashModel $IniHandleNeoxDashModel): self
+        {
+            $this->iniHandleNeoxDashModel = $IniHandleNeoxDashModel;
+            return $this;
         }
 
         /**
@@ -24,18 +49,14 @@
          * @param               $request
          * @param FormInterface $form
          * @param object        $entity
-         * @param array         $setup
          *
          * @return mixed
          */
-        public function handleForm($request, FormInterface $form, object $entity, array $setup): array
+        public function handleForm($request, FormInterface $form, object $entity): array
         {
-            $return = [
-                "submit" => false, "data" => $form,
-            ];
 
             // identification type request
-            $return = $this->getRequestType($request, $return);
+            $return = $this->getRequestType($request, $form);
 
             // submit form
             if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +72,9 @@
             }
 
             // Return the form if it is invalid or not submitted
-            return [$return, $form];
+            return [
+                $return, $form
+            ];
         }
 
 
@@ -64,11 +87,14 @@
          *
          * @return mixed
          */
-        public function handleCreateForm(object $entity, string $formType, array $setup): FormInterface
+        public function handleCreateForm(object $entity, string $formType): FormInterface
         {
             // build action for form
-            $action = $entity->getId() ? $this->router->generate($setup["route"] . '_edit', [ 'id' => $entity->getId() ]) : $this->router->generate($setup["route"] . '_new',$setup["params"]);
-            
+            $route  = $this->iniHandleNeoxDashModel->getRoute();
+            $params = $entity->getId() ? [ 'id' => $entity->getId() ] : $this->iniHandleNeoxDashModel->getParams();
+            $action = $this->router->generate("{$route}_" . ($entity->getId() ? 'edit' : 'new'), $params);
+
+
             // Create the form generically
             // Return the form if it is invalid or not submitted
             return $this->formFactory->create($formType, $entity, [
@@ -82,14 +108,17 @@
          *
          * @return array
          */
-        public function getRequestType($request, array $return): array
+        public function getRequestType($request, ?FormInterface $form = null): array
         {
-            $return[ "status" ] = match (true) {
-                $request->isXmlHttpRequest() => 'ajax',      // AJAX request
-                TurboBundle::STREAM_FORMAT === $request->getPreferredFormat() => 'turbo',     // Turbo Stream request
-                $request->isMethod('POST') => 'redirect',  // Classic POST request
-                default => 'standard',  // Classic request (GET, etc.)
-            };
-            return $return;
+            return [
+                "submit" => false, "data" => $form, "status" => match (true) {
+                    $request->isXmlHttpRequest() => 'ajax',                                     // AJAX request
+                    TurboBundle::STREAM_FORMAT === $request->getPreferredFormat() => 'turbo',   // Turbo Stream request
+                    $request->isMethod('POST') => 'redirect',                                   // Classic POST request
+                    default => 'standard',                                                      // Classic request (GET, etc.)
+                }
+            ];
         }
+
+
     }

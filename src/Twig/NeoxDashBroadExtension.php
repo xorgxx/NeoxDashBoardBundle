@@ -38,6 +38,7 @@ class NeoxDashBroadExtension extends AbstractExtension
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
 //            new TwigFilter('setJsFile', [$this, 'setJsFile']),
+            new TwigFilter('getShortDomain', [$this, 'shortDomain']),
         ];
     }
 
@@ -51,8 +52,34 @@ class NeoxDashBroadExtension extends AbstractExtension
 //            new TwigFunction('setJsFile', [$this, 'setJsFile']),
 //            new TwigFunction('getPropertyType', [ReflectionHelper::class, 'getPropertyType']),
 //            new TwigFunction('getTrans', [$this, 'getTranslation']),
-
+//            new TwigFunction('getShortDomain', [$this, 'shortDomain']),
         ];
     }
 
+    public function shortDomain(string $url, $callback = "first"): array
+    {
+        // Check if the URL starts with a scheme
+        if (!preg_match('/^http(s)?:\/\//', $url)) {
+            // Prepend 'http://' if no scheme is present
+            $url = 'https://' . $url;
+        }
+        $domain = parse_url($url, PHP_URL_HOST);
+        $parts  = explode('.', $domain);
+
+        if (count($parts) >= 2) {
+            $mainDomain = $parts[ count($parts) - 2 ];
+        } else {
+            $mainDomain = $parts[ 0 ];
+        }
+
+        // Extraire la première lettre du domaine principal
+        $firstLetter = substr($mainDomain, 0, 1);
+        $a = [
+            'url'       => $url,
+            'domain'    => $domain,
+            'first'     => $firstLetter
+        ];
+        
+        return $a;
+    }
 }

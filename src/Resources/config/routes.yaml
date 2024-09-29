@@ -8,7 +8,7 @@ app_neox_dash_setup_new:
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::new
     methods: [GET, POST]
 app_neox_dash_setup_edit:
-    path: /neox/dash/setup/{id}
+    path: /neox/dash/setup/{id}/edit
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::edit
     methods: [GET, POST]
 
@@ -21,9 +21,13 @@ app_neox_dash_class_new:
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::new
     methods: [GET, POST]
 app_neox_dash_class_edit:
-    path: /neox/dash/class/{id}
+    path: /neox/dash/class/{id}/edit
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::edit
     methods: [GET, POST]
+app_neox_dash_class_delete:
+    path: /neox/dash/class/{id}/delete
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::delete
+    methods: [POST]
     
 app_neox_dash_section_index:
     path: /neox/dash/section/
@@ -34,6 +38,27 @@ app_neox_dash_section_new:
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::new
     methods: [GET, POST]
 app_neox_dash_section_edit:
-    path: /neox/dash/section/{id}
+    path: /neox/dash/section/{id}/edit
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::edit
     methods: [GET, POST]
+app_neox_dash_section_delete:
+    path: /neox/dash/section/{id}/delete
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSectionController::delete
+    methods: [POST]
+    
+app_neox_dash_domain_index:
+    path: /neox/dash/domain/
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashDomainController::index
+    methods: [GET]
+app_neox_dash_domain_new:
+    path: /neox/dash/domain/new/{id}
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashDomainController::new
+    methods: [GET, POST]
+app_neox_dash_domain_edit:
+    path: /neox/dash/domain/{id}/edit
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashDomainController::edit
+    methods: [GET, POST]
+app_neox_dash_domain_delete:
+    path: /neox/dash/domain/{id}/delete
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashDomainController::delete
+    methods: [POST]

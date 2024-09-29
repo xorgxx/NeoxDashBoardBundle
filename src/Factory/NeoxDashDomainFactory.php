@@ -33,14 +33,14 @@
         protected function defaults(): array|callable
         {
 
-            [ $url, $domain, $firstDomain ] = $this->shortDomain();
+            [ $url, $domain ] = $this->shortDomain();
             return [
                 'name'        => $domain, # ;self::faker()->domainWord(),
                 'section'     => NeoxDashSectionFactory::random(),
                 'slug'        => self::faker()->slug(1),
                 'url'         => $url,
                 'color'       => self::faker()->hexColor(),
-                'firstLetter' => $firstDomain
+
             ];
         }
 
@@ -72,6 +72,6 @@
             // Extraire la première lettre du domaine principal
             $firstLetter = substr($mainDomain, 0, 1);
 
-            return [ $url, $domain, $firstLetter ];
+            return [ $url, $domain ];
         }
     }

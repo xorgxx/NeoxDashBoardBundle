@@ -1,0 +1,30 @@
+
+
+
+<form method="post" action="{{ path('app_neox_dash_domain_delete', {'id': item.id}) }}"
+    {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
+        title: "Delete Domain",
+        text: "Do you want to cddddontinue?",
+        idElement: "live-NeoxDashBoard@" ~ NeoxDashClass.id,
+        url: path('app_neox_dash_domain_delete', { id: item.id })
+    })}}
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+
+    <button
+        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}
+{#        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#deleteConfirm"#}
+{#        data-modal="modal"#}
+{#        data-title="Delete Domain"#}
+{#        data-text="Do you want to continue?"#}
+{#        data-idElement=live-NeoxDashBoard@" ~ {{ NeoxDashClass.id }},#}
+{#        data-url= path('app_neox_dash_section_new', {{ item.id }}#}
+        class="nav-link"
+        type="button"
+        aria-selected="false"
+    >
+        <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+
+    </button>
+</form>
+

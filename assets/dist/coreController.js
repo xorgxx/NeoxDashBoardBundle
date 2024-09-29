@@ -21,40 +21,25 @@ export class coreController extends Controller {
         url: {type: String, default: 'Fetching ...'},
         idElement: {type: String, default: 'element'},
     };
-
-    // Constructor to initialize Toast globally
-    // connect() {
-    //     window.Toast = swal.mixin({
-    //         toast: true,
-    //         position: "top-end",
-    //         showConfirmButton: false,
-    //         timer: 3000,
-    //         timerProgressBar: true,
-    //         didOpen: (toast) => {
-    //             toast.onmouseenter = swal.stopTimer;
-    //             toast.onmouseleave = swal.resumeTimer;
-    //         }
-    //     });
-    // }
-
-    initializeStimulusAtt() {
+    
+    initializeStimulusAtt(){
         // Initialize values based on data- attributes
         this.#initializeStAttValues();
     }
-
-    initializeDataAtt() {
+    
+    initializeDataAtt(){
         // Initialize values based on data- attributes
         this.#initializeDataAttValues();
     }
-
-    async fetchForm(body, signal) {
-
+    
+    async fetchForm(body, signal){
+        
         swal.update({
             'text': `Loading form waiting ...`,
             'icon': "question"
         })
         swal.showLoading()
-
+        
         let $f = JSON.stringify(body);
         return fetch(this.urlValue, {
             method: "post",
@@ -65,22 +50,22 @@ export class coreController extends Controller {
             signal,
             credentials: 'include'
         })
-            .then(await this.#handleResponse)
-            .catch(this.#handleError)
+        .then(await this.#handleResponse)
+        .catch(this.#handleError)
     }
-
-    async submitForm( signal ) {
+    
+    async submitForm(signal){
         const $elem = document.getElementById("swal2-html-container");
         const $form = $elem.querySelector("form");
         const formData = new FormData($form);
         const inputFields = [...$form.querySelectorAll('input, textarea, select')];
-
+        
         // Check required fields
         const formIsValid = inputFields.every(field => !field.hasAttribute('required') || field.value.trim());
-
-        if (!formIsValid) {
+        
+        if(!formIsValid){
             inputFields.forEach(field => {
-                if (field.hasAttribute('required') && !field.value.trim()) {
+                if(field.hasAttribute('required') && !field.value.trim()){
                     field.classList.add("is-invalid");
                 } else {
                     field.classList.remove("is-invalid");
@@ -90,14 +75,14 @@ export class coreController extends Controller {
             swal.showValidationMessage(`Request failed: ${error.message}`);
             return;
         }
-
+        
         swal.update({
             'text': `Submit form waiting ...`,
             'html': "",
             'icon': "question"
         })
         swal.showLoading()
-
+        
         // Send the request with the form data
         return fetch($form.action, {
             method: $form.method,
@@ -109,52 +94,50 @@ export class coreController extends Controller {
             signal,
             credentials: 'include'
         })
-            .then(this.#handleResponse)
-            .then(data => {
-                if (data == "true") {
-                    toast.fire({
-                        icon: "success",
-                        title: "Changes successfully"
-                    });
-                    $form.reset()
-
-                    const id        = this.idElementValue.split('@')[1]; // Extract the id
-                    const component = document.getElementById(this.idElementValue).__component; // Get the parent div
-                    // const component = divParent.querySelector(`[data-live-name-value="${id}"]`).__component; // Select the component
-
-
-                    // or call an action
-                    component.action('refresh', {'query': id});
-                    // then, trigger a re-render to get the fresh HTML
-                    // component.render();
-
-                } else {
-                    // Update the UI with the retrieved data
-                    swal.fire({
-                        // icon: '',
-                        title: this.titleValue,
-                        html: data,
-                        showCancelButton: this.showCancelButtonValue,
-                        confirmButtonText: this.confirmButtonTextValue,
-                        allowOutsideClick: false,
-                        preConfirm: () => this.submitForm("formNeox"),
-                    });
-                    swal.showValidationMessage(
-                        `${error}`
-                    );
-                }
-            })
-            .catch(this.#handleError)
+        .then(this.#handleResponse)
+        .then(data => {
+            if(data == "true"){
+                toast.fire({
+                    icon: "success",
+                    title: "Changes successfully"
+                });
+                $form.reset()
+                
+                const id = this.idElementValue.split('@')[ 1 ]; // Extract the id
+                const component = document.getElementById(this.idElementValue).__component; // Get the parent div
+                // const component = divParent.querySelector(`[data-live-name-value="${id}"]`).__component; // Select the component
+                // or call an action
+                component.action('refresh', {'query': id});
+                // then, trigger a re-render to get the fresh HTML
+                // component.render();
+                
+            } else {
+                // Update the UI with the retrieved data
+                swal.fire({
+                    // icon: '',
+                    title: this.titleValue,
+                    html: data,
+                    showCancelButton: this.showCancelButtonValue,
+                    confirmButtonText: this.confirmButtonTextValue,
+                    allowOutsideClick: false,
+                    preConfirm: () => this.submitForm("formNeox"),
+                });
+                swal.showValidationMessage(
+                    `${error}`
+                );
+            }
+        })
+        .catch(this.#handleError)
     }
-
-    async #handleResponse(result) {
-        if (!result.ok) {
+    
+    async #handleResponse(result){
+        if(!result.ok){
             throw new Error(`Network error: ${result.status} - ${result.statusText}`);
         }
         return result.text();
     }
-
-    #handleError(error) {
+    
+    #handleError(error){
         swal.update({
             'text': `Request failed !!`,
             'icon': "warning"
@@ -163,36 +146,43 @@ export class coreController extends Controller {
             `${error}`
         );
     }
-
+    
     // Get by stimulus attributes 
-    #initializeStAttValues() {
-        for (const key of Object.keys(this.constructor.values)) {
+    #initializeStAttValues(){
+        for(const key of Object.keys(this.constructor.values)) {
             // We use the Stimulus attributes
-            const dataValue = this[`${key}Value`];
-
+            const dataValue = this[ `${key}Value` ];
+            
             // We apply the default value if no value is provided
-            this[key + 'Value'] = dataValue || this.constructor.values[key].default;
+            this[ key + 'Value' ] = dataValue || this.constructor.values[ key ].default;
         }
     }
-
+    
     // Get by data-attributes
     #initializeDataAttValues() {
-        // Check and apply values passed via data attributes-
-        for (const key in this.constructor.values) {
-            const dataValue = this.element.dataset[key];
-            // const dataValue = this.[key].Value
-            this[key + 'Value'] = dataValue !== undefined
-                ? this.convertDataValue(dataValue)
+        for (const key of Object.keys(this.constructor.values)) {
+            // Récupérer la valeur de l'attribut data-* correspondant
+            const dataValue = this.element.dataset[this.#camelCaseToDash(key)];
+            
+            // Si la valeur data-* est fournie, on la convertit et l'utilise
+            // Sinon, on utilise la valeur par défaut
+            this[`${key}Value`] = dataValue !== undefined
+                ? this.convertDataValue(dataValue)  // Convertir la valeur si nécessaire
                 : this.constructor.values[key].default;
         }
     }
 
-    #convertDataValue(value) {
+// Fonction utilitaire pour convertir le nom camelCase en format dash-case
+    #camelCaseToDash(key) {
+        return key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    }
+    
+    #convertDataValue(value){
         // Convert values to appropriate types
-        if (value === 'true') return true;
-        if (value === 'false') return false;
+        if(value === 'true') return true;
+        if(value === 'false') return false;
         const numberValue = Number(value);
         return isNaN(numberValue) ? value : numberValue;
     }
-
+    
 }

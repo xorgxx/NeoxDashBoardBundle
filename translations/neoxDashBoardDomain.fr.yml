@@ -1,0 +1,40 @@
+# src/Acme/DemoBundle/Resources/translations/messages.fr.yml
+neoxDashBoardDomain:
+    home:
+        title: Post
+        sub-title: Interface
+    setup-tool:
+        title: Menu
+    DarkMode:
+        dark: Sombre
+        light: claire
+
+    form:
+        action.label: Action
+        add.label: Ajouter
+        view.label: Voir
+        update.label: Modifier
+        delete.label: Supprimer
+        delete.msg.label: Êtes-vous sûr de bien vouloir supprimer cet élément ?
+        pin.publish.1: Êtes-vous sûr de bien vouloir de-publier cet élément ?
+        pin.publish.0: Êtes-vous sûr de bien vouloir publier cet élément ?
+        save.label: Enregistrer
+        home:
+            title: Post Manager
+            title-edit: Edit Post
+            title-new: New Post
+        id:
+            label: id
+            placeholder: Saisir nom un pour le tags ...
+        name:
+            label: Nom
+            placeholder: Saisir le nom de la section
+        url:
+            label: url
+            placeholder: Saisir l'url du site ...
+        color :
+            label       : couleur
+            placeholder : Saisir la couleur ...
+        slug :
+            label       : slug
+            placeholder : Saisir le vitesse de deffilements en ms...
