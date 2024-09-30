@@ -11,13 +11,17 @@ app_neox_dash_setup_edit:
     path: /neox/dash/setup/{id}/edit
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::edit
     methods: [GET, POST]
+app_neox_dash_setup_show:
+    path: /neox/dash/setup/{id}
+    controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashSetupController::show
+    methods: [GET]
 
 app_neox_dash_class_index:
     path: /neox/dash/class/
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::index
     methods: [GET]
 app_neox_dash_class_new:
-    path: /neox/dash/class/new
+    path: /neox/dash/class/new/{id}
     controller: NeoxDashBoard\NeoxDashBoardBundle\Controller\NeoxDashClassController::new
     methods: [GET, POST]
 app_neox_dash_class_edit:

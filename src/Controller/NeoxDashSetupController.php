@@ -63,7 +63,7 @@
         #[Route('/{id}', name: 'app_neox_dash_setup_show', methods: [ 'GET' ])]
         public function show(NeoxDashSetup $neoxDashSetup): Response
         {
-            return $this->render('@NeoxDashBoardBundle/neox_dash_setup/show.html.twig', [ 'neox_dash_setup' => $neoxDashSetup, ]);
+            return $this->render('@NeoxDashBoardBundle/index.html.twig', [ 'NeoxDashSetup' => $neoxDashSetup, ]);
         }
 
         #[Route('/{id}/edit', name: 'app_neox_dash_setup_edit', methods: [

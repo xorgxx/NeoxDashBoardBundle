@@ -84,7 +84,21 @@
                 'translation_domain' => 'neoxDashBoardSetup',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                 'row_attr'           => [ 'class' => 'row mb-3' ],
-            ));
+            ))->add('theme', textType::class, [
+                'required'           => true,
+                'label'              => $this->getTrans('theme'),
+                'translation_domain' => 'neoxDashBoardSetup',
+                'label_attr'         => [
+                    'class'       => 'col-form-label text-start',
+                ],
+                'attr'               => [
+                    "placeholder" => $this->getTrans('country', "placeholder"),
+                    'class' => 'form-control',
+                ],
+                'row_attr'           => [
+                    'class' => 'row mb-3',
+                ],
+            ]);
         }
 
         public function configureOptions(OptionsResolver $resolver): void

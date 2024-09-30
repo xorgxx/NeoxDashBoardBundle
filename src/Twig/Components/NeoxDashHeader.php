@@ -27,7 +27,7 @@
         use DefaultActionTrait;
         use ComponentToolsTrait;
 
-//        #[LiveProp]
+        #[LiveProp]
         public ?NeoxDashSetup $NeoxDashSetup = null;
 
         #[LiveProp(writable: true)]
@@ -58,7 +58,9 @@
         {
             $this->NeoxDashSetup = $this->entityManager->getRepository(NeoxDashSetup::class)->findOneBy([ "id" => $query ]);
             $this->initializeSetup($this->NeoxDashSetup);
-
+//            $this->emit('refresh', [
+//                'NeoxDashSetup' => $this->NeoxDashSetup->getId(),
+//            ], componentName: 'NeoxDashBoard');
         }
 
     }

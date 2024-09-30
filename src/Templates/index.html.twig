@@ -1,23 +1,30 @@
-<div class="bg-secondary-subtle">
-    <div class=" sticky-top">
-        <turbo-frame id="NeoxDashHeader">
-            <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader"/>
-        </turbo-frame>
-        {#    {% include '@NeoxDashBoardBundle/_Partials/header/Inc-Header.html.twig' %}#}
-    </div>
-    <div class="container">
-        {#    <div class="accordion" id="accordionExample">#}
-        <div id="NeoxDashBoard" >
-            {% for class in  NeoxDashSetup.class %}
-                <turbo-frame id="NeoxDashBoard-{{ class.id }}">
-                    <twig:NeoxDashBoard :NeoxDashClass="class" :loopn="loop" id="live-NeoxDashBoard@{{ class.id }}"/>
-                </turbo-frame>
-            {% endfor %}
-        </div>
 
-        {#    </div>#}
-    </div>
-</div>
+
+<turbo-frame id="NeoxDashControl">
+    <twig:NeoxDashBoard :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashBoard"/>
+</turbo-frame>
+
+
+{#<div class="bg-secondary-subtle">#}
+{#    <div class=" sticky-top">#}
+{#        <turbo-frame id="NeoxDashHeader">#}
+{#            <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader"/>#}
+{#        </turbo-frame>#}
+{#        #}{#    {% include '@NeoxDashBoardBundle/_Partials/header/Inc-Header.html.twig' %}#}
+{#    </div>#}
+{#    <div class="container">#}
+{#        #}{#    <div class="accordion" id="accordionExample">#}
+{#        <div id="NeoxDashBoardContent" >#}
+{#            {% for class in  NeoxDashSetup.class %}#}
+{#                <turbo-frame id="NeoxDashBoardContent-{{ class.id }}">#}
+{#                    <twig:NeoxDashBoardContent :NeoxDashClass="class" :loopn="loop" id="live-NeoxDashBoardContent@{{ class.id }}"/>#}
+{#                </turbo-frame>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+{#        #}{#    </div>#}
+{#    </div>#}
+{#</div>#}
 
 
 

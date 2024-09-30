@@ -103,13 +103,23 @@ export class coreController extends Controller {
                 });
                 $form.reset()
                 
-                const id = this.idElementValue.split('@')[ 1 ]; // Extract the id
-                const component = document.getElementById(this.idElementValue).__component; // Get the parent div
-                // const component = divParent.querySelector(`[data-live-name-value="${id}"]`).__component; // Select the component
-                // or call an action
-                component.action('refresh', {'query': id});
-                // then, trigger a re-render to get the fresh HTML
-                // component.render();
+                const idElement = this.idElementValue;
+                
+                if (this.#isRelativeUrl(idElement)) {
+                    // If the URL is valid, we execute a turbo.visit to refresh the page
+                    console.log('L\'élément est une URL:', idElement);
+                    Turbo.visit(idElement)
+                } else {
+                    // If it's not a URL, treat it like a normal identifier
+                    const id = idElement.split('@')[1]; // Extract the id
+                    // const id = this.idElementValue.split('@')[ 1 ];
+                    const component = document.getElementById(idElement).__component; // Get the parent div
+                    // or call an action
+                    component.action('refresh', {'query': id});
+                    // then, trigger a re-render to get the fresh HTML
+                    // component.render();
+                    console.log('L\'élément n\'est pas une URL, l\'id est:', id);
+                }
                 
             } else {
                 // Update the UI with the retrieved data
@@ -135,6 +145,11 @@ export class coreController extends Controller {
             throw new Error(`Network error: ${result.status} - ${result.statusText}`);
         }
         return result.text();
+    }
+    
+    #isRelativeUrl(url) {
+        // Vérifie si la chaîne commence par "/", "./" ou "../", typiquement des indicateurs d'URL relative
+        return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }
     
     #handleError(error){

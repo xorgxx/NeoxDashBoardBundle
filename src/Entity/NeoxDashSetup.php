@@ -35,7 +35,9 @@ class NeoxDashSetup
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $home = null;
-
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $theme = null;
 
     /**
      * @var Collection<int, NeoxDashClass>
@@ -143,4 +145,15 @@ class NeoxDashSetup
         return $this;
     }
 
+    public function getTheme(): ?string
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?string $theme): NeoxDashSetup
+    {
+        $this->theme = $theme;
+        return $this;
+    }
+    
 }

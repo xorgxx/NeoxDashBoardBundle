@@ -1,6 +1,6 @@
 {% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
 {% if NeoxDashClass %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
         {# Item Title ============== #}
         {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }}
 
@@ -18,7 +18,7 @@
         {{ neox_macro.navItemMenu(NeoxDashClass) }}
 
     </ul>
-    <div class="tab-content mt-4" id="myTabContent">
+    <div class="tab-content" id="myTabContent">
 
         {% for section in NeoxDashClass.NeoxDashSections %}
 

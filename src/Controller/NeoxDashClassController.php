@@ -2,6 +2,10 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
+    use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashSectionRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\FormHandlerService;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use NeoxDashBoard\NeoxDashBoardBundle\Form\NeoxDashClassType;
@@ -28,11 +32,16 @@
             return $this->render('@NeoxDashBoardBundle/neox_dash_class/index.html.twig', [ 'neox_dash_classs' => $neoxDashClassRepository->findAll(), ]);
         }
 
-        #[Route('/new', name: 'app_neox_dash_class_new', methods: [ 'GET', 'POST' ])]
-        public function new(Request $request): Response | JsonResponse
+        #[Route('/new/{id}', name: 'app_neox_dash_class_new', methods: [ 'GET', 'POST' ])]
+        public function new(Request $request, $id, NeoxDashSetup $neoxDashSetup): Response | JsonResponse
         {
             // Determine the template to use for rendering
-            $formHandlerService = $this->setInit("new");
+            $formHandlerService = $this->setInit("new", [ "id" => $neoxDashSetup->getId() ]);
+
+            // build entity
+            $neoxDashClass = new NeoxDashClass();
+            $neoxDashClass->setNeoxDashSetup($neoxDashSetup);
+
             // build Form entity Generic
             $form               = $formHandlerService->handleCreateForm($neoxDashClass, NeoxDashClassType::class);
 
@@ -96,12 +105,29 @@
         #[Route('/{id}', name: 'app_neox_dash_class_delete', methods: [ 'POST' ])]
         public function delete(Request $request, NeoxDashClass $neoxDashClass, EntityManagerInterface $entityManager): Response
         {
+            $submit = false;
             if ($this->isCsrfTokenValid('delete' . $neoxDashClass->getId(), $request->getPayload()->getString('_token'))) {
                 $entityManager->remove($neoxDashClass);
                 $entityManager->flush();
+                $submit = true;
             }
 
-            return $this->redirectToRoute('app_neox_dash_class_index', [], Response::HTTP_SEE_OTHER);
+            $formHandlerService = $this->setInit("index");
+            $return             = $this->formHandlerService->getRequestType($request);
+
+            return match ($return["status"]) {
+                "redirect"  => $submit ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . 'index', [], Response::HTTP_SEE_OTHER) : null,
+                "ajax"      => $submit ? new JsonResponse(true): new JsonResponse(false),
+                "turbo"     => $submit ? $return[ "data" ] : false,
+                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
+            };
+            
+//            if ($this->isCsrfTokenValid('delete' . $neoxDashClass->getId(), $request->getPayload()->getString('_token'))) {
+//                $entityManager->remove($neoxDashClass);
+//                $entityManager->flush();
+//            }
+//
+//            return $this->redirectToRoute('app_neox_dash_class_index', [], Response::HTTP_SEE_OTHER);
         }
 
         /**

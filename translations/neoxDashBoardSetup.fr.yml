@@ -45,3 +45,6 @@ neoxDashBoardSetup:
         weather:
             label: météo
             placeholder: Saisir pour la météo ...
+        theme :
+            label       : Theme
+            placeholder : Saisir un theme ...
