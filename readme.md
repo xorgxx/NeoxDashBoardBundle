@@ -14,8 +14,11 @@ Install the bundle via Composer! Since it’s still in beta:
 ````
 
 **NOTE:** _You may need to use [ symfony composer dump-autoload ] to reload autoloading_
-
-`php bin/console import:install`
+````
+  1 - `php bin/console import:install`
+  2 - `php bin/console asset-map:compile`
+  3 - `php bin/console cache:clear`
+````
 
  ..... Done 🎈
 
@@ -24,6 +27,10 @@ You need to have Symfony 6|7 installed and configured, along with Stimulus ^3.0,
 Bootstrap ^5.0, SweetAlert2 ^11.0, UX Turbo ^2.0, and UX LiveComponent ^2.0.
 
 ## Usage
+🚨🚨🚨 In your controller, very important to keep this naming convention: 
+````
+    #[Route('/', name: 'app_neox_dashboard')]
+````
 
 In your Twig template, add:
 ```twig
