@@ -59,7 +59,10 @@ In your Twig template, add:
   
     ....
 ````
-
+## trying fast 
+```
+    [https//YOURURLWEBSITE]/neox/dash/neox-home
+```
 ## Documentation (coming soon)
 
 

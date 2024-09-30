@@ -3,6 +3,8 @@ controllers:
     resource:
         path: ../../Controller/
         namespace: NeoxDashBoard\NeoxDashBoardBundle\Controller
+#        prefix: "/secure"
+#        trailing_slash_on_root: true
     type: attribute
 
 #app_neox_dash_setup_index:
