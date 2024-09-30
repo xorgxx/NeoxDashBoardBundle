@@ -15,7 +15,7 @@
         public function dashBoard(NeoxDashSetupRepository $setupRepository): Response
         {
             $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
-            return $this->render('@NeoxDashBoardBundle/index.html.twig', [
+            return $this->render('@NeoxDashBoardBundle/indexHome.html.twig', [
                 'NeoxDashSetup' => $NeoxDashSetup,
             ]);
         }
