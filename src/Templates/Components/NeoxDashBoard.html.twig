@@ -24,7 +24,7 @@
                         key information, this solution provides a user-friendly approach to implementing dashboards in a fast and intuitive way.
                     </p>
                     <p>
-                        1 - to start :
+                        1 - Edit the Navigation Bar :
                         <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
                             title: 'Configuration dash board' ,
                             text: 'Do you want to continue' ,
@@ -38,12 +38,11 @@
                             type="button"
                         >
                             <twig:ux:icon class="flex-shrink-0 icon-normal me-2" name="fa6-solid:user-gear" width="20" style="height: auto;" />
-                            click here ...
+                            Menu...
                         </button >
-                        and enter your information
                     </p>
                     <p>
-                        2 - adding at list one content :
+                        2 - Add a Minimum of One Content Element :
                         <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
                             title: 'Add Content' ,
                             text: 'Do you want to continue' ,
@@ -59,10 +58,19 @@
                             Add Content ...
                         </button >
                     </p>
-                    In the future you will having to click on main menu : <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:sliders" width="30" style="height: auto;" color="black" />
+                    <div class="">
+                        <h4 class="my-3">
+                            Usage in future
+                        </h4>
+                        <div class="border-bottom mb-3 text-dark"></div> <!-- Ligne horizontale -->
+                        <p>
+                            In the future you will having to click on main menu : <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:sliders" width="30" style="height: auto;" color="black" />
+
+                        </p>
+                    </div>
 
                     <p>
-                        In conclusion, have fun exploring and implementing these features! Whether you're building a dynamic dashboard or enhancing user interactions with modals, the possibilities are endless. Enjoy the
+                        <h4>In conclusion 🎉</h4> have fun exploring and implementing these features! Whether you're building a dynamic dashboard or enhancing user interactions with modals, the possibilities are endless. Enjoy the
                         process, experiment with new ideas, and let your creativity shine. Happy coding!
                     </p>
                 {% endif %}
