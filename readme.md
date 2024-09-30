@@ -82,5 +82,6 @@ If you want to contribute \(thank you!\) to this bundle, here are some guideline
 * Multi-lingual (pre-done)
 * add widget (pre-done) API ...
 * add tracker website 🌶️🌶️🌶️ (scheduler, mercure, rabbitmq, ...)
+* Dockerizing image 🐳
 
 ## Thanks
