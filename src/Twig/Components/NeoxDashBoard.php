@@ -33,13 +33,20 @@
 
         public function mount(?NeoxDashSetup $NeoxDashSetup): void
         {
-            $this->NeoxDashSetup = $NeoxDashSetup;
+            $this->NeoxDashSetup = $this->initIfNeed($NeoxDashSetup);
         }
-//        #[LiveAction]
-////        #[LiveListener("refresh")]
-//        public function refresh(): void
-//        {
-//            $this->NeoxDashSetup = $this->entityManager->getRepository(NeoxDashSetup::class)->findOneBy([ "id" => 1 ]);
-//        }
+
+        private function initIfNeed(?NeoxDashSetup $NeoxDashSetup){
+            if (!$NeoxDashSetup) {
+                $p = new NeoxDashSetup();
+                $p->setCountry("Fr");
+                $p->setTheme("#d5cdcd");
+                $repository = $this->entityManager;
+                $repository->persist($p);
+                $repository->flush($p);
+                return $p;
+            }
+            return $NeoxDashSetup;
+        }
 
     }

@@ -77,10 +77,10 @@
                 'class'              => NeoxSearchEnum::class,
                 'required'           => false,
                 "attr"               => array(
-                    "placeholder" => $this->getTrans('weather', "placeholder"),
+                    "placeholder" => $this->getTrans('search', "placeholder"),
                     'class'       => 'required form-control '
                 ),
-                'label'              => $this->getTrans('weather'),
+                'label'              => $this->getTrans('search'),
                 'translation_domain' => 'neoxDashBoardSetup',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                 'row_attr'           => [ 'class' => 'row mb-3' ],

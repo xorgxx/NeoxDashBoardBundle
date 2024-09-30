@@ -29,7 +29,23 @@ Bootstrap ^5.0, SweetAlert2 ^11.0, UX Turbo ^2.0, and UX LiveComponent ^2.0.
 ## Usage
 🚨🚨🚨 In your controller, very important to keep this naming convention: 
 ````
-    #[Route('/', name: 'app_neox_dashboard')]
+        #[Route('/', name: 'app_neox_dashboard')]
+        public function dashBoard(NeoxDashSetupRepository $setupRepository): Response
+        {
+            /*
+             * Get the first setup
+             * so if you want to add security by user you can do it here
+             * in your entity add join with user <=> NeoxDashsetup
+             * render your dashboard with user current
+             * $NeoxDashSetup = user->getNeoxDashSetup()......
+             */
+             
+            $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
+            return $this->render('neox_dashboard_bundle/index.html.twig', [
+                'NeoxDashSetup' => $NeoxDashSetup,
+                ......
+            ]);
+        }
 ````
 
 In your Twig template, add:

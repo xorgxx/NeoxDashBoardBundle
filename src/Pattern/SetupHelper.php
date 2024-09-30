@@ -8,7 +8,7 @@
     {
 
 
-        public function initSeput(NeoxDashSetup $neoxDashSetup): array
+        public function initSeput(?NeoxDashSetup $neoxDashSetup = null): array
         {
             $setups = [
                 "logo"    => $neoxDashSetup->getLogo() ?? "tttp.png",
