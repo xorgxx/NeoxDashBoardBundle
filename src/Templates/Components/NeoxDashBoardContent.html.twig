@@ -1,0 +1,14 @@
+<div {{ attributes }}>
+    {% if NeoxDashClass.mode.value|default('Tabs') == 'Accordion' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_TabsAccord.html.twig' %}
+    {% elseif NeoxDashClass.mode.value|default('Tabs') == 'Tabs' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+    {% else %}
+        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+    {% endif %}
+</div>
+
+
+
+
+
