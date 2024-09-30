@@ -18,6 +18,7 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
+//        $loader->load('routes.yaml');
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
@@ -27,11 +28,13 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
         //    $container->setParameter( 'neox_dashboard.' . $key, $value);
         // }
 
+
         // Ajoutez le chemin des traductions
         $container->setParameter('translator.paths', [
             '%kernel.project_dir%/src/NeoxDashboardBundle/translations',
         ]);
     }
+
 
     public function prepend(ContainerBuilder $container): void
     {
@@ -71,4 +74,5 @@ class NeoxDashBoardExtension extends Extension implements PrependExtensionInterf
 
         return is_file($bundlesMetadata['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
     }
+
 }
