@@ -9,7 +9,7 @@
                     {{ neox_macro.navItemBottomSimple(NeoxDashClass, 'black', 'bg-dark') }}
                 </button>
             </h2>
-            <div id="collapseOne{{ NeoxDashClass.id }}" class="bg-transparent accordion-collapse collapse {{ loopn.first|default(true) ? "show" : "" }}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div id="collapseOne{{ NeoxDashClass.id }}" class="bg-transparent accordion-collapse collapse {{ loopn.first|default() ? "show" : "" }}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body bg-transparent">
                     <ul class="nav nav-tabs bg-transparent" id="myTab" role="tablist">
                         {#                    #}{# Item Title ============== #}
