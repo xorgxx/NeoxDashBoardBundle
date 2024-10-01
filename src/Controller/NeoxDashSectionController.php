@@ -60,9 +60,7 @@
         }
 
 
-        #[Route('/{id}/edit', name: 'app_neox_dash_section_edit', methods: [
-            'GET', 'POST'
-        ])]
+        #[Route('/{id}/edit', name: 'app_neox_dash_section_edit', methods: [ 'GET', 'POST' ])]
         public function edit(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
            // Determine the template to use for rendering and render the builder !!
@@ -78,7 +76,6 @@
                 ->renderNeox()
             ;
         }
-
 
         #[Route('/{id}', name: 'app_neox_dash_section_delete', methods: [ 'POST' ])]
         public function delete(Request $request, NeoxDashSection $neoxDashSection, EntityManagerInterface $entityManager): Response
@@ -106,14 +103,13 @@
          */
         public function setInit(string $name = "new", object $object = null, array $params = []): FormHandlerService
         {
-            $o = $this->formHandlerService
-                ->createNewHandleNeoxDashModel()
-                ->setNew("@NeoxDashBoardBundle/neox_dash_section/$name.html.twig")
-                ->setForm('@NeoxDashBoardBundle/neox_dash_section/_form.html.twig')
-                ->setRoute('app_neox_dash_section')
-                ->setParams($params)
-                ->setFormInterface(NeoxDashSectionType::class)
-                ->setEntity($object)
+            $o = $this->formHandlerService->createNewHandleNeoxDashModel()
+                    ->setNew("@NeoxDashBoardBundle/neox_dash_section/$name.html.twig")
+                    ->setForm('@NeoxDashBoardBundle/neox_dash_section/_form.html.twig')
+                    ->setRoute('app_neox_dash_section')
+                    ->setParams($params)
+                    ->setFormInterface(NeoxDashSectionType::class)
+                    ->setEntity($object)
             ;
 
             // Determine the template to use for rendering

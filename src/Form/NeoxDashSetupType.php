@@ -5,6 +5,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSearchEnum;
     use Symfony\Component\Form\AbstractType;
+    use Symfony\Component\Form\Extension\Core\Type\ColorType;
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Component\OptionsResolver\OptionsResolver;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -84,7 +85,7 @@
                 'translation_domain' => 'neoxDashBoardSetup',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                 'row_attr'           => [ 'class' => 'row mb-3' ],
-            ))->add('theme', textType::class, [
+            ))->add('theme', ColorType::class, [
                 'required'           => true,
                 'label'              => $this->getTrans('theme'),
                 'translation_domain' => 'neoxDashBoardSetup',
