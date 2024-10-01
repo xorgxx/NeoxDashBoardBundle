@@ -13,7 +13,7 @@
     use Symfony\UX\Turbo\TurboBundle;
     use Twig\Environment;
 
-    class FormHandlerService
+    class CrudHandleBuilder
     {
 
         public ?IniHandleNeoxDashModel $iniHandleNeoxDashModel = null;
@@ -37,7 +37,7 @@
         }
 
         // Définis une instance de iniHandleNeoxDashModel dans la propriété
-        public function setHandleNeoxDashModel(iniHandleNeoxDashModel $IniHandleNeoxDashModel): self
+        public function setHandleNeoxDashModel(iniHandleNeoxDashModel $IniHandleNeoxDashModel): self|FormInterface
         {
             $this->iniHandleNeoxDashModel = $IniHandleNeoxDashModel;
             return $this;
@@ -52,7 +52,7 @@
          *
          * @return mixed
          */
-        public function handleCreateForm(): self
+        public function handleCreateForm( bool $raw = false): self|array
         {
             // build action for form
             $route  = $this->iniHandleNeoxDashModel->getRoute();
@@ -67,7 +67,12 @@
             ]);
 
             $this->iniHandleNeoxDashModel->setFormInterface($formInterface);
-            return $this;
+
+            if ($raw) {
+                return $formInterface;
+            }else{
+                return $this;
+            }
         }
 
         /**
@@ -79,7 +84,7 @@
          *
          * @return mixed
          */
-        public function handleForm($request): self
+        public function handleForm($request, bool $raw = false): self|array
         {
 
             // Merge form
@@ -104,13 +109,16 @@
             // Return the form if it is invalid or not submitted
             $this->iniHandleNeoxDashModel->setReturn($return);
 
-            return $this;
-            return [
-                $return, $this->iniHandleNeoxDashModel->getFormInterface()
-            ];
+            if ($raw) {
+                return $return;
+            }else{
+                return $this;
+            }
+
+
         }
 
-        public function renderNeox()
+        public function render()
         {
             $return = $this->iniHandleNeoxDashModel->getReturn();
             

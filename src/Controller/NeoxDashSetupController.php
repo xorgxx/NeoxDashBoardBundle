@@ -3,7 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
-    use NeoxDashBoard\NeoxDashBoardBundle\Services\FormHandlerService;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\CrudHandleBuilder;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
     use NeoxDashBoard\NeoxDashBoardBundle\Form\NeoxDashSetupType;
     use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +19,7 @@
     final class NeoxDashSetupController extends AbstractController
     {
 
-        public function __construct(readonly private FormHandlerService $formHandlerService)
+        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder)
         {
         }
 
@@ -36,16 +36,16 @@
             $neoxDashSetup      = new NeoxDashSetup();
 
             // Determine the template to use for rendering and render the builder !!
-            $formHandlerService = $this->setInit("new", $neoxDashSetup);
+            $crudHandleBuilder = $this->setInit("new", $neoxDashSetup);
 
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
             */
-            return $formHandlerService
+            return $crudHandleBuilder
                 ->handleCreateForm($neoxDashSetup, NeoxDashSetupType::class)
                 ->handleForm($request, null, $neoxDashSetup)
-                ->renderNeox()
+                ->render()
             ;
 
         }
@@ -63,16 +63,16 @@
         {
             
             // Determine the template to use for rendering and render the builder !!
-            $formHandlerService = $this->setInit("edit", $neoxDashSetup);
+            $crudHandleBuilder = $this->setInit("edit", $neoxDashSetup);
 
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
             */
-            return $formHandlerService
+            return $crudHandleBuilder
                 ->handleCreateForm()
                 ->handleForm($request)
-                ->renderNeox()
+                ->render()
             ;
 
 
@@ -92,9 +92,9 @@
         /**
          * @return IniHandleNeoxDashModel
          */
-        public function setInit(string $name = "new", object $object = null, array $params = []): FormHandlerService
+        public function setInit(string $name = "new", object $object = null, array $params = []): CrudHandleBuilder
         {
-            $o = $this->formHandlerService
+            $o = $this->crudHandleBuilder
                 ->createNewHandleNeoxDashModel()
                 ->setNew("@NeoxDashBoardBundle/neox_dash_setup/$name.html.twig")
                 ->setForm('@NeoxDashBoardBundle/neox_dash_setup/_form.html.twig')
@@ -105,6 +105,6 @@
             ;
 
             // Determine the template to use for rendering
-            return $this->formHandlerService->setHandleNeoxDashModel($o);
+            return $this->crudHandleBuilder->setHandleNeoxDashModel($o);
         }
     }

@@ -4,7 +4,7 @@
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
-    use NeoxDashBoard\NeoxDashBoardBundle\Services\FormHandlerService;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\CrudHandleBuilder;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use NeoxDashBoard\NeoxDashBoardBundle\Form\NeoxDashSectionType;
     use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +20,7 @@
     final class NeoxDashSectionController extends AbstractController
     {
 
-        public function __construct(readonly private FormHandlerService $formHandlerService)
+        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder)
         {
         }
 
@@ -39,16 +39,16 @@
             $neoxDashSection->setClass($neoxDashClass);
 
             // Determine the template to use for rendering and render the builder !!
-            $formHandlerService = $this->setInit("edit", $neoxDashSection, [ 'id' => $neoxDashClass->getId() ]);
+            $crudHandleBuilder = $this->setInit("edit", $neoxDashSection, [ 'id' => $neoxDashClass->getId() ]);
 
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
             */
-            return $formHandlerService
+            return $crudHandleBuilder
                 ->handleCreateForm()
                 ->handleForm($request)
-                ->renderNeox()
+                ->render()
             ;
 
         }
@@ -64,16 +64,16 @@
         public function edit(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
            // Determine the template to use for rendering and render the builder !!
-            $formHandlerService = $this->setInit("edit", $neoxDashSection);
+            $crudHandleBuilder = $this->setInit("edit", $neoxDashSection);
 
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
             */
-            return $formHandlerService
+            return $crudHandleBuilder
                 ->handleCreateForm()
                 ->handleForm($request)
-                ->renderNeox()
+                ->render()
             ;
         }
 
@@ -87,23 +87,23 @@
                 $submit = true;
             }
 
-            $formHandlerService = $this->setInit("index");
-            $return             = $this->formHandlerService->getRequestType($request);
+            $crudHandleBuilder = $this->setInit("index");
+            $return             = $this->crudHandleBuilder->getRequestType($request);
 
             return match ($return["status"]) {
-                "redirect"  => $submit ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . 'index', [], Response::HTTP_SEE_OTHER) : null,
+                "redirect"  => $submit ? $this->redirectToRoute($crudHandleBuilder->getIniHandleNeoxDashModel()->getRoute() . 'index', [], Response::HTTP_SEE_OTHER) : null,
                 "ajax"      => $submit ? new JsonResponse(true): new JsonResponse(false),
                 "turbo"     => $submit ? $return[ "data" ] : false,
-                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
+                default     => $this->render($crudHandleBuilder->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
             };
         }
 
         /**
          * @return IniHandleNeoxDashModel
          */
-        public function setInit(string $name = "new", object $object = null, array $params = []): FormHandlerService
+        public function setInit(string $name = "new", object $object = null, array $params = []): CrudHandleBuilder
         {
-            $o = $this->formHandlerService->createNewHandleNeoxDashModel()
+            $o = $this->crudHandleBuilder->createNewHandleNeoxDashModel()
                     ->setNew("@NeoxDashBoardBundle/neox_dash_section/$name.html.twig")
                     ->setForm('@NeoxDashBoardBundle/neox_dash_section/_form.html.twig')
                     ->setRoute('app_neox_dash_section')
@@ -113,6 +113,6 @@
             ;
 
             // Determine the template to use for rendering
-            return $this->formHandlerService->setHandleNeoxDashModel($o);
+            return $this->crudHandleBuilder->setHandleNeoxDashModel($o);
         }
     }
