@@ -5,6 +5,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
+    use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashSectionRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\FormHandlerService;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
@@ -35,34 +36,23 @@
         #[Route('/new/{id}', name: 'app_neox_dash_class_new', methods: [ 'GET', 'POST' ])]
         public function new(Request $request, $id, NeoxDashSetup $neoxDashSetup): Response | JsonResponse
         {
-            // Determine the template to use for rendering
-            $formHandlerService = $this->setInit("new", [ "id" => $neoxDashSetup->getId() ]);
 
             // build entity
             $neoxDashClass = new NeoxDashClass();
             $neoxDashClass->setNeoxDashSetup($neoxDashSetup);
 
-            // build Form entity Generic
-            $form               = $formHandlerService->handleCreateForm($neoxDashClass, NeoxDashClassType::class);
-
-            // Merge form
-            $form->handleRequest($request);
+            // Determine the template to use for rendering and render the builder !!
+            $formHandlerService = $this->setInit("new", $neoxDashClass, [ "id" => $neoxDashSetup->getId() ]);
 
             /*
-             * Call to the generic form management service, with support for turbo-stream
-             * For kipping this code flexible to return your need
-             */
-            [$return, $form]    = $formHandlerService->handleForm($request, $form, $neoxDashClass);
-            return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
-                    'form' => $form->createView(),
-                ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
-                    'form' => $form->createView(),
-                ]),
-                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
-            };
+            * Call to the generic form management service, with support for turbo-stream
+            * For kipping this code flexible to return your need
+            */
+            return $formHandlerService
+                ->handleCreateForm()
+                ->handleForm($request)
+                ->renderNeox()
+            ;
 
         }
 
@@ -76,30 +66,20 @@
             'GET', 'POST'
         ])]
         public function edit(Request $request, NeoxDashClass $neoxDashClass): Response | JsonResponse
-        {            
-            // Determine the template to use for rendering
-            $formHandlerService = $this->setInit("edit");
-            // build Form entity Generic
-            $form               = $formHandlerService->handleCreateForm($neoxDashClass, NeoxDashClassType::class);
-
-            // Merge form
-            $form->handleRequest($request);
+        {
+            // Determine the template to use for rendering and render the builder !!
+            $formHandlerService = $this->setInit("edit", $neoxDashClass);
 
             /*
-             * Call to the generic form management service, with support for turbo-stream
-             * For kipping this code flexible to return your need
-             */
-            [$return, $form]    = $formHandlerService->handleForm($request, $form, $neoxDashClass);
-            return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
-                    'form' => $form->createView(),
-                ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
-                    'form' => $form->createView(),
-                ]),
-                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
-            };
+            * Call to the generic form management service, with support for turbo-stream
+            * For kipping this code flexible to return your need
+            */
+            return $formHandlerService
+                ->handleCreateForm()
+                ->handleForm($request)
+                ->renderNeox()
+            ;
+
         }
 
         #[Route('/{id}', name: 'app_neox_dash_class_delete', methods: [ 'POST' ])]
@@ -129,17 +109,20 @@
 //
 //            return $this->redirectToRoute('app_neox_dash_class_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        
         /**
          * @return IniHandleNeoxDashModel
          */
-        public function setInit(string $name = "new", array $params = []):  FormHandlerService
+        public function setInit(string $name = "new", object $object = null, array $params = []): FormHandlerService
         {
-            $o = $this->formHandlerService->createNewHandleNeoxDashModel()
+            $o = $this->formHandlerService
+                ->createNewHandleNeoxDashModel()
                 ->setNew("@NeoxDashBoardBundle/neox_dash_class/$name.html.twig")
                 ->setForm('@NeoxDashBoardBundle/neox_dash_class/_form.html.twig')
                 ->setRoute('app_neox_dash_class')
                 ->setParams($params)
+                ->setFormInterface(NeoxDashClassType::class)
+                ->setEntity($object)
             ;
 
             // Determine the template to use for rendering

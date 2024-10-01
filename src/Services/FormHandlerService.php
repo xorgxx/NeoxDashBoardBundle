@@ -11,14 +11,14 @@
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\RouterInterface;
     use Symfony\UX\Turbo\TurboBundle;
+    use Twig\Environment;
 
     class FormHandlerService
     {
 
         public ?IniHandleNeoxDashModel $iniHandleNeoxDashModel = null;
 
-
-        public function __construct(readonly EntityManagerInterface $entityManager, readonly FormFactoryInterface $formFactory, readonly RouterInterface $router)
+        public function __construct(readonly EntityManagerInterface $entityManager, readonly Environment $twig, readonly FormFactoryInterface $formFactory, readonly RouterInterface $router)
         {
         }
 
@@ -44,6 +44,33 @@
         }
 
         /**
+         * Handle form creation for any entity and form type
+         *
+         * @param object $entity
+         * @param string $formType
+         * @param array  $setup
+         *
+         * @return mixed
+         */
+        public function handleCreateForm(): self
+        {
+            // build action for form
+            $route  = $this->iniHandleNeoxDashModel->getRoute();
+            $params = $this->iniHandleNeoxDashModel->getEntity()->getId() ? [ 'id' => $this->iniHandleNeoxDashModel->getEntity()->getId() ] : $this->iniHandleNeoxDashModel->getParams();
+            $action = $this->router->generate("{$route}_" . ($this->iniHandleNeoxDashModel->getEntity()->getId() ? 'edit' : 'new'), $params);
+
+
+            // Create the form generically
+            // Return the form if it is invalid or not submitted
+            $formInterface = $this->formFactory->create($this->iniHandleNeoxDashModel->getFormInterface(), $this->iniHandleNeoxDashModel->getEntity(), [
+                'action' => $action, 'method' => 'POST',
+            ]);
+
+            $this->iniHandleNeoxDashModel->setFormInterface($formInterface);
+            return $this;
+        }
+
+        /**
          * Handle form submission for any entity and form type
          *
          * @param               $request
@@ -52,15 +79,18 @@
          *
          * @return mixed
          */
-        public function handleForm($request, FormInterface $form, object $entity): array
+        public function handleForm($request): self
         {
 
+            // Merge form
+            $this->iniHandleNeoxDashModel->getFormInterface()->handleRequest($request);
+
             // identification type request
-            $return = $this->getRequestType($request, $form);
+            $return = $this->getRequestType($request);
 
             // submit form
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->entityManager->persist($entity);
+            if ($this->iniHandleNeoxDashModel->getFormInterface()->isSubmitted() && $this->iniHandleNeoxDashModel->getFormInterface()->isValid()) {
+                $this->entityManager->persist($this->iniHandleNeoxDashModel->getEntity());
                 $this->entityManager->flush();
 
                 $return[ "submit" ] = true;
@@ -70,36 +100,27 @@
                 //   $return["status"]   = "unmatch";
                 //   $return["data"]     = $this->getJsonResponse('Query type not supported', response::HTTP_BAD_REQUEST);
             }
-
+            $return[ "formType" ] = $this->iniHandleNeoxDashModel->getFormInterface();
             // Return the form if it is invalid or not submitted
+            $this->iniHandleNeoxDashModel->setReturn($return);
+
+            return $this;
             return [
-                $return, $form
+                $return, $this->iniHandleNeoxDashModel->getFormInterface()
             ];
         }
 
-
-        /**
-         * Handle form creation for any entity and form type
-         *
-         * @param object $entity
-         * @param string $formType
-         * @param array  $setup
-         *
-         * @return mixed
-         */
-        public function handleCreateForm(object $entity, string $formType): FormInterface
+        public function renderNeox()
         {
-            // build action for form
-            $route  = $this->iniHandleNeoxDashModel->getRoute();
-            $params = $entity->getId() ? [ 'id' => $entity->getId() ] : $this->iniHandleNeoxDashModel->getParams();
-            $action = $this->router->generate("{$route}_" . ($entity->getId() ? 'edit' : 'new'), $params);
-
-
-            // Create the form generically
-            // Return the form if it is invalid or not submitted
-            return $this->formFactory->create($formType, $entity, [
-                'action' => $action, 'method' => 'POST',
-            ]);
+            $return = $this->iniHandleNeoxDashModel->getReturn();
+            
+            // This will render only what we need to send
+            return match ($return[ "status" ]) {
+                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($this->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
+                "ajax"      => $return[ "submit" ] ? new JsonResponse(true) : new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getForm(), ['form' => $return[ "formType" ]->createView(), ])),
+                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $return[ "formType" ]->createView(), ])),
+                default     => new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $return[ "formType" ]->createView(), ])),
+            };
         }
 
         /**
@@ -108,14 +129,16 @@
          *
          * @return array
          */
-        public function getRequestType($request, ?FormInterface $form = null): array
+        public function getRequestType($request): array
         {
             return [
-                "submit" => false, "data" => $form, "status" => match (true) {
-                    $request->isXmlHttpRequest() => 'ajax',                                     // AJAX request
-                    TurboBundle::STREAM_FORMAT === $request->getPreferredFormat() => 'turbo',   // Turbo Stream request
-                    $request->isMethod('POST') => 'redirect',                                   // Classic POST request
-                    default => 'standard',                                                      // Classic request (GET, etc.)
+                "submit"    => false, 
+                "data"      => $this->iniHandleNeoxDashModel->getFormInterface() ?? null, 
+                "status"    => match (true) {
+                    $request->isXmlHttpRequest()    => 'ajax',                                          // AJAX request
+                    TurboBundle::STREAM_FORMAT      === $request->getPreferredFormat() => 'turbo',      // Turbo Stream request
+                    $request->isMethod('POST')      => 'redirect',                                      // Classic POST request
+                    default                         => 'standard',                                      // Classic request (GET, etc.)
                 }
             ];
         }

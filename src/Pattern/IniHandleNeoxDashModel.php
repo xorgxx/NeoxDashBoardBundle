@@ -2,13 +2,19 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Pattern;
 
+    use Symfony\Component\Form\FormInterface;
+
     class IniHandleNeoxDashModel
     {
 
-        public ?string $new    = null;
-        public ?string $form  = null;
-        public ?string $route  = null;
-        public ?array  $params = [];
+        public ?string              $new    = null;
+        public ?string              $form   = null;
+        public ?string              $route  = null;
+        public ?array               $params = [];
+        public ?object              $entity = null;
+        public FormInterface|string $formInterface;
+        public ?array               $return = [];
+        
 
         public function getNew(): ?string
         {
@@ -53,6 +59,39 @@
             $this->params = $params;
             return $this;
         }
-        
+
+        public function getEntity(): ?object
+        {
+            return $this->entity;
+        }
+
+        public function setEntity(?object $entity): IniHandleNeoxDashModel
+        {
+            $this->entity = $entity;
+            return $this;
+        }
+
+        public function getFormInterface(): FormInterface|string
+        {
+            return $this->FormInterface;
+        }
+
+        public function setFormInterface(FormInterface|string $formInterface): IniHandleNeoxDashModel
+        {
+            $this->FormInterface = $formInterface;
+            return $this;
+        }
+
+        public function getReturn(): ?array
+        {
+            return $this->return;
+        }
+
+        public function setReturn(?array $return): IniHandleNeoxDashModel
+        {
+            $this->return = $return;
+            return $this;
+        }
+
         
     }

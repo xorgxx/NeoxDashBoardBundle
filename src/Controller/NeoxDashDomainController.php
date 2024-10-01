@@ -3,6 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
+    use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\FormHandlerService;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
     use NeoxDashBoard\NeoxDashBoardBundle\Form\NeoxDashDomainType;
@@ -32,7 +33,7 @@
         #[Route('/new/{id}', name: 'app_neox_dash_domain_new', methods: [ 'GET', 'POST' ])]
         public function new(Request $request, NeoxDashSection $neoxDashSection): Response | JsonResponse
         {
-            $formHandlerService = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
+//            $formHandlerService = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
 
             // build entity
             $neoxDashDomain = new NeoxDashDomain();
@@ -42,28 +43,19 @@
             $g = rand(0, 255); // Vert
             $b = rand(0, 255); // Bleu
             $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", $r, $g, $b));
-            
-            // build Form entity Generic
-            $form = $formHandlerService->handleCreateForm($neoxDashDomain, NeoxDashDomainType::class);
 
-            // Build form
-            $form->handleRequest($request);
+            // Determine the template to use for rendering and render the builder !!
+            $formHandlerService = $this->setInit("new", $neoxDashDomain, [ "id" => $neoxDashSection->getId() ]);
 
             /*
-             * Call to the generic form management service, with support for turbo-stream
-             * For kipping this code flexible to return your need
-             */
-            [$return, $form]  = $formHandlerService->handleForm($request, $form, $neoxDashDomain);
-            return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
-                    'form' => $form->createView(),
-                ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
-                    'form' => $form->createView(),
-                ]),
-                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
-            };
+            * Call to the generic form management service, with support for turbo-stream
+            * For kipping this code flexible to return your need
+            */
+            return $formHandlerService
+                ->handleCreateForm()
+                ->handleForm($request)
+                ->renderNeox()
+            ;
 
         }
 
@@ -77,31 +69,20 @@
             'GET', 'POST'
         ])]
         public function edit(Request $request, NeoxDashDomain $neoxDashDomain): Response | JsonResponse
-        {            
-            // Determine the template to use for rendering
-            $formHandlerService = $this->setInit("edit");
-
-            // build Form entity Generic
-            $form = $formHandlerService->handleCreateForm($neoxDashDomain, NeoxDashDomainType::domain);
-
-            // Merge form
-            $form->handleRequest($request);
+        {
+            // Determine the template to use for rendering and render the builder !!
+            $formHandlerService = $this->setInit("edit", $neoxDashDomain);
 
             /*
-             * Call to the generic form management service, with support for turbo-stream
-             * For kipping this code flexible to return your need
-             */
-            [$return, $form] = $formHandlerService->handleForm($request, $form, $neoxDashDomain);
-            return match ($return[ "status" ]) {
-                "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($formHandlerService->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true): $this->render($formHandlerService->getIniHandleNeoxDashModel()->getForm(), [
-                    'form' => $form->createView(),
-                ]),
-                "turbo"     => $return[ "submit" ] ? $return[ "data" ] : $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [
-                    'form' => $form->createView(),
-                ]),
-                default     => $this->render($formHandlerService->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $form->createView(), ]),
-            };
+            * Call to the generic form management service, with support for turbo-stream
+            * For kipping this code flexible to return your need
+            */
+            return $formHandlerService
+                ->handleCreateForm()
+                ->handleForm($request)
+                ->renderNeox()
+            ;
+
         }
 
         #[Route('/{id}', name: 'app_neox_dash_domain_delete', methods: [ 'POST' ])]
@@ -129,7 +110,7 @@
         /**
          * @return IniHandleNeoxDashModel
          */
-        public function setInit(string $name = "new", array $params = []): FormHandlerService
+        public function setInit(string $name = "new", object $object = null, array $params = []): FormHandlerService
         {
             $o = $this->formHandlerService
                 ->createNewHandleNeoxDashModel()
@@ -137,6 +118,8 @@
                 ->setForm('@NeoxDashBoardBundle/neox_dash_domain/_form.html.twig')
                 ->setRoute('app_neox_dash_domain')
                 ->setParams($params)
+                ->setFormInterface(NeoxDashDomainType::class)
+                ->setEntity($object)
             ;
 
             // Determine the template to use for rendering

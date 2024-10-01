@@ -41,10 +41,10 @@
 {#                            <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />#}
 {#                        </button >#}
                         <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                            title: 'New Section' ,
+                            title: 'Edit Domain' ,
                             text: 'Do you want to continue' ,
                             idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id,
-                            url: path('app_neox_dash_section_edit', { id: section.id })
+                            url: path('app_neox_dash_domain_edit', { id: section.id })
 
                         }) }}
                             data-modal="modal"
