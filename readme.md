@@ -1,5 +1,5 @@
-# NeoxDashBoardBundle { Symfony 6|7 }
-This bundle provides a dashboard for Symfony 6|7 in your application. 
+# NeoxDashBoardBundle { Symfony 6 | 7 }
+This bundle provides a dashboard for Symfony 6 | 7 in your application. 
 Its main goal is to simplify the integration of additional tools!
 
 [![2024-09-28-15-57-09.png](https://i.postimg.cc/VkRcGKtJ/2024-09-28-15-57-09.png)](https://postimg.cc/87j3sBtG)

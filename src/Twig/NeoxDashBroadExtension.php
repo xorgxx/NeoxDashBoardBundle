@@ -50,9 +50,6 @@ class NeoxDashBroadExtension extends AbstractExtension
 //                'needs_environment' => true,
 //            )),
 //            new TwigFunction('setJsFile', [$this, 'setJsFile']),
-//            new TwigFunction('getPropertyType', [ReflectionHelper::class, 'getPropertyType']),
-//            new TwigFunction('getTrans', [$this, 'getTranslation']),
-//            new TwigFunction('getShortDomain', [$this, 'shortDomain']),
         ];
     }
 
