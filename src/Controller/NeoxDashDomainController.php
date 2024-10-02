@@ -39,10 +39,12 @@
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
 
-            $r = rand(0, 255); // Rouge
-            $g = rand(0, 255); // Vert
-            $b = rand(0, 255); // Bleu
+            $r = random_int(0, 255); // Rouge
+            $g = random_int(0, 255); // Vert
+            $b = random_int(0, 255); // Bleu
+
             $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", $r, $g, $b));
+
 
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("new", $neoxDashDomain, [ "id" => $neoxDashSection->getId() ]);
