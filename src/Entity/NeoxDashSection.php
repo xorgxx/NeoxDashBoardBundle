@@ -25,8 +25,8 @@ class NeoxDashSection
     #[ORM\Column(nullable: true)]
     private ?int $colonne = 5;
 
-    #[ORM\Column(type: 'decimal', precision: 4, scale: 2)]
-    private float $heigth;
+    #[ORM\Column(type: 'decimal', precision: 4, scale: 2, nullable: true)]
+    private ?string $heigth;
 
     #[ORM\Column(nullable: true)]
     private ?bool $edit = false;
@@ -91,12 +91,12 @@ class NeoxDashSection
         return $this;
     }
 
-    public function getHeigth(): float
+    public function getHeigth(): string
     {
         return $this->heigth;
     }
 
-    public function setHeigth(float $heigth): NeoxDashSection
+    public function setHeigth(string $heigth): NeoxDashSection
     {
         $this->heigth = $heigth;
         return $this;
