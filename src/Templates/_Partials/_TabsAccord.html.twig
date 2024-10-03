@@ -30,11 +30,10 @@
 
                     </ul>
                     <div class="tab-content mt-4" id="myTabContent">
-
                         {% for section in NeoxDashClass.NeoxDashSections %}
-
                             {% include'@NeoxDashBoardBundle/_Partials/_TabsCardtest.html.twig' %}
-
+                        {% else %}
+{#                            {% include'@NeoxDashBoardBundle/_Partials/_DomainHelper.html.twig' %}#}
                         {% endfor %}
                     </div>
                 </div>

@@ -5,8 +5,8 @@
 
 <form method="post" action="{{ path('app_neox_dash_class_delete', {'id': class.id}) }}"
     {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
-        title: "Delete Content",
-        text: "Do you want to continue?",
+        title: "Delete " ~ class.name,
+        Text: "All domain inside will also be delete! Do you want to continue?",
         idElement: path('app_neox_dashboard'),
         url: path('app_neox_dash_class_delete', { id: class.id })
     })}}
@@ -15,10 +15,10 @@
 
     <a
         {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}
-        class="dropdown-item"
+        class="dropdown-item text-warning"
         href="#"
     >
         {#                        <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />#}
-        Delete content ...
+        Delete "{{ class.name }}"
     </a>
 </form>

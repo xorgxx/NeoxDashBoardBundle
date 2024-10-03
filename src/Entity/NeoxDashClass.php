@@ -27,7 +27,7 @@ class NeoxDashClass
     /**
      * @var Collection<int, NeoxDashSection>
      */
-    #[ORM\OneToMany(targetEntity: NeoxDashSection::class, mappedBy: 'class', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NeoxDashSection::class, mappedBy: 'class', orphanRemoval: true, cascade: ['persist', 'remove'] )]
     private Collection $neoxDashSections;
 
     #[ORM\Column(length: 100, nullable: true)]

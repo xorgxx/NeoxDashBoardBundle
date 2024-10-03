@@ -58,10 +58,10 @@
                 // 'disabled'      => true,
                 'required'           => false,
                 "attr"               => array(
-                    "placeholder" => $this->getTrans('colonne', "placeholder"),
+                    "placeholder" => $this->getTrans('heigth', "placeholder"),
                     'class'       => 'required form-control '
                 ),
-                'label'              => $this->getTrans('colonne'),
+                'label'              => $this->getTrans('heigth'),
                 'translation_domain' => 'neoxDashBoardSection',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                 'row_attr'           => [ 'class' => 'row mb-3' ],

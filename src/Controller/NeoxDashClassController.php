@@ -39,6 +39,12 @@
 
             // build entity
             $neoxDashClass = new NeoxDashClass();
+
+            $section = new NeoxDashSection();
+            $section->setName("New (edit to modify");
+            $section->setHeigth(2.5);
+
+            $neoxDashClass->addNeoxDashSection($section);
             $neoxDashClass->setNeoxDashSetup($neoxDashSetup);
 
             // Determine the template to use for rendering and render the builder !!

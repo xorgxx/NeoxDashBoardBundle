@@ -32,19 +32,19 @@
                         <div class="left-item" >
                             {{ include('@NeoxDashBoardBundle/neox_dash_section/_delete_form.html.twig') }}
                             {#                            <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', #}
-                            {#                                title: 'Delete Section' ,#}
-                            {#                                text: 'Do you want to continue' ,#}
-                            {#                                idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id,#}
-                            {#                                url: path('app_neox_dash_section_delete', { id: section.id })#}
+                            {#                                title: 'Delete Section' , #}
+                            {#                                text: 'Do you want to continue' , #}
+                            {#                                idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id, #}
+                            {#                                url: path('app_neox_dash_section_delete', { id: section.id }) #}
 
-                            {#                            }) }}#}
-                            {#                                data-modal="modal"#}
-                            {#                                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"#}
-                            {#                                class="nav-link"#}
-                            {#                                type="button"#}
-                            {#                                aria-selected="false" >#}
-                            {#                                <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />#}
-                            {#                            </button >#}
+                            {#                            }) }} #}
+                            {#                                data-modal="modal" #}
+                            {#                                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" #}
+                            {#                                class="nav-link" #}
+                            {#                                type="button" #}
+                            {#                                aria-selected="false" > #}
+                            {#                                <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" /> #}
+                            {#                            </button > #}
                         </div >
                     </div >
                 {% else %}
@@ -104,13 +104,12 @@
                                     <div class="row justify-content-center" >
 
                                         {% for item in rowSet %}
-                                            {% if item is not empty %}
+                                            {% if item %}
                                                 {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
                                             {% endif %}
                                         {% endfor %}
 
                                     </div >
-
                                 {% endfor %}
 
                             </div >
