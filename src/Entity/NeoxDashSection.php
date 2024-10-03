@@ -25,6 +25,9 @@ class NeoxDashSection
     #[ORM\Column(nullable: true)]
     private ?int $colonne = 5;
 
+    #[ORM\Column(type: 'decimal', precision: 4, scale: 2)]
+    private float $heigth;
+
     #[ORM\Column(nullable: true)]
     private ?bool $edit = false;
 
@@ -87,6 +90,19 @@ class NeoxDashSection
 
         return $this;
     }
+
+    public function getHeigth(): float
+    {
+        return $this->heigth;
+    }
+
+    public function setHeigth(float $heigth): NeoxDashSection
+    {
+        $this->heigth = $heigth;
+        return $this;
+    }
+    
+
 
     /**
      * @return Collection<int, NeoxDashDomain>
@@ -152,5 +168,5 @@ class NeoxDashSection
         $this->edit = $edit;
         return $this;
     }
-    
+
 }

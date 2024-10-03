@@ -35,6 +35,9 @@ neoxDashBoardSection:
         colonne :
             label       : Colonnes
             placeholder : Saisir le nombre de Colonnes ...
+        heigth :
+            label       : largeur Domain
+            placeholder : Saisir la largeur des cartes domain en de 1 à 3.5...
         timer :
             label       : Minuteries
             placeholder : Saisir le vitesse de deffilements en ms...

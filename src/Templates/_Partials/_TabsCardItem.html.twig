@@ -1,52 +1,38 @@
 <div class="col-md-3 mb-3">
-    <div class="card h-100" style="border-width: 0!important; position: relative;">
+    <div class="card h-100" style="border-width: 0!important;">
         <div class="row no-gutters align-items-center">
 
             <!-- Icon Column -->
-            <div class="col-auto bg-dark" style="margin-left: 5px">
-                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: 3rem;">
+            {% set height = section.heigth ~ 'rem' %}
+            <div class="col-auto bg-dark" style="margin-left: 5px; height: {{  height }};">
+                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{  height }};">
                     <a href="https://{{ item.name }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
-                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond" width="40" style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
+                        <twig:ux:icon class="flex-shrink-0 icon-normal"
+                            name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
+                            width="{{ height  }}"
+                            style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
                     </a>
                 </div>
             </div>
 
             <!-- Content Column -->
-            <div class="col">
-                <div class="p-2">
+            <div class="col d-flex align-items-center" style="height: {{  height }};">
+                <div class="flex-grow-1 text-start py-1"> <!-- Ajout de py-1 pour un espacement uniforme -->
                     {{ item.name }}
                     {% if NeoxDashClass.icon == "bell" %}
-                        <p>
-                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="20" style="height: auto;" color="red"/>
+                        <p class="mb-0 d-inline-flex align-items-center"> <!-- Utilisation de d-inline-flex pour aligner verticalement les icônes -->
+                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red"/>
                             {{ random(0, 23) }}
-                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="20" style="height: auto;" color="red"/>
+                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red"/>
                         </p>
                     {% endif %}
                 </div>
             </div>
-        </div>
 
-        <!-- Edit and Delete Button on the top-right for the Icons -->
-        {% if section.edit %}
-            <div class="neox-edit d-flex justify-content-end align-items-center" style="position: absolute; top: 0px; right: 0px;">
-                <!-- Delete Form -->
-                {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}
-
-                <!-- Edit Button -->
-                <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                    title: 'Edit Domain' ,
-                    text: 'Do you want to continue' ,
-                    idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id,
-                    url: path('app_neox_dash_domain_edit', { id: item.id })
-                }) }}
-                    data-modal="modal"
-                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                    class="nav-link"
-                    type="button"
-                    aria-selected="false">
-                    <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
-                </button>
+            <!-- Edit and Delete Button on the top-right for the Icons -->
+            <div class="position-absolute top-0 end-0 p-1"> <!-- Positionnement en haut à droite -->
+                {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItemButton.html.twig') }}
             </div>
-        {% endif %}
+        </div>
     </div>
 </div>

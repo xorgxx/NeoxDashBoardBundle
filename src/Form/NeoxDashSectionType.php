@@ -6,6 +6,7 @@
     use Symfony\Component\Form\Extension\Core\Type\Integer;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+    use Symfony\Component\Form\Extension\Core\Type\NumberType;
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Component\OptionsResolver\OptionsResolver;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,7 +54,18 @@
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
-                ))->add('timer', IntegerType::class, array(
+                ))->add('heigth', NumberType::class, array(
+                // 'disabled'      => true,
+                'required'           => false,
+                "attr"               => array(
+                    "placeholder" => $this->getTrans('colonne', "placeholder"),
+                    'class'       => 'required form-control '
+                ),
+                'label'              => $this->getTrans('colonne'),
+                'translation_domain' => 'neoxDashBoardSection',
+                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                'row_attr'           => [ 'class' => 'row mb-3' ],
+            ))->add('timer', IntegerType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(

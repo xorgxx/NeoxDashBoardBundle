@@ -1,0 +1,23 @@
+<!-- Edit and Delete Button on the top-right for the Icons -->
+{% if section.edit %}
+    <div class="neox-edit d-flex justify-content-end align-items-center" style="position: absolute; top: 0px; right: 0px;" >
+        <!-- Delete Form -->
+        {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}
+
+        <!-- Edit Button -->
+        <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
+            title: 'Edit Domain' ,
+            text: 'Do you want to continue' ,
+            idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id,
+            url: path('app_neox_dash_domain_edit', { id: item.id })
+        }) }}
+            data-modal="modal"
+            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+            class="nav-link"
+            type="button"
+            aria-selected="false" >
+            <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
+        </button >
+    </div >
+{% endif %}
+
