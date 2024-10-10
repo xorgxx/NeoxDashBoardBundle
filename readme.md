@@ -13,8 +13,8 @@ Install the bundle via Composer! Since it’s still in beta:
   composer require xorgxx/neox-dashboard-bundle
 ````
 
-**NOTE:** _You need to have Symfony 6|7 installed and configured, along with Stimulus ^3.0,
-Bootstrap ^5.0, SweetAlert2 ^11.0, UX Turbo ^2.0, and UX LiveComponent ^2.0.  You may need to use [ symfony composer dump-autoload ] to reload autoloading_
+**NOTE:** _You need to have Symfony 6|7 installed and configured, along with Messenger, Stimulus,
+Bootstrap, SweetAlert2, UX Turbo, and UX LiveComponent.  You may need to use [ symfony composer dump-autoload ] to reload autoloading_
 
 ## Run commands CLI Symfony
 ````

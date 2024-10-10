@@ -2,8 +2,6 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
-    use DOMDocument;
-    use DOMXPath;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\CrudHandleBuilder;
@@ -11,6 +9,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Form\NeoxDashDomainType;
     use Doctrine\ORM\EntityManagerInterface;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\FindIconOnWebSite;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,7 @@
     final class NeoxDashDomainController extends AbstractController
     {
 
-        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder, readonly private HttpClientInterface $httpClient)
+        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder, readonly FindIconOnWebSite $findIconOnWebSite)
         {
         }
 
@@ -59,19 +58,22 @@
             * For kipping this code flexible to return your need
             */
 
-            $handleSubmit = $crudHandleBuilder->handleCreateForm()->preHandleForm($request);
-            // Handle form submission for any entity, can make entity change if needed and flush entity
-            $handleSubmit->getIniHandleNeoxDashModel()->getEntity()
-                ->setUrlIcon($handleSubmit->getIniHandleNeoxDashModel()->getEntity()->getUrlIcon())
+            /*
+            *   ===== this is the way to use the generic form management service =====
+            *   $handleSubmit = $crudHandleBuilder->handleCreateForm()->preHandleForm($request);
+            *   // Handle form submission for any entity, can make entity change if needed and flush entity
+            *   $handleSubmit->getIniHandleNeoxDashModel()->getEntity()
+            *       ->setUrlIcon($handleSubmit->getIniHandleNeoxDashModel()->getEntity()->getUrlIcon())
+            *   ;
+            *
+            *   return $handleSubmit->flushHandleForm()->render();
+            */
+
+            return  $crudHandleBuilder
+                ->handleCreateForm()
+                ->handleForm($request)
+                ->render()
             ;
-
-            return $handleSubmit->flushHandleForm()->render();
-
-//            return
-//
-//                ->handleForm($request)
-//                ->render()
-//            ;
 
         }
 
@@ -88,8 +90,6 @@
         {
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("edit", $neoxDashDomain);
-
-            $neoxDashDomain->setUrlIcon($this->getFaviconUrl($neoxDashDomain->getUrl()));
 
             /*
             * Call to the generic form management service, with support for turbo-stream
@@ -149,14 +149,13 @@
             // Determine the template to use for rendering
             return $this->crudHandleBuilder->setHandleNeoxDashModel($o);
         }
-
-
+        
         #[Route('/{id}/find-icon', name: 'app_neox_dash_find-icon', methods: [ 'POST' ])]
         public function findIcon(Request $request, NeoxDashSection $neoxDashSection, EntityManagerInterface $entityManager): Response|JsonResponse
         {
             $domains = $neoxDashSection->getNeoxDashDomains();
             foreach ($domains as $domain) {
-                $domain->seturlIcon($this->getFaviconUrl($domain->getname()));
+                $domain->seturlIcon($this->findIconOnWebSite->getFaviconUrl($domain->getname()));
                 $entityManager->persist($domain);
             }
             $entityManager->flush();
@@ -174,64 +173,6 @@
                     ->getIniHandleNeoxDashModel()
                     ->getNew(), [ 'form' => $form->createView(), ]),
             };
-        }
-
-
-        private function getFaviconUrl(string $url): ?string
-        {
-            // Add "https://" by default if the URL does not contain a scheme
-            if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-                $url = 'https://' . ltrim($url, '/');
-            }
-
-            // Check if the URL is accessible with a HEAD request
-            try {
-                $response = $this->httpClient->request('HEAD', $url, [
-                    'timeout' => 2, 'verify_peer' => false, 'verify_host' => false, 'max_redirects' => 2,
-                ]);
-
-                if ($response->getStatusCode() !== 200) {
-                    return "500 : $url (HTTP " . $response->getStatusCode() . ")";
-                }
-
-            } catch (\Exception $e) {
-                return "500 : $url (" . $e->getMessage() . ")";
-            }
-
-            // Get the content of the HTML page
-            $html = @file_get_contents($url);
-            if ($html === false) {
-                return "500 : $url";
-            }
-
-            // Use DOMDocument to parse HTML and search for favicons
-            $doc = new DOMDocument();
-            @$doc->loadHTML($html);
-
-            $xpath    = new DOMXPath($doc);
-            $linkTags = $xpath->query("//link[contains(@rel, 'icon')]");
-
-            // Check for the presence of an icon
-            if ($linkTags->length > 0) {
-                $faviconUrl = $linkTags
-                    ->item(0)
-                    ->getAttribute('href')
-                ;
-
-                // Normalize the URL if it is relative
-                if (strpos($faviconUrl, 'http') !== 0) {
-                    $parsedUrl = parse_url($url);
-
-                    // Get the current directory path of the URL if it exists
-                    $basePath = isset($parsedUrl[ 'path' ]) ? rtrim(dirname($parsedUrl[ 'path' ]), '/') : '';
-
-                    // If the URL starts with "/", it is absolute with respect to the site root
-                    $faviconUrl = (strpos($faviconUrl, '/') === 0) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $faviconUrl : $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $basePath . '/' . ltrim($faviconUrl, '/');
-                }
-
-                return $faviconUrl;
-            }
-            return "500";
         }
 
     }
