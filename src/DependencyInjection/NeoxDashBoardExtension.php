@@ -58,6 +58,14 @@
                     ],
                 ],
             ]);
+
+            $container->prependExtensionConfig('framework', [
+                'messenger' => [
+                    'routing' => [
+                        \NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage::class => 'asyncRabbitMq',
+                    ],
+                ],
+            ]);
         }
 
         private function isAssetMapperAvailable(ContainerBuilder $container): bool
