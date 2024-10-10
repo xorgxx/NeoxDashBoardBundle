@@ -7,5 +7,5 @@
     enum NeoxDashTypeEnum: string
     {
         case LINK  = 'Link';
-//        case ALERT = 'Alert'; // not install yet this will be done in future !!!
+        case ALERT = 'Alert'; // not install yet this will be done in future !!!
     }

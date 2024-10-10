@@ -6,12 +6,17 @@
             {% set height = section.heigth|default('2.8') ~ 'rem' %}
             <div class="col-auto bg-dark" style="margin-left: 5px; height: {{  height }};">
                 <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{  height }};">
-                    <a href="https://{{ item.name }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
-                        <twig:ux:icon class="flex-shrink-0 icon-normal"
-                            name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
-                            width="{{ height  }}"
-                            style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
-                    </a>
+                    <!-- Icon -->
+                        <a href="https://{{ item.name }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                            {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null %}
+                               <twig:ux:icon class="flex-shrink-0 icon-normal"
+                                name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
+                                width="{{ height  }}"
+                                style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
+                            {% else %}
+                                <img src="{{ item.urlicon }}" alt="??!" width="30rem"  />
+                            {% endif %}
+                        </a>
                 </div>
             </div>
 

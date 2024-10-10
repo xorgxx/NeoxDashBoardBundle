@@ -16,7 +16,7 @@
         public function buildForm(FormBuilderInterface $builder, array $options): void
         {
             $builder->add('name', textType::class, [
-                    'required'           => false,
+                    'required'           => true,
                     'label'              => $this->getTrans('name'),
                     'translation_domain' => 'neoxDashBoardDomain',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
@@ -28,7 +28,7 @@
                         'class' => 'row mb-3',
                     ],
                 ])->add('url', textType::class, [
-                'required'           => false,
+                'required'           => true,
                 'label'              => $this->getTrans('url'),
                 'translation_domain' => 'neoxDashBoardDomain',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],

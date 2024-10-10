@@ -80,8 +80,7 @@ export default class extends coreController {
             }
         });
     }
-
-
+    
     async fetch(data) {
         const controller = new AbortController();
         const {signal} = controller;

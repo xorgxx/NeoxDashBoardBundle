@@ -19,7 +19,7 @@
         public function buildForm(FormBuilderInterface $builder, array $options): void
         {
             $builder->add('name', textType::class, [
-                    'required'   => false,
+                    'required'   => true,
                     'label'              => $this->getTrans('name'),
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr' => [

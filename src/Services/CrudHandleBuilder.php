@@ -97,13 +97,7 @@
             if ($this->iniHandleNeoxDashModel->getFormInterface()->isSubmitted() && $this->iniHandleNeoxDashModel->getFormInterface()->isValid()) {
                 $this->entityManager->persist($this->iniHandleNeoxDashModel->getEntity());
                 $this->entityManager->flush();
-
                 $return[ "submit" ] = true;
-
-                // If the query does not match any of the previous cases ("unmatch")
-                // Code 400 pour requête incorrecte
-                //   $return["status"]   = "unmatch";
-                //   $return["data"]     = $this->getJsonResponse('Query type not supported', response::HTTP_BAD_REQUEST);
             }
             $return[ "formType" ] = $this->iniHandleNeoxDashModel->getFormInterface();
             // Return the form if it is invalid or not submitted
@@ -114,9 +108,47 @@
             }else{
                 return $this;
             }
-
-
         }
+
+        /**
+         * Handle form submission for any entity and form type
+         *
+         * @param               $request
+         * @param FormInterface $form
+         * @param object        $entity
+         *
+         * @return mixed
+         */
+        public function preHandleForm($request): self
+        {
+
+            // Merge form
+            $this->iniHandleNeoxDashModel->getFormInterface()->handleRequest($request);
+
+            // identification type request
+            $return = $this->getRequestType($request);
+
+            // submit form
+            if ($this->iniHandleNeoxDashModel->getFormInterface()->isSubmitted() && $this->iniHandleNeoxDashModel->getFormInterface()->isValid()) {
+                $return[ "submit" ] = true;
+            }
+            $return[ "formType" ] = $this->iniHandleNeoxDashModel->getFormInterface();
+            // Return the form if it is invalid or not submitted
+            $this->iniHandleNeoxDashModel->setReturn($return);
+
+            return $this;
+        }
+
+        public function flushHandleForm(): self
+        {
+            if($this->iniHandleNeoxDashModel->getReturn()["submit"]) {
+                $this->entityManager->persist($this->iniHandleNeoxDashModel->getEntity());
+                $this->entityManager->flush();
+            }
+
+            return $this;
+        }
+
 
         public function render()
         {

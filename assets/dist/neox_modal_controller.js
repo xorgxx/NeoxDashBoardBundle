@@ -69,19 +69,6 @@ export default class extends coreController {
         });
     }
     
-    // async handleRequestWithTimeout(requestFunc, timeout = 10000) {
-    //     try {
-    //         return await this.withTimeout(requestFunc(), timeout); // Call the function to execute the promise
-    //     } catch (error) {
-    //         swal.fire({
-    //             icon: 'error',
-    //             title: 'Request failed',
-    //             text: error.message
-    //         });
-    //         throw error;
-    //     }
-    // }
-    
     async handleRequestWithTimeout(requestFunc, timeout = 30000) { // Augmentez le timeout à 30 secondes
         const timeoutId = setTimeout(() => {
             throw new Error("Request timed out");
@@ -101,7 +88,6 @@ export default class extends coreController {
             clearTimeout(timeoutId); // Arrête le timeout
         }
     }
-    
     
     async handleFormSubmit() {
         return await this.handleRequestWithTimeout(() => this.submitForm()); // Pass a function that returns a promise
@@ -166,7 +152,6 @@ export default class extends coreController {
             clearTimeout(timeout); // Efface le délai d'attente
         }
     }
-
     
     withTimeout(promise, ms) {
         const controller = new AbortController();

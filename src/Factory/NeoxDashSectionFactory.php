@@ -39,6 +39,7 @@
                 'name'    => self::faker()->word(1),
                 'row'     => self::faker()->Numberbetween(1,4),
                 'class'   => NeoxDashClassFactory::randomOrCreate(),
+                'heigth'  => self::faker()->randomFloat(1, 1.8, 3),
             ];
         }
 

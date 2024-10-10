@@ -54,36 +54,37 @@ export class coreController extends Controller {
         .catch(this.#handleError)
     }
     
-    async submitForm(signal){
+    async submitForm(signal) {
         const $elem = document.getElementById("swal2-html-container");
         const $form = $elem.querySelector("form");
         const formData = new FormData($form);
         const inputFields = [...$form.querySelectorAll('input, textarea, select')];
         
-        // Check required fields
+        // Vérification des champs obligatoires
         const formIsValid = inputFields.every(field => !field.hasAttribute('required') || field.value.trim());
         
-        if(!formIsValid){
+        if (!formIsValid) {
             inputFields.forEach(field => {
-                if(field.hasAttribute('required') && !field.value.trim()){
+                if (field.hasAttribute('required') && !field.value.trim()) {
                     field.classList.add("is-invalid");
                 } else {
                     field.classList.remove("is-invalid");
                 }
             });
-            // Added error message here if submission fails
-            swal.showValidationMessage(`Request failed: ${error.message}`);
-            return;
+            
+            // Afficher un message d'erreur et stopper l'exécution
+            swal.showValidationMessage(`Veuillez remplir tous les champs obligatoires.`);
+            return; // Empêcher la soumission si le formulaire est invalide
         }
         
         swal.update({
-            'text': `Submit form waiting ...`,
+            'text': `En attente de soumission...`,
             'html': "",
             'icon': "question"
-        })
-        swal.showLoading()
+        });
+        swal.showLoading();
         
-        // Send the request with the form data
+        // Envoi de la requête avec les données du formulaire
         return fetch($form.action, {
             method: $form.method,
             body: formData,
@@ -96,35 +97,25 @@ export class coreController extends Controller {
         })
         .then(this.#handleResponse)
         .then(data => {
-            if(data == "true"){
+            if (data == "true") {
                 toast.fire({
                     icon: "success",
-                    title: "Changes successfully"
+                    title: "Changements effectués avec succès"
                 });
-                $form.reset()
+                $form.reset();
                 
                 const idElement = this.idElementValue;
                 
                 if (this.#isRelativeUrl(idElement)) {
-                    // If the URL is valid, we execute a turbo.visit to refresh the page
-                    console.log('L\'élément est une URL:', idElement);
-                    Turbo.visit(idElement)
+                    Turbo.visit(idElement);
                 } else {
-                    // If it's not a URL, treat it like a normal identifier
-                    const id = idElement.split('@')[1]; // Extract the id
-                    // const id = this.idElementValue.split('@')[ 1 ];
-                    const component = document.getElementById(idElement).__component; // Get the parent div
-                    // or call an action
+                    const id = idElement.split('@')[1];
+                    const component = document.getElementById(idElement).__component;
                     component.action('refresh', {'query': id});
-                    // then, trigger a re-render to get the fresh HTML
-                    // component.render();
-                    console.log('L\'élément n\'est pas une URL, l\'id est:', id);
                 }
                 
             } else {
-                // Update the UI with the retrieved data
                 swal.fire({
-                    // icon: '',
                     title: this.titleValue,
                     html: data,
                     showCancelButton: this.showCancelButtonValue,
@@ -132,12 +123,10 @@ export class coreController extends Controller {
                     allowOutsideClick: false,
                     preConfirm: () => this.submitForm("formNeox"),
                 });
-                swal.showValidationMessage(
-                    `${error}`
-                );
+                swal.showValidationMessage(`${error}`);
             }
         })
-        .catch(this.#handleError)
+        .catch(this.#handleError);
     }
     
     async #handleResponse(result){

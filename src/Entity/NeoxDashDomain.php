@@ -23,6 +23,9 @@ class NeoxDashDomain
     #[ORM\Column(type: Types::TEXT)]
     private ?string $url = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $urlIcon = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $color = null;
 
@@ -65,6 +68,18 @@ class NeoxDashDomain
 
         return $this;
     }
+
+    public function getUrlIcon(): ?string
+    {
+        return $this->urlIcon;
+    }
+
+    public function setUrlIcon(?string $urlIcon): NeoxDashDomain
+    {
+        $this->urlIcon = $urlIcon;
+        return $this;
+    }
+
 
     public function getColor(): ?string
     {
