@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
+#[Broadcast(template: '@NeoxDashBoardBundle\broadcast\NeoxDashDomain.stream.html.twig')]
 #[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
 class NeoxDashDomain
 {

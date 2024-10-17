@@ -1,0 +1,25 @@
+{# Learn how to use Turbo Streams: https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
+{% block create %}
+    <turbo-stream action="append" target="neox_dash_domains">
+        <template>
+            <div id="{{ 'neox_dash_domain_' ~ id }}">
+                #{{ id }} created
+            </div>
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block update %}
+    <turbo-stream action="update" method="morph" target="neox_dash_domain_{{ id }}">
+        <template>
+            {% set item             = entity %}
+            {% set section          = item.section %}
+            {% set NeoxDashClass    = section.class %}
+            {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block remove %}
+    <turbo-stream action="remove" target="neox_dash_domain_{{ id }}"></turbo-stream>
+{% endblock %}

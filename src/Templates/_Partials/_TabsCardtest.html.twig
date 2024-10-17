@@ -33,7 +33,7 @@
                             <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
                                 title: 'Edit Section' ,
                                 text: 'Do you want to continue' ,
-                                idElement: "live-NeoxDashBoardContent@" ~ NeoxDashClass.id,
+                                idElement: null,
                                 url: path('app_neox_dash_section_edit', { id: section.id })
 
                             }) }}
@@ -114,7 +114,7 @@
 
                 <div class="carousel-inner" >
                     {% for row in section.NeoxDashDomains|batch(columns_per_row * rows_per_carousel, '') %}
-                        <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer|default(20000) }}" >
+                        <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer | setTimer }}" >
 
                             <div class="container" >
                                 {% for rowSet in row|batch(columns_per_row) %}
@@ -122,7 +122,11 @@
 
                                         {% for item in rowSet %}
                                             {% if item %}
-                                                {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
+                                                <div id="neox_dash_domain_{{ item.id }}" {{ section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : '' }}
+                                                    class="col-md-3 mb-3" >
+                                                    {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
+                                                </div >
+
                                             {% endif %}
                                         {% endfor %}
 

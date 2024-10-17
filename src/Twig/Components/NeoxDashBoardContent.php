@@ -48,6 +48,7 @@
                 $this->entityManager->flush();
 
                 $this->refresh($entity->getClass()->getId());
+//                $this->mount($this->NeoxDashClass);
             }
 
         }

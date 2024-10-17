@@ -16,6 +16,7 @@ Install the bundle via Composer! Since it’s still in beta:
 **NOTE:** _You need to have Symfony 6|7 installed and configured, along with Messenger, Stimulus,
 Bootstrap, SweetAlert2, UX Turbo, and UX LiveComponent.  You may need to use [ symfony composer dump-autoload ] to reload autoloading_
 
+
 ## Run commands CLI Symfony
 ````
   1 - `php bin/console make:migration`
@@ -24,11 +25,25 @@ Bootstrap, SweetAlert2, UX Turbo, and UX LiveComponent.  You may need to use [ s
   4 - `php bin/console asset-map:compile`
   5 - `php bin/console cache:clear`
 ````
+We use the Messenger queue to process methods asynchronously, preventing requests from being blocked.
+
+To enable this, you’ll need to add the following to your `messenger.yaml`. This setup gives customers the flexibility to choose whether to use asynchronous processing or not.
+
+````
+framework:
+    messenger:
+        ....
+
+        routing:
+            ....
+            NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage: [what ever transport you want to use or "async"]
+
+```
 
  ..... Done 🎈
 
 ## Usage
-🚨🚨🚨 In your controller, very important to keep this naming convention: 
+🚨🚨🚨 In your controller, very important to keep this naming convention: ```#[Route('/', name: 'app_neox_dashboard')]```
 ````
         #[Route('/', name: 'app_neox_dashboard')]
         public function dashBoard(NeoxDashSetupRepository $setupRepository): Response

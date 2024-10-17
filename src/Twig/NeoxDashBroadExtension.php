@@ -39,6 +39,7 @@ class NeoxDashBroadExtension extends AbstractExtension
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
 //            new TwigFilter('setJsFile', [$this, 'setJsFile']),
             new TwigFilter('getShortDomain', [$this, 'shortDomain']),
+            new TwigFilter('setTimer', [$this, 'setTimer']),
         ];
     }
 
@@ -49,10 +50,20 @@ class NeoxDashBroadExtension extends AbstractExtension
 //                'is_safe'           => array('html'),
 //                'needs_environment' => true,
 //            )),
-//            new TwigFunction('setJsFile', [$this, 'setJsFile']),
+//            new TwigFunction('setTimer', [$this, 'setTimer']),
         ];
     }
 
+    public function setTimer( $timer = null)
+    {
+        return match ($timer) {
+            null        => 500000,
+            '0'         => 500000,
+            0           => 500000,
+            default     => $timer,
+        };
+
+    }
     public function shortDomain(string $url, $callback = "first"): array
     {
         // Check if the URL starts with a scheme

@@ -124,7 +124,13 @@ export default class extends coreController {
                 title: "Supprimé! L'élément a été supprimé avec succès."
             });
             
-            const idElement = this.idElementValue;
+            if (this.idElementValue !== "element") {
+                const idElement = this.idElementValue// Do something with idElement
+            } else {
+                // Handle the case where idElement is null meaning that we dont have to render any !! maybe is Mercure "broadcast" ???🦖
+                console.log('idElement is null');
+                return ;
+            }
             
             if (this.#isRelativeUrl(idElement)) {
                 // If the URL is valid, we execute a turbo.visit to refresh the page

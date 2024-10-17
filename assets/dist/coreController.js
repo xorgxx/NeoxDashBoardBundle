@@ -104,15 +104,25 @@ export class coreController extends Controller {
                 });
                 $form.reset();
                 
-                const idElement = this.idElementValue;
-                
-                if (this.#isRelativeUrl(idElement)) {
-                    Turbo.visit(idElement);
-                } else {
-                    const id = idElement.split('@')[1];
-                    const component = document.getElementById(idElement).__component;
-                    component.action('refresh', {'query': id});
+                if (this.idElementValue !== "element") {
+                    const idElement = this.idElementValue;
+                    if (this.#isRelativeUrl(idElement)) {
+                        Turbo.visit(idElement);
+                    } else {
+                        const id = idElement.split('@')[1];
+                        const component = document.getElementById(idElement).__component;
+                        component.action('refresh', {'query': id});
+                    }
+                    return;
                 }
+                
+                // if (this.#isRelativeUrl(idElement)) {
+                //     Turbo.visit(idElement);
+                // } else {
+                //     const id = idElement.split('@')[1];
+                //     const component = document.getElementById(idElement).__component;
+                //     component.action('refresh', {'query': id});
+                // }
                 
             } else {
                 swal.fire({
