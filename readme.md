@@ -29,7 +29,7 @@ We use the Messenger queue to process methods asynchronously, preventing request
 
 To enable this, you’ll need to add the following to your `messenger.yaml`. This setup gives customers the flexibility to choose whether to use asynchronous processing or not.
 
-````
+```
 framework:
     messenger:
         ....
