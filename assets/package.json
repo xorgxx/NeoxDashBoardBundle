@@ -10,6 +10,11 @@
                 "main": "dist/neox_modal_controller.js",
                 "fetch": "eager",
                 "enabled": true
+            },
+            "neox_drop": {
+                "main": "dist/neox_drop_controller.js",
+                "fetch": "eager",
+                "enabled": true
             }
         },
         "assets": {

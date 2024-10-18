@@ -1,9 +1,11 @@
 import {coreController} from './coreController.js';
 
-export default class extends coreController {
+export default class NeoxModalController extends coreController {
     modal(event) {
         event.preventDefault();
         event.stopPropagation();
+        
+        const domain = this.element.getAttribute('data-domain') || null;
         
         // Initialize stimulus attributes with default values
         this.initializeStimulusAtt();
@@ -14,7 +16,7 @@ export default class extends coreController {
             icon: this.iconValue,
             showCancelButton: this.showCancelButtonValue,
             confirmButtonText: this.confirmButtonTextValue,
-            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch([])) // Use a function that returns a promise
+            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch({ domain })),
         });
         // Automatically trigger the confirmation button after the first step
         swal.clickConfirm();

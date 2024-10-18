@@ -39,10 +39,22 @@
         public function new(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
 //            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
+            $content    = $request->getContent();
+            $data       = json_decode($content, true)??null;
 
             // build entity
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
+            if ($data["domain"] ?? null) {
+                $neoxDashDomain->setName($this->extractDomain($data["domain"]));
+
+                if (!preg_match('/^(https?|ftp):\/\//', $data["domain"])) {
+                    $data["domain"] = 'https://' . $data["domain"]; // Ajoute un schéma par défaut
+                }
+
+                $neoxDashDomain->setUrl($data["domain"] ?? "");
+            }
+            $neoxDashDomain->setUrlIcon("z");
 
             $r = random_int(0, 255); // Rouge
             $g = random_int(0, 255); // Vert
@@ -169,10 +181,20 @@
                         ->getRoute() . 'index', [], Response::HTTP_SEE_OTHER) : null,
                 "ajax" => $submit ? new JsonResponse(true) : new JsonResponse(false),
                 "turbo" => $submit ? $return[ "data" ] : false,
-                default => $this->render($crudHandleBuilder
-                    ->getIniHandleNeoxDashModel()
-                    ->getNew(), [ 'form' => $form->createView(), ]),
+                default => null,
             };
         }
 
+        private function extractDomain($url) {
+
+            if (!preg_match('/^(https?|ftp):\/\//', $url)) {
+                $url = 'http://' . $url; // Ajoute un schéma par défaut
+            }
+            $parsedUrl = parse_url($url);
+
+            // Vérifier si le domaine existe et retourner le domaine sans www
+            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
+
+            return $domain;
+        }
     }

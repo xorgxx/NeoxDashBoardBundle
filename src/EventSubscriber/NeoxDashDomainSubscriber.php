@@ -34,7 +34,7 @@
         // callback methods must be called exactly like the events they listen to;
         // they receive an argument of type LifecycleEventArgs, which gives you access
         // to both the entity object of the event and the entity manager itself
-        public function postPersist(LifecycleEventArgs $args): void
+        public function prePersist(LifecycleEventArgs $args): void
         {
             $this->logActivity('persist', $args);
         }
