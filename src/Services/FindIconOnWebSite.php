@@ -17,6 +17,8 @@
          */
         public function getFaviconUrl(string $url): ?string
         {
+            $url = $this->extractDomain($url)["host"];
+
             // Add "https://" by default if the URL does not contain a scheme
             if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
                 $url = 'https://' . ltrim($url, '/');
@@ -25,7 +27,7 @@
             // Check if the URL is accessible with a HEAD request
             try {
                 $response = $this->httpClient->request('HEAD', $url, [
-                    'timeout' => 2, 'verify_peer' => false, 'verify_host' => false, 'max_redirects' => 2,
+                    'timeout' => 3, 'verify_peer' => true, 'verify_host' => true, 'max_redirects' => 5,'http_version' => '1.1', // Optional: Force HTTP/1.1
                 ]);
 
                 if ($response->getStatusCode() !== 200) {
@@ -72,4 +74,19 @@
             return "500";
         }
 
+        public function extractDomain($url) {
+
+            if (!preg_match('/^(https?|ftp):\/\//', $url)) {
+                $url = 'http://' . $url; // Ajoute un schéma par défaut
+            }
+            $parsedUrl = parse_url($url);
+
+            // Vérifier si le domaine existe et retourner le domaine sans www
+            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
+            return  [
+                "domain"    => $domain,
+                "host"      => $parsedUrl['host'],
+            ];
+
+        }
     }

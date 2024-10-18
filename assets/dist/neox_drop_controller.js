@@ -67,7 +67,7 @@ export default class extends Controller {
         dropzoneTarget.classList.toggle('dropzone-valid', isValid);
         dropzoneTarget.classList.toggle('dropzone-invalid', !isValid);
         
-        // Rétablir le style initial après 3 secondes
+        // Restore the initial style after 3 seconds
         setTimeout(() => {
             dropzoneTarget.classList.remove('dropzone-valid', 'dropzone-invalid');
         }, 3000);
@@ -75,19 +75,19 @@ export default class extends Controller {
     
     showError(message) {
         console.error(message);
-        const initialContent = this.dropzoneTarget.innerHTML; // Utiliser innerHTML pour conserver les balises HTML
+        const initialContent = this.dropzoneTarget.innerHTML; // Use innerHTML to persist HTML tags
         
-        // Ajoutez une icône d'erreur ici, par exemple une icône de croix
+        // Add an error icon here, for example a cross icon
         const errorIcon = '<twig:ux:icon name="fa6-solid:exclamation-circle" width="20" height="20" color="red" class="mx-2" />';
         
-        // Mettre à jour le contenu avec le message d'erreur et l'icône
+        // Update content with error message and icon
         this.dropzoneTarget.innerHTML = `${errorIcon} ${message}`;
-        this.dropzoneTarget.style.color = 'red'; // Changer la couleur du texte pour indiquer l'erreur
+        this.dropzoneTarget.style.color = 'red'; // Change text color to indicate error
         
-        // Restaurer le contenu et la couleur après 5 secondes
+        // Restore content and color after 5 seconds
         setTimeout(() => {
-            this.dropzoneTarget.innerHTML = initialContent; // Restaurer le contenu initial
-            this.dropzoneTarget.style.color = ''; // Remettre la couleur initiale
+            this.dropzoneTarget.innerHTML = initialContent; // Restore original content
+            this.dropzoneTarget.style.color = ''; // Reset the initial color
         }, 5000);
     }
     
@@ -96,8 +96,8 @@ export default class extends Controller {
         this.updateDropzoneStyle(true);
         const modalTriggerElement = this.element.closest('[data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"]');
         if (modalTriggerElement) {
-            modalTriggerElement.setAttribute('data-domain', url); // Mettre à jour l'URL dans un attribut data-url
-            modalTriggerElement.click(); // Déclenche l'événement click
+            modalTriggerElement.setAttribute('data-domain', url); // Update URL in a data-url attribute
+            modalTriggerElement.click(); // Triggers the click event
             modalTriggerElement.removeAttribute('data-domain');
         }
     }

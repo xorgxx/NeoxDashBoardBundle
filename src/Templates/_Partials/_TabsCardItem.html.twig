@@ -8,13 +8,13 @@
                 <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{  height }};">
                     <!-- Icon -->
                         <a href="{{ item.url }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
-                            {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null %}
+                            {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                                <twig:ux:icon class="flex-shrink-0 icon-normal"
                                 name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
                                 width="{{ height  }}"
                                 style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
                             {% else %}
-                                <img src="{{ item.urlicon }}" alt="??!" width="30rem"  />
+                                <img src="{{ item.urlicon }}" alt="nc" width="30rem"  />
                             {% endif %}
                         </a>
                 </div>

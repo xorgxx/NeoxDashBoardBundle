@@ -46,7 +46,7 @@
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
             if ($data["domain"] ?? null) {
-                $d = $this->extractDomain($data["domain"]);
+                $d = $this->findIconOnWebSite->extractDomain($data["domain"]);
                 $neoxDashDomain->setName($d["domain"]);
                 $neoxDashDomain->setUrl($d["host"] ?? "");
             }
@@ -101,9 +101,8 @@
         {
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("edit", $neoxDashDomain);
-            $dom = $this->extractDomain($neoxDashDomain->getUrl());
 
-            $icon = $this->findIconOnWebSite->getFaviconUrl($dom["host"]);
+            $icon = $this->findIconOnWebSite->getFaviconUrl($neoxDashDomain->getUrl());
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
@@ -186,19 +185,19 @@
             };
         }
 
-        private function extractDomain($url) {
-
-            if (!preg_match('/^(https?|ftp):\/\//', $url)) {
-                $url = 'http://' . $url; // Ajoute un schéma par défaut
-            }
-            $parsedUrl = parse_url($url);
-
-            // Vérifier si le domaine existe et retourner le domaine sans www
-            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
-            return  [
-                "domain"    => $domain,
-                "host"      => $parsedUrl['host'],
-            ];
-
-        }
+//        private function extractDomain($url) {
+//
+//            if (!preg_match('/^(https?|ftp):\/\//', $url)) {
+//                $url = 'http://' . $url; // Ajoute un schéma par défaut
+//            }
+//            $parsedUrl = parse_url($url);
+//
+//            // Vérifier si le domaine existe et retourner le domaine sans www
+//            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
+//            return  [
+//                "domain"    => $domain,
+//                "host"      => $parsedUrl['host'],
+//            ];
+//
+//        }
     }
