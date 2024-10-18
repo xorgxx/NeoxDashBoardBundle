@@ -24,7 +24,7 @@
 //    #[AsDoctrineListener( event: Events::postLoad, priority: 500, connection: 'default' )]
 //    #[AsDoctrineListener( event: Events::postFlush, priority: 500, connection: 'default' )]
     #[AsDoctrineListener( event: Events::postUpdate, priority: 500, connection: 'default' )]
-    #[AsDoctrineListener( event: Events::prePersist, priority: 500, connection: 'default' )]
+    #[AsDoctrineListener( event: Events::postPersist, priority: 500, connection: 'default' )]
     class NeoxDashDomainSubscriber
     {
 
@@ -34,9 +34,9 @@
         // callback methods must be called exactly like the events they listen to;
         // they receive an argument of type LifecycleEventArgs, which gives you access
         // to both the entity object of the event and the entity manager itself
-        public function prePersist(LifecycleEventArgs $args): void
+        public function postPersist(LifecycleEventArgs $args): void
         {
-            $this->logActivity('persist', $args);
+            $this->logActivity('postPersist', $args);
         }
 
 //        public function prePersist(LifecycleEventArgs $args): void
@@ -75,7 +75,7 @@
 
                 switch ($action) {
                     case "update":
-                    case "prePersist":
+                    case "postPersist":
                         $this->bus->dispatch(new NeoxDashDomainMessage($entity->getId()));
                         break;
 
