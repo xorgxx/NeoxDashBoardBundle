@@ -46,13 +46,9 @@
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
             if ($data["domain"] ?? null) {
-                $neoxDashDomain->setName($this->extractDomain($data["domain"]));
-
-                if (!preg_match('/^(https?|ftp):\/\//', $data["domain"])) {
-                    $data["domain"] = 'https://' . $data["domain"]; // Ajoute un schéma par défaut
-                }
-
-                $neoxDashDomain->setUrl($data["domain"] ?? "");
+                $d = $this->extractDomain($data["domain"]);
+                $neoxDashDomain->setName($d["domain"]);
+                $neoxDashDomain->setUrl($d["host"] ?? "");
             }
             $neoxDashDomain->setUrlIcon("z");
 
@@ -95,6 +91,9 @@
             return $this->render('@NeoxDashBoardBundle/neox_dash_domain/show.html.twig', [ 'neox_dash_domain' => $neoxDashDomain, ]);
         }
 
+        /**
+         * @throws TransportExceptionInterface
+         */
         #[Route('/{id}/edit', name: 'app_neox_dash_domain_edit', methods: [
             'GET', 'POST'
         ])]
@@ -102,7 +101,9 @@
         {
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("edit", $neoxDashDomain);
+            $dom = $this->extractDomain($neoxDashDomain->getUrl());
 
+            $icon = $this->findIconOnWebSite->getFaviconUrl($dom["host"]);
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
@@ -194,7 +195,10 @@
 
             // Vérifier si le domaine existe et retourner le domaine sans www
             $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
+            return  [
+                "domain"    => $domain,
+                "host"      => $parsedUrl['host'],
+            ];
 
-            return $domain;
         }
     }

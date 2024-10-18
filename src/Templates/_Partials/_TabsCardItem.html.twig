@@ -7,7 +7,7 @@
             <div class="col-auto bg-dark" style="margin-left: 5px; height: {{  height }};">
                 <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{  height }};">
                     <!-- Icon -->
-                        <a href="https://{{ item.name }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
+                        <a href="{{ item.url }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
                             {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null %}
                                <twig:ux:icon class="flex-shrink-0 icon-normal"
                                 name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"

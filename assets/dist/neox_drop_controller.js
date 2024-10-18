@@ -7,6 +7,13 @@ export default class extends Controller {
         this.isProcessing = false; // Définir isProcessing dans connect()
         this.addEventListeners();
     }
+    disconnect() {
+        // You should always remove listeners when the controller is disconnected to avoid side-effects
+        const { dropzoneTarget } = this;
+        dropzoneTarget.removeEventListener('dragover', this.handleDragOver.bind(this));
+        dropzoneTarget.removeEventListener('dragleave', this.handleMouseOut.bind(this));
+        dropzoneTarget.removeEventListener('drop', this.handleDrop.bind(this));
+    }
     
     addEventListeners() {
         const { dropzoneTarget } = this;

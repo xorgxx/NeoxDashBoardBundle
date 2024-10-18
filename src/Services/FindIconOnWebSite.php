@@ -2,6 +2,7 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Services;
 
+    use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
     use Symfony\Contracts\HttpClient\HttpClientInterface;
     use DOMDocument;
     use DOMXPath;
@@ -10,7 +11,10 @@
     {
 
         public function __construct(readonly private HttpClientInterface $httpClient){}
-        
+
+        /**
+         * @throws TransportExceptionInterface
+         */
         public function getFaviconUrl(string $url): ?string
         {
             // Add "https://" by default if the URL does not contain a scheme
@@ -53,14 +57,14 @@
                 ;
 
                 // Normalize the URL if it is relative
-                if (strpos($faviconUrl, 'http') !== 0) {
+                if (!str_starts_with($faviconUrl, 'http')) {
                     $parsedUrl = parse_url($url);
 
                     // Get the current directory path of the URL if it exists
                     $basePath = isset($parsedUrl[ 'path' ]) ? rtrim(dirname($parsedUrl[ 'path' ]), '/') : '';
 
                     // If the URL starts with "/", it is absolute with respect to the site root
-                    $faviconUrl = (strpos($faviconUrl, '/') === 0) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $faviconUrl : $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $basePath . '/' . ltrim($faviconUrl, '/');
+                    $faviconUrl = (str_starts_with($faviconUrl, '/')) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $faviconUrl : $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] . $basePath . '/' . ltrim($faviconUrl, '/');
                 }
 
                 return $faviconUrl;
