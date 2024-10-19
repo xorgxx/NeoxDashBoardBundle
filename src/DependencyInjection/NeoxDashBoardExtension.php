@@ -2,7 +2,9 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection;
 
+    use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\doctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\frameworkConfig;
+    use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\stofDoctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigComponentsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigConfig;
     use Symfony\Component\AssetMapper\AssetMapperInterface;
@@ -19,6 +21,22 @@
         {
             parent::build($container);
             $this->checkDependencies($container);
+
+            // Register Gedmo mappings
+            $this->registerGedmoMappings($container);
+        }
+
+        private function registerGedmoMappings(ContainerBuilder $container): void
+        {
+            $container->setParameter('doctrine.orm.default_metadata_driver', 'doctrine.orm.default_metadata_driver');
+
+            // Register the Gedmo mappings as a service
+            $container->register('doctrine.orm.default_metadata_driver', 'Doctrine\ORM\Mapping\Driver\AnnotationDriver')
+                      ->addArgument(new \Doctrine\Common\Annotations\AnnotationReader())
+                      ->addArgument(['%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translatable/Entity'])
+                      ->addArgument(['%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translator/Entity'])
+                      ->addArgument(['%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Loggable/Entity'])
+                      ->addArgument(['%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity']);
         }
 
         public function prepend(ContainerBuilder $container): void
@@ -31,9 +49,11 @@
         private function prependConfigurations(ContainerBuilder $container): void
         {
             $configurations = [
-                'twig'              => TwigConfig::getConfig(),
-                'twig_components'   => twigComponentsConfig::getConfig(),
-                'framework'         => frameworkConfig::getConfig(),
+                'twig'                     => TwigConfig::getConfig(),
+                'twig_components'          => twigComponentsConfig::getConfig(),
+                'framework'                => frameworkConfig::getConfig(),
+                'doctrine'                 => doctrineExtensionsConfig::getConfig(),
+                'stof_doctrine_extensions' => stofDoctrineExtensionsConfig::getConfig()
             ];
 
             foreach ($configurations as $extension => $config) {
@@ -75,6 +95,7 @@
                 'twig.components'                     => 'Twig components are not available. Please install them to use NeoxDashBoardBundle.',
                 AssetMapperInterface::class           => 'AssetMapper is not available. Please install the required bundle.',
                 'doctrine.orm.entity_manager.default' => 'Doctrine ORM is not installed. Please install DoctrineBundle to use NeoxDashBoardBundle.',
+                'stof_doctrine_extensions'            => 'StofDoctrineExtensionsBundle is not installed. Please install it to use NeoxDashBoardBundle.',
             ];
 
             foreach ($dependencies as $service => $errorMessage) {

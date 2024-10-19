@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[Broadcast(template: '@NeoxDashBoardBundle\broadcast\NeoxDashDomain.stream.html.twig')]
 #[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
@@ -31,6 +32,7 @@ class NeoxDashDomain
     private ?string $color = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Gedmo\Slug(fields: ['name', 'url'])]
     private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'neoxDashDomains')]
