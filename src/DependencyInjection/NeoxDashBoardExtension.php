@@ -2,7 +2,6 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection;
 
-    use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Compiler\CheckDependenciesPass;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\frameworkConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigComponentsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigConfig;
@@ -12,26 +11,39 @@
     use Symfony\Component\DependencyInjection\Extension\Extension;
     use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
     use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+    use RuntimeException;
 
     class NeoxDashBoardExtension extends Extension implements PrependExtensionInterface
     {
-
         public function build(ContainerBuilder $container): void
         {
             parent::build($container);
-            $container->addCompilerPass(new CheckDependenciesPass());
+            $this->checkDependencies($container);
         }
 
         public function prepend(ContainerBuilder $container): void
         {
-            if (!$this->isAssetMapperAvailable($container)) {
-                return;
+            if ($this->isAssetMapperAvailable($container)) {
+                $this->prependConfigurations($container);
+            }
+        }
+
+        private function prependConfigurations(ContainerBuilder $container): void
+        {
+            $configurations = [
+                'twig'              => TwigConfig::getConfig(),
+                'twig_components'   => twigComponentsConfig::getConfig(),
+                'framework'         => frameworkConfig::getConfig(),
+            ];
+
+            foreach ($configurations as $extension => $config) {
+                $container->prependExtensionConfig($extension, $config);
             }
 
-            $container->prependExtensionConfig('twig', TwigConfig::getConfig());
-            $container->prependExtensionConfig('twig_component', twigComponentsConfig::getConfig() );
-            $container->prependExtensionConfig('framework', frameworkConfig::getConfig() );
-
+            // Set translation paths
+            $container->setParameter('translator.paths', [
+                '%kernel.project_dir%/src/NeoxDashboardBundle/translations',
+            ]);
         }
 
         /**
@@ -40,43 +52,36 @@
         public function load(array $configs, ContainerBuilder $container): void
         {
             $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-            // Load each YAML file separately
             $loader->load('services.yaml');
-
-            ;
-//        $loader->load('routes.yaml');
+            // Uncomment if needed
+            // $loader->load('routes.yaml');
 
             $configuration = $this->getConfiguration($configs, $container);
-            $config        = $this->processConfiguration($configuration, $configs);
+            $this->processConfiguration($configuration, $configs);
 
-            // set key config as container parameters
-            // foreach ($config as $key => $value) {
-            //    $container->setParameter( 'neox_dashboard.' . $key, $value);
-            // }
-
-
-            // Ajoutez le chemin des traductions
-            $container->setParameter('translator.paths', [
-                '%kernel.project_dir%/src/NeoxDashboardBundle/translations',
-            ]);
         }
-
-
-
 
         private function isAssetMapperAvailable(ContainerBuilder $container): bool
         {
-            if (!interface_exists(AssetMapperInterface::class)) {
-                return false;
-            }
-
-            // check that FrameworkBundle 6.3 or higher is installed
             $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
-            if (!isset($bundlesMetadata[ 'FrameworkBundle' ])) {
-                return false;
-            }
 
-            return is_file($bundlesMetadata[ 'FrameworkBundle' ][ 'path' ] . '/Resources/config/asset_mapper.php');
+            return interface_exists(AssetMapperInterface::class) && isset($bundlesMetadata[ 'FrameworkBundle' ]) && is_file($bundlesMetadata[ 'FrameworkBundle' ][ 'path' ] . '/Resources/config/asset_mapper.php');
+        }
+
+        private function checkDependencies(ContainerBuilder $container): void
+        {
+            $dependencies = [
+                'twig'                                => 'TwigBundle is not installed. Please install it to use NeoxDashBoardBundle.',
+                'twig.components'                     => 'Twig components are not available. Please install them to use NeoxDashBoardBundle.',
+                AssetMapperInterface::class           => 'AssetMapper is not available. Please install the required bundle.',
+                'doctrine.orm.entity_manager.default' => 'Doctrine ORM is not installed. Please install DoctrineBundle to use NeoxDashBoardBundle.',
+            ];
+
+            foreach ($dependencies as $service => $errorMessage) {
+                if (!$container->has($service) && !$container->hasDefinition($service)) {
+                    throw new RuntimeException($errorMessage);
+                }
+            }
         }
 
     }
