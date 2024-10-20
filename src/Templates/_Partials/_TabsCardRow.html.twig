@@ -1,11 +1,9 @@
 
 {% for row in section.NeoxDashDomains|sort((a, b) => a.position <=> b.position)|batch(columns_per_row * rows_per_carousel, '') %}
     <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer | setTimer }}" >
-
         <div class="container" >
             {% for rowSet in row|batch(columns_per_row) %}
-                <div class="row justify-content-center" {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : "" }}>
-
+                <div class="row justify-content-center " {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : "" }}>
                     {% for item in rowSet %}
                         {% if item %}
                             <div id="neox_dash_domain_{{ item.id }}"
@@ -21,7 +19,6 @@
 
                         {% endif %}
                     {% endfor %}
-
                 </div >
             {% endfor %}
 

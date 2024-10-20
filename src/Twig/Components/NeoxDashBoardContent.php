@@ -40,15 +40,14 @@
             $entity = $this->entityManager->getRepository(NeoxDashSection::class)->findOneBy(["id" => $query]) ;
 
             if ($entity) {
-                // Inverser la valeur du champ 'edit'
+                // Reverse the value of the 'edit' field
                 $entity->setEdit(!$entity->getEdit());
 
-                // Persister l'entité et sauvegarder en base
+                // Persist the entity and save in base
                 $this->entityManager->persist($entity);
                 $this->entityManager->flush();
 
                 $this->refresh($entity->getClass()->getId());
-//                $this->mount($this->NeoxDashClass);
             }
 
         }

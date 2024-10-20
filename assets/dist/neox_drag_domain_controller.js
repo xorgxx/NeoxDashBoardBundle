@@ -40,28 +40,6 @@ export default class extends Controller {
         }
     }
     
-    // handleDrop(event){
-    //     event.preventDefault();
-    //
-    //     const draggedId = event.dataTransfer.getData("text/plain");
-    //     const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
-    //
-    //     if(targetElement){
-    //         const targetId = targetElement.dataset.id;
-    //         const targetApi = targetElement.dataset.api;
-    //         console.log(`Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}`);
-    //
-    //         // Send data to the server
-    //         this.sendData(draggedId, targetId, targetApi);
-    //         // Remove hover effect from the target element
-    //         const domainChild   = targetElement.querySelector('.domain');
-    //         if(domainChild){
-    //             domainChild.classList.remove('drag-hover');
-    //         }
-    //     } else {
-    //         console.log(`Dragged ID: ${draggedId}, Dropped On ID: undefined`);
-    //     }
-    // }
     handleDrop(event) {
         event.preventDefault();
         
@@ -80,53 +58,47 @@ export default class extends Controller {
             // Send data to the server to update order or perform backend tasks
             this.sendData(draggedId, targetId, targetApi);
             
-            // Adjust the positions of other elements
-            // this.updatePositions();
-            
             // Remove hover effect from the target element
             const domainChild = targetElement.querySelector('.domain');
             if (domainChild) {
                 domainChild.classList.remove('drag-hover');
             }
             
-            
-            
         } else {
             console.log(`Dragged ID: ${draggedId}, Dropped On ID: undefined`);
         }
     }
     
-    updatePositions(draggedItemId) {
-        const items = document.querySelectorAll('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
-        let draggedItemIndex;
+    handleDrop(event) {
+        event.preventDefault();
         
-        // Parcours des éléments pour identifier leur nouvelle position
-        items.forEach((item, index) => {
-            const id = item.dataset.id;
-            
-            // Si c'est l'élément déplacé, on le marque
-            if (id === draggedItemId) {
-                draggedItemIndex = index;
-            }
-        });
+        const draggedId = event.dataTransfer.getData("text/plain");
+        const draggedElement = document.getElementById("neox_dash_domain_" + draggedId);
+        const neoxWarp = draggedElement.closest('.container');
+        const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
         
-        // Maintenant, nous mettons à jour les positions à partir de l'élément déplacé
-        items.forEach((item, index) => {
-            const id = item.dataset.id;
+        if (targetElement) {
+            const targetId = targetElement.dataset.id;
+            const targetApi = targetElement.dataset.api;
+            console.log(`Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}`);
             
-            // Si l'élément est après l'élément déplacé, on décale sa position
-            if (index >= draggedItemIndex) {
-                const newPosition = index + 1; // Décalage de 1 pour chaque élément après l'élément déplacé
-                console.log(`Item ID: ${id}, New Position: ${newPosition}`);
-                
-                // Envoyer la mise à jour au serveur si nécessaire
-                this.sendPositionUpdate(id, newPosition);
+            // Inserts the dragged element before the target element
+            targetElement.insertAdjacentElement('beforebegin', draggedElement);
+            
+            
+            // Send new positions to server
+            this.sendData(draggedId, targetId, targetApi);
+            
+            // Remove hover effect from target element
+            const domainChild = targetElement.querySelector('.domain');
+            if (domainChild) {
+                domainChild.classList.remove('drag-hover');
             }
-        });
+        } else {
+            console.log(`Dragged ID: ${draggedId}, Dropped On ID: undefined`);
+        }
     }
-
-
-    
+        
     sendPositionUpdate(id, newPosition) {
         // Logic to send the updated positions to the server
         console.log(`Updating server: ID = ${id}, New Position = ${newPosition}`);
@@ -159,7 +131,12 @@ export default class extends Controller {
             }
             
             const data = await response.json();
-            console.log('Response from server:', data);
+            const refreshButton = document.getElementById('refreshClass');
+            if (refreshButton) {
+                // Simulate a button click
+                refreshButton.click();
+            }
+
         } catch (error) {
             console.error('Error during fetch:', error);
         } finally {

@@ -32,24 +32,27 @@
         #[Route('/', name: 'app_neox_dash_domain_index', methods: [ 'GET' ])]
         public function index(NeoxDashDomainRepository $neoxDashDomainRepository): Response
         {
-            $domains = $neoxDashDomainRepository->findBy([], ['Position' => 'ASC']);
+            $domains = $neoxDashDomainRepository->findBy([], [ 'Position' => 'ASC' ]);
             return $this->render('@NeoxDashBoardBundle/neox_dash_domain/index.html.twig', [ 'neox_dash_domains' => $domains ]);
         }
 
-        #[Route('/new/{id}', name: 'app_neox_dash_domain_new', methods: [ 'GET', 'POST' ])]
+        #[Route('/new/{id}', name: 'app_neox_dash_domain_new', methods: [
+            'GET',
+            'POST'
+        ])]
         public function new(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
 //            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
-            $content    = $request->getContent();
-            $data       = json_decode($content, true)??null;
+            $content = $request->getContent();
+            $data    = json_decode($content, true) ?? null;
 
             // build entity
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
-            if ($data["domain"] ?? null) {
-                $d = $this->findIconOnWebSite->extractDomain($data["domain"]);
-                $neoxDashDomain->setName($d["domain"]);
-                $neoxDashDomain->setUrl($d["host"] ?? "");
+            if ($data[ "domain" ] ?? null) {
+                $d = $this->findIconOnWebSite->extractDomain($data[ "domain" ]);
+                $neoxDashDomain->setName($d[ "domain" ]);
+                $neoxDashDomain->setUrl($d[ "host" ] ?? "");
             }
             $neoxDashDomain->setUrlIcon("z");
 
@@ -78,7 +81,7 @@
             *   return $handleSubmit->flushHandleForm()->render();
             */
 
-            return  $crudHandleBuilder
+            return $crudHandleBuilder
                 ->handleCreateForm()
                 ->handleForm($request)
                 ->render()
@@ -96,7 +99,8 @@
          * @throws TransportExceptionInterface
          */
         #[Route('/{id}/edit', name: 'app_neox_dash_domain_edit', methods: [
-            'GET', 'POST'
+            'GET',
+            'POST'
         ])]
         public function edit(Request $request, NeoxDashDomain $neoxDashDomain): Response|JsonResponse
         {
@@ -117,49 +121,33 @@
         }
 
         #[Route('/exchange', name: 'app_neox_dash_domain_exchange', methods: [
-            'GET', 'POST'
+            'GET',
+            'POST'
         ])]
         public function exchange(Request $request, NeoxDashDomainRepository $neoxDashDomainRepository, entityManagerInterface $entityManager): Response|JsonResponse
         {
-            $content    = $request->getContent();
-            $data       = json_decode($content, true)??null;
+            $content = $request->getContent();
+            $data    = json_decode($content, true) ?? null;
 
-            // Récupérer les deux domaines
-            $draggedDomain  = $neoxDashDomainRepository->find($data["draggedId"]);
-            $targetDomain   = $neoxDashDomainRepository->find($data["targetId"]);
+            // Recover both domains
+            $draggedDomain = $neoxDashDomainRepository->find($data[ "draggedId" ]);
+            $targetDomain  = $neoxDashDomainRepository->find($data[ "targetId" ]);
 
             if ($draggedDomain && $targetDomain) {
                 $tempPosition = $targetDomain->getPosition();
-//                $draggedDomain->setPosition($targetDomain->getPosition());
                 $draggedDomain->setPosition($tempPosition);
 
-                // Cloner temporairement pour intervertir tous les champs
-//                $tempDomain = clone $draggedDomain;
-
-                // Intervertir chaque champ
-//                $draggedDomain->setName($targetDomain->getName());
-//                $draggedDomain->setUrl($targetDomain->getUrl());
-//                $draggedDomain->setUrlIcon($targetDomain->getUrlIcon());
-//                $draggedDomain->setColor($targetDomain->getColor());
-//                $draggedDomain->setSlug($targetDomain->getSlug());
-//                $draggedDomain->setSection($targetDomain->getSection());
-//                $draggedDomain->setPosition($targetDomain->getPosition());
-
-//                $targetDomain->setName($tempDomain->getName());
-//                $targetDomain->setUrl($tempDomain->getUrl());
-//                $targetDomain->setUrlIcon($tempDomain->getUrlIcon());
-//                $targetDomain->setColor($tempDomain->getColor());
-//                $targetDomain->setSlug($tempDomain->getSlug());
-//                $targetDomain->setSection($tempDomain->getSection());
-//                $targetDomain->setPosition($tempDomain->getPosition());
-
-                // Sauvegarder les changements
+                // Save changes
                 $entityManager->flush();
-
-                return new JsonResponse(['status' => 'success']);
+                
+                return new JsonResponse("true");
             }
 
-            return new jsonResponse($targetId->getSection()->getId() === $draggedId->getSection()->getId());
+            return new jsonResponse($targetId
+                    ->getSection()
+                    ->getId() === $draggedId
+                    ->getSection()
+                    ->getId());
         }
 
         #[Route('/{id}', name: 'app_neox_dash_domain_delete', methods: [ 'POST' ])]

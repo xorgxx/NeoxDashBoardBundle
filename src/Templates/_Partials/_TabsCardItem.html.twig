@@ -1,50 +1,45 @@
-{#<div class="col-md-3 mb-3">#}
-    {# Card Wrapper for Drag-and-Drop #}
-    <div  class="card h-100 {{ section.edit|default(false) ? "domain" : "" }}"
+<div class="card h-100 {{ section.edit|default(false) ? "domain" : "" }}"
 
-{#        data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"#}
-{#        data-id="{{ item.id }}"#}
-{#        draggable="true"#}
-        style="border-width: 0!important;
-       ">
-        <div class="row no-gutters align-items-center">
+    style="border-width: 0!important;
+       " >
+    <div class="row no-gutters align-items-center" >
 
-            <!-- Icon Column -->
-            {% set height = section.heigth|default('2.8') ~ 'rem' %}
-            <div class="col-auto bg-dark" style="margin-left: 5px; height: {{  height }};">
-                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{  height }};">
-                    <!-- Icon -->
-                        <a href="{{ item.url }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color">
-                            {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
-                               <twig:ux:icon class="flex-shrink-0 icon-normal"
-                                name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
-                                width="{{ height  }}"
-                                style="height: auto; transform: rotate({{  0 }}deg)" color="{{ item.color }}"/>
-                            {% else %}
-                                <img src="{{ item.urlicon }}" alt="nc" width="30rem"  />
-                            {% endif %}
-                        </a>
-                </div>
-            </div>
-
-            <!-- Content Column -->
-            <div class="col d-flex align-items-center" style="height: {{  height }};">
-                <div class="flex-grow-1 text-start py-1"> <!-- Ajout de py-1 pour un espacement uniforme -->
-                    {{ item.name }}
-                    {% if NeoxDashClass.icon == "bell" %}
-                        <p class="mb-0 d-inline-flex align-items-center"> <!-- Utilisation de d-inline-flex pour aligner verticalement les icônes -->
-                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red"/>
-                            {{ random(0, 23) }}
-                            <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red"/>
-                        </p>
+        <!-- Icon Column -->
+        {% set height = section.heigth|default('2.8') ~ 'rem' %}
+        <div class="col-auto bg-dark" style="margin-left: 5px; height: {{ height }};" >
+            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};" >
+                <!-- Icon -->
+                <a href="{{ item.url }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color" >
+                    {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
+                        <twig:ux:icon class="flex-shrink-0 icon-normal"
+                            name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
+                            width="{{ height }}"
+                            style="height: auto; transform: rotate({{ 0 }}deg)" color="{{ item.color }}" />
+                    {% else %}
+                        <img src="{{ item.urlicon }}" alt="nc" width="30rem" />
                     {% endif %}
-                </div>
-            </div>
+                </a >
+            </div >
+        </div >
 
-            <!-- Edit and Delete Button on the top-right for the Icons -->
-            <div class="position-absolute top-0 end-0 p-1"> <!-- Positionnement en haut à droite -->
-                {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItemButton.html.twig') }}
-            </div>
-        </div>
-    </div>
-{#</div>#}
+        <!-- Content Column -->
+        <div class="col d-flex align-items-center" style="height: {{ height }};" >
+            <div class="flex-grow-1 text-start py-1" > <!-- Added py-1 for uniform spacing-->
+                {{ item.name }}
+                {% if NeoxDashClass.icon == "bell" %}
+                    <p class="mb-0 d-inline-flex align-items-center" > <!-- Using d-inline-flex to vertically align icons -->
+                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red" />
+                        {{ random(0, 23) }}
+                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red" />
+                    </p >
+                {% endif %}
+            </div >
+        </div >
+
+        <!-- Edit and Delete Button on the top-right for the Icons -->
+        <div class="position-absolute top-0 end-0 p-1" > <!-- Top right positioning -->
+            {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItemButton.html.twig') }}
+        </div >
+    </div >
+</div >
+

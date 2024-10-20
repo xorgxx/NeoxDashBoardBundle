@@ -2,9 +2,13 @@
 {% set sectionId            = section.id ~ "-" ~ sectionC %}
 {% set columns_per_row      = section.edit ? 4 : section.row %}
 {% set rows_per_carousel    = section.edit ? 100 : section.colonne %}
-{% set cards_per_row        = 100 %}
+{% set cards_per_row        = 12 %}
 {% set nb_section           = section.NeoxDashDomains|length // (columns_per_row * rows_per_carousel) %}
 <style >
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
     .loader {
         display: none; /* Masqué par défaut */
         position: fixed; /* Fixe au centre de l'écran */
@@ -83,6 +87,22 @@
                 {% if section.edit %}
                     <div class="ml-auto d-flex" >
                         <div class="left-item" >
+                            <button
+                                type="button"
+                                hidden="hidden"
+                                class="btn btn-secondary btn-sm"
+                                id="refreshClass"
+                                data-action="live#action"
+                                data-live-action-param="refresh"
+                                data-live-query-param="{{ NeoxDashClass.id }}"
+                            >
+                                {% if section.edit %}
+                                    <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+                                {% else %}{% endif %}
+
+                            </button >
+                        </div >
+                        <div class="left-item" >
                             <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
                                 title: 'find icon' ,
                                 text: 'Do you want to continue' ,
@@ -131,7 +151,6 @@
                             {#                                <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" /> #}
                             {#                            </button > #}
                         </div >
-
                     </div >
                 {% else %}
                     {#  ===== Botton ADD DOMAIN ======            #}
@@ -188,8 +207,8 @@
                     {% endif %}
                 </div >
 
-                <div class="carousel-inner" >
-                    {#                    {% for row in section.NeoxDashDomains|batch(columns_per_row * rows_per_carousel, '') %} #}
+                <div id= "neox{{ sectionId }}" class="carousel-inner" >
+
                     {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardRow.html.twig') }}
 
                 </div >
