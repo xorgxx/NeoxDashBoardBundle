@@ -9,7 +9,10 @@
         <div class="col-auto bg-dark" style="margin-left: 5px; height: {{ height }};" >
             <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};" >
                 <!-- Icon -->
-                <a href="{{ item.url }}" target="_blank" class="d-flex align-items-center justify-content-center p-2 hover-color" >
+                <a href="{{ item.url }}" target="_blank"
+                    class="d-flex align-items-center justify-content-center p-2 hover-color"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}"
+                    >
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                         <twig:ux:icon class="flex-shrink-0 icon-normal"
                             name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
@@ -23,18 +26,21 @@
         </div >
 
         <!-- Content Column -->
-        <div class="col d-flex align-items-center" style="height: {{ height }};" >
-            <div class="flex-grow-1 text-start py-1" > <!-- Added py-1 for uniform spacing-->
+        <div class="col d-flex align-items-center" style="height: {{ height }};">
+            <div class="flex-grow-1 text-start py-1"> <!-- Ajout du message de survol ici -->
                 {{ item.name }}
                 {% if NeoxDashClass.icon == "bell" %}
-                    <p class="mb-0 d-inline-flex align-items-center" > <!-- Using d-inline-flex to vertically align icons -->
+                    <p class="mb-0 d-inline-flex align-items-center" title="Autre message de survol ici"> <!-- Message de survol pour l'icône -->
+                                                                                                          <!-- Première icône -->
                         <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red" />
                         {{ random(0, 23) }}
+                                                                                                          <!-- Deuxième icône -->
                         <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red" />
-                    </p >
+                    </p>
                 {% endif %}
-            </div >
-        </div >
+            </div>
+        </div>
+
 
         <!-- Edit and Delete Button on the top-right for the Icons -->
         <div class="position-absolute top-0 end-0 p-1" > <!-- Top right positioning -->
