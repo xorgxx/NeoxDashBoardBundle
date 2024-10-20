@@ -3,8 +3,8 @@
 
 <form method="post" action="{{ path('app_neox_dash_domain_delete', {'id': item.id}) }}"
     {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
-        title: "Delete Domain",
-        text: "Do you want to cddddontinue?",
+        title: "Delete Domain : " ~ item.name,
+        text: "Do you want to continue?",
         idElement: null,
         url: path('app_neox_dash_domain_delete', { id: item.id })
     })}}

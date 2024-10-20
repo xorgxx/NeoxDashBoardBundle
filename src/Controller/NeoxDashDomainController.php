@@ -32,7 +32,8 @@
         #[Route('/', name: 'app_neox_dash_domain_index', methods: [ 'GET' ])]
         public function index(NeoxDashDomainRepository $neoxDashDomainRepository): Response
         {
-            return $this->render('@NeoxDashBoardBundle/neox_dash_domain/index.html.twig', [ 'neox_dash_domains' => $neoxDashDomainRepository->findAll(), ]);
+            $domains = $neoxDashDomainRepository->findBy([], ['Position' => 'ASC']);
+            return $this->render('@NeoxDashBoardBundle/neox_dash_domain/index.html.twig', [ 'neox_dash_domains' => $domains ]);
         }
 
         #[Route('/new/{id}', name: 'app_neox_dash_domain_new', methods: [ 'GET', 'POST' ])]
@@ -115,6 +116,48 @@
 
         }
 
+        #[Route('/exchange', name: 'app_neox_dash_domain_exchange', methods: [
+            'GET', 'POST'
+        ])]
+        public function exchange(Request $request, NeoxDashDomainRepository $neoxDashDomainRepository, entityManagerInterface $entityManager): Response|JsonResponse
+        {
+            $content    = $request->getContent();
+            $data       = json_decode($content, true)??null;
+
+            // Récupérer les deux domaines
+            $draggedDomain  = $neoxDashDomainRepository->find($data["draggedId"]);
+            $targetDomain   = $neoxDashDomainRepository->find($data["targetId"]);
+
+            if ($draggedDomain && $targetDomain) {
+                // Cloner temporairement pour intervertir tous les champs
+                $tempDomain = clone $draggedDomain;
+
+                // Intervertir chaque champ
+                $draggedDomain->setName($targetDomain->getName());
+                $draggedDomain->setUrl($targetDomain->getUrl());
+                $draggedDomain->setUrlIcon($targetDomain->getUrlIcon());
+                $draggedDomain->setColor($targetDomain->getColor());
+                $draggedDomain->setSlug($targetDomain->getSlug());
+                $draggedDomain->setSection($targetDomain->getSection());
+//                $draggedDomain->setPosition($targetDomain->getPosition());
+
+                $targetDomain->setName($tempDomain->getName());
+                $targetDomain->setUrl($tempDomain->getUrl());
+                $targetDomain->setUrlIcon($tempDomain->getUrlIcon());
+                $targetDomain->setColor($tempDomain->getColor());
+                $targetDomain->setSlug($tempDomain->getSlug());
+                $targetDomain->setSection($tempDomain->getSection());
+//                $targetDomain->setPosition($tempDomain->getPosition());
+
+                // Sauvegarder les changements
+                $entityManager->flush();
+
+                return new JsonResponse(['status' => 'success']);
+            }
+
+            return new jsonResponse($targetId->getSection()->getId() === $draggedId->getSection()->getId());
+        }
+
         #[Route('/{id}', name: 'app_neox_dash_domain_delete', methods: [ 'POST' ])]
         public function delete(Request $request, NeoxDashDomain $neoxDashDomain, EntityManagerInterface $entityManager): Response
         {
@@ -161,7 +204,7 @@
             // Determine the template to use for rendering
             return $this->crudHandleBuilder->setHandleNeoxDashModel($o);
         }
-        
+
         #[Route('/{id}/find-icon', name: 'app_neox_dash_find-icon', methods: [ 'POST' ])]
         public function findIcon(Request $request, NeoxDashSection $neoxDashSection, EntityManagerInterface $entityManager): Response|JsonResponse
         {

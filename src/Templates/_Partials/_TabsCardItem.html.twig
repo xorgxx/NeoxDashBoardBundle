@@ -1,5 +1,12 @@
 {#<div class="col-md-3 mb-3">#}
-    <div  class="card h-100" style="border-width: 0!important;">
+    {# Card Wrapper for Drag-and-Drop #}
+    <div  class="card h-100 {{ section.edit|default(false) ? "domain" : "" }}"
+
+{#        data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"#}
+{#        data-id="{{ item.id }}"#}
+{#        draggable="true"#}
+        style="border-width: 0!important;
+       ">
         <div class="row no-gutters align-items-center">
 
             <!-- Icon Column -->

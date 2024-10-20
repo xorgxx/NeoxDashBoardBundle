@@ -27,7 +27,10 @@ services:
 
     NeoxDashBoard\NeoxDashBoardBundle\Services\TestService:
     
-#    doctrine.orm.default_metadata_driver:
+    
+#    Dontt know what this does or not !!! so quipe for now
+#
+#   doctrine.orm.default_metadata_driver:
 #        class: Doctrine\ORM\Mapping\Driver\AnnotationDriver
 #        arguments:
 #            - '@annotation_reader'

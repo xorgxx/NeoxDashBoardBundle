@@ -23,9 +23,10 @@
             $this->checkDependencies($container);
 
             // Register Gedmo mappings
-            $this->registerGedmoMappings($container);
+//            $this->registerGedmoMappings($container);
         }
-
+        
+        // Not use yet. maybe will need later so quipe for now !!!
         private function registerGedmoMappings(ContainerBuilder $container): void
         {
             $container->setParameter('doctrine.orm.default_metadata_driver', 'doctrine.orm.default_metadata_driver');

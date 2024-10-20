@@ -37,8 +37,13 @@ class NeoxDashDomain
 
     #[ORM\ManyToOne(inversedBy: 'neoxDashDomains')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\SortableGroup()]
     private ?NeoxDashSection $section = null;
-    
+
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\SortablePosition()]
+    private ?int $position = null;
+
     public function __construct()
     {
     }
@@ -116,6 +121,17 @@ class NeoxDashDomain
     {
         $this->section = $section;
 
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): NeoxDashDomain
+    {
+        $this->position = $position;
         return $this;
     }
 
