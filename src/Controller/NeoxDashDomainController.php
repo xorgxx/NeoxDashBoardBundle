@@ -129,24 +129,28 @@
             $targetDomain   = $neoxDashDomainRepository->find($data["targetId"]);
 
             if ($draggedDomain && $targetDomain) {
+                $tempPosition = $targetDomain->getPosition();
+//                $draggedDomain->setPosition($targetDomain->getPosition());
+                $draggedDomain->setPosition($tempPosition);
+
                 // Cloner temporairement pour intervertir tous les champs
-                $tempDomain = clone $draggedDomain;
+//                $tempDomain = clone $draggedDomain;
 
                 // Intervertir chaque champ
-                $draggedDomain->setName($targetDomain->getName());
-                $draggedDomain->setUrl($targetDomain->getUrl());
-                $draggedDomain->setUrlIcon($targetDomain->getUrlIcon());
-                $draggedDomain->setColor($targetDomain->getColor());
-                $draggedDomain->setSlug($targetDomain->getSlug());
-                $draggedDomain->setSection($targetDomain->getSection());
+//                $draggedDomain->setName($targetDomain->getName());
+//                $draggedDomain->setUrl($targetDomain->getUrl());
+//                $draggedDomain->setUrlIcon($targetDomain->getUrlIcon());
+//                $draggedDomain->setColor($targetDomain->getColor());
+//                $draggedDomain->setSlug($targetDomain->getSlug());
+//                $draggedDomain->setSection($targetDomain->getSection());
 //                $draggedDomain->setPosition($targetDomain->getPosition());
 
-                $targetDomain->setName($tempDomain->getName());
-                $targetDomain->setUrl($tempDomain->getUrl());
-                $targetDomain->setUrlIcon($tempDomain->getUrlIcon());
-                $targetDomain->setColor($tempDomain->getColor());
-                $targetDomain->setSlug($tempDomain->getSlug());
-                $targetDomain->setSection($tempDomain->getSection());
+//                $targetDomain->setName($tempDomain->getName());
+//                $targetDomain->setUrl($tempDomain->getUrl());
+//                $targetDomain->setUrlIcon($tempDomain->getUrlIcon());
+//                $targetDomain->setColor($tempDomain->getColor());
+//                $targetDomain->setSlug($tempDomain->getSlug());
+//                $targetDomain->setSection($tempDomain->getSection());
 //                $targetDomain->setPosition($tempDomain->getPosition());
 
                 // Sauvegarder les changements
