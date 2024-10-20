@@ -1,0 +1,33 @@
+
+{% for row in section.NeoxDashDomains|sort((a, b) => a.position <=> b.position)|batch(columns_per_row * rows_per_carousel, '') %}
+    <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer | setTimer }}" >
+
+        <div class="container" >
+            {% for rowSet in row|batch(columns_per_row) %}
+                <div class="row justify-content-center" {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : "" }}>
+
+                    {% for item in rowSet %}
+                        {% if item %}
+                            <div id="neox_dash_domain_{{ item.id }}"
+                                {{ section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : '' }}
+                                class="col-md-3 mb-3 "
+                                data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"
+                                data-id="{{ item.id }}"
+                                data-api="{{ path('app_neox_dash_domain_exchange') }}"
+                                draggable="true"
+                            >
+                                {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItem.html.twig') }}
+                            </div >
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div >
+            {% endfor %}
+
+        </div >
+    </div >
+{% endfor %}
+
+
+
