@@ -111,12 +111,12 @@ export default class extends Controller {
     
     async sendData(draggedId, targetId, targetApi) {
         const loader = document.getElementById('loader');
-        const body = document.querySelector('body'); // Ou n'importe quel élément à rendre semi-transparent
+        const body = document.getElementById('bbbbb'); // Ou n'importe quel élément à rendre semi-transparent
         
         try {
             // Afficher le loader et réduire l'opacité
             loader.style.display = 'block';
-            body.classList.add('loading-opacity');
+            body.classList.add('no-select', 'body-loading');
             
             const response = await fetch(targetApi, {
                 method: 'POST',
@@ -142,7 +142,7 @@ export default class extends Controller {
         } finally {
             // Masquer le loader et restaurer l'opacité
             loader.style.display = 'none';
-            body.classList.remove('loading-opacity');
+            body.classList.remove('no-select','body-loading');
         }
     }
 
