@@ -52,7 +52,7 @@
             if ($data[ "domain" ] ?? null) {
                 $d = $this->findIconOnWebSite->extractDomain($data[ "domain" ]);
                 $neoxDashDomain->setName($d[ "domain" ]);
-                $neoxDashDomain->setUrl($d[ "host" ] ?? "");
+                $neoxDashDomain->setUrl($data[ "domain" ] ?? "");
             }
             $neoxDashDomain->setUrlIcon("z");
 

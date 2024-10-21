@@ -21,6 +21,7 @@ export default class extends Controller {
         dropzoneTarget.addEventListener('dragleave', this.handleMouseOut.bind(this));
         dropzoneTarget.addEventListener('drop', this.handleDrop.bind(this));
     }
+
     
     handleDragOver(event) {
         event.preventDefault();
@@ -38,12 +39,46 @@ export default class extends Controller {
         this.handleMouseOut();
     }
     
+    // processDrop(item) {
+    //     if (item?.kind === 'string') {
+    //         item.getAsString((plainText) => {
+    //             const url = plainText.trim().split('\n')[0];
+    //             console.log('Dropped URL:', url);
+    //             this.validateAndProcessURL(url);
+    //         });
+    //     }
+    // }
+    
     processDrop(item) {
         if (item?.kind === 'string') {
             item.getAsString((plainText) => {
-                const url = plainText.trim().split('\n')[0];
-                console.log('Dropped URL:', url);
-                this.validateAndProcessURL(url);
+                const text = plainText.trim().split('\n')[0];
+                console.log('Dropped Text:', text);
+                
+                if (item.type === 'text/x-moz-place') {
+                    // Process bookmark URL from Firefox
+                    const bookmarkData = JSON.parse(text); // Firefox fournit des données JSON
+                    const bookmarkURL = bookmarkData.uri; // Récupérer l'URL du bookmark
+                    console.log('Dropped Bookmark URL:', bookmarkURL);
+                    this.validateAndProcessURL(bookmarkURL); // Valider et traiter l'URL du bookmark
+                } else {
+                    // Vérifier si c'est une URL
+                    const urlPattern = new RegExp('^(https?:\\/\\/)?'+
+                        '((([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})|'+
+                        'localhost|' +
+                        '\\d{1,3}(\\.\\d{1,3}){3})' +
+                        '(\\:\\d+)?(\\/[-a-zA-Z0-9@:%._\\+~#=]*)*'+
+                        '(\\?[;&a-zA-Z0-9%_.~+=-]*)?'+
+                        '(\\#[-a-zA-Z0-9_]*)?$', 'i');
+                    
+                    if (urlPattern.test(text)) {
+                        console.log('Valid URL:', text);
+                        this.validateAndProcessURL(text);
+                    } else {
+                        console.log('Not a URL, handling as plain text:', text);
+                        this.processPlainText(text);
+                    }
+                }
             });
         }
     }

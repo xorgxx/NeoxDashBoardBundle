@@ -20,6 +20,11 @@
                 "main": "dist/neox_drag_domain_controller.js",
                 "fetch": "eager",
                 "enabled": true
+            },
+            "neox_drag_nav_domain": {
+                "main": "dist/neox_drag_nav_domain_controller.js",
+                "fetch": "eager",
+                "enabled": true
             }
         },
         "assets": {
