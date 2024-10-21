@@ -36,7 +36,7 @@
         "doctrine/orm": "^2.6 || ^3.0",
         "gedmo/doctrine-extensions": "^3.17",
         "stof/doctrine-extensions-bundle": "^1.12",
-        "symfony/amqp-messenger": "^6.0 ||^7.1",
+        "symfony/amqp-messenger": "^6.0 || ^7.1",
         "symfony/asset": "^6.3|^7.0",
         "symfony/asset-mapper": "^6.3|^7.0",
         "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0",
