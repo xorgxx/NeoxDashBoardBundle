@@ -4,6 +4,7 @@
 
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\doctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\frameworkConfig;
+    use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\routerConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\stofDoctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigComponentsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigConfig;
@@ -53,6 +54,7 @@
                 'twig'                     => TwigConfig::getConfig(),
                 'twig_components'          => twigComponentsConfig::getConfig(),
                 'framework'                => frameworkConfig::getConfig(),
+                'router'                   => routerConfig::getConfig(),
                 'doctrine'                 => doctrineExtensionsConfig::getConfig(),
                 'stof_doctrine_extensions' => stofDoctrineExtensionsConfig::getConfig()
             ];

@@ -1,7 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import {getComponent} from '@symfony/ux-live-component';
 
-export class coreController extends Controller {
+export class coreDashController extends Controller {
     static values = {
         // Valeurs par défaut pour SweetAlert
         showCancelButton: {type: Boolean, default: true},

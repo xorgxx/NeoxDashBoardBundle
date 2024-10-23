@@ -1,6 +1,6 @@
-import {coreController} from './coreController.js';
+import {coreDashController} from './coreDashController.js';
 
-export default class NeoxModalController extends coreController {
+export default class NeoxModalController extends coreDashController {
     modal(event) {
         event.preventDefault();
         event.stopPropagation();
