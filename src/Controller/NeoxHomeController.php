@@ -1,7 +1,5 @@
 <?php
 
-    declare(strict_types=1);
-
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashSetupRepository;
@@ -15,7 +13,7 @@
         public function dashBoard(NeoxDashSetupRepository $setupRepository): Response
         {
             $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
-            return $this->render('@NeoxDashBoardBundle/indexHome.html.twig', [
+            return $this->render('@NeoxDashBoardBundle/IndexHome.html.twig', [
                 'NeoxDashSetup' => $NeoxDashSetup,
             ]);
         }

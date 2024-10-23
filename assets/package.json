@@ -32,16 +32,28 @@
         },
         "importmap": {
             "@hotwired/stimulus": "^3.0",
+            "@hotwired/turbo" : '^8.0',
+            "@popperjs/core" : '^2.11',
+            "jquery": "^3.6",
             "bootstrap": "^5.0",
-            "sweetalert2": "^11.0"
+            "bootstrap/dist/css/bootstrap.min.css": "^5.0",
+            "sweetalert2": "^11.0",
+            "@sweetalert2/theme-dark/dark.css": "^5.0",
+            "@sweetalert2/theme-bootstrap-4/bootstrap-4.css": "^5.0",
+            "sweetalert2/dist/sweetalert2.esm.min": "^11.0",
+            "sweetalert2/dist/sweetalert2.esm.all.min": "^11.0",
         }
     },
     "peerDependencies": {
+        "symfony/stimulus-bundle": "^3.0",
+        "@symfony/ux-live-component": "^3.0",
         "@hotwired/stimulus": "^3.0",
         "bootstrap": "^5.0",
         "sweetalert2": "^11.0"
     },
     "devDependencies": {
+        "symfony/stimulus-bundle": "^3.0",
+        "@symfony/ux-live-component": "^3.0",
         "@hotwired/stimulus": "^3.0",
         "bootstrap": "^5.0",
         "sweetalert2": "^11.0"

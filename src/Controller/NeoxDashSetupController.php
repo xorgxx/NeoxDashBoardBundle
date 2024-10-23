@@ -96,7 +96,7 @@
         {
             $o = $this->crudHandleBuilder
                 ->createNewHandleNeoxDashModel()
-                ->setNew("@NeoxDashBoardBundle/neox_dash_setup/$name.html.twig")
+                ->setNew("@c/neox_dash_setup/$name.html.twig")
                 ->setForm('@NeoxDashBoardBundle/neox_dash_setup/_form.html.twig')
                 ->setRoute('app_neox_dash_setup')
                 ->setParams($params)
