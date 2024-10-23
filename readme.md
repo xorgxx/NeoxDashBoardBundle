@@ -1,5 +1,5 @@
-# NeoxDashBoardBundle { Symfony 6 | 7 }
-This bundle provides a dashboard for Symfony 6 | 7 in your application. 
+# NeoxDashBoardBundle { Symfony  7 }
+This bundle provides a dashboard for Symfony  7 in your application. 
 Its main goal is to simplify the integration of additional tools!
 
 [![2024-09-28-15-57-09.png](https://i.postimg.cc/VkRcGKtJ/2024-09-28-15-57-09.png)](https://postimg.cc/87j3sBtG)
@@ -13,7 +13,7 @@ Install the bundle via Composer! Since it’s still in beta:
   composer require xorgxx/neox-dashboard-bundle
 ````
 
-**NOTE:** _You need to have Symfony 6|7 installed and configured, along with Messenger, Stimulus,
+**NOTE:** _You need to have Symfony 7 installed and configured, along with Messenger, Stimulus,
 Bootstrap, SweetAlert2, UX Turbo, and UX LiveComponent.  You may need to use [ symfony composer dump-autoload ] to reload autoloading_
 
 
