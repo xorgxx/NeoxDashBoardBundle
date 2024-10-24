@@ -2,6 +2,8 @@
 This bundle provides a dashboard for Symfony  7 in your application. 
 Its main goal is to simplify the integration of additional tools!
 
+**Modular and Autonomous System: Operating Independently from the Main Project!!**
+
 [![2024-09-28-15-57-09.png](https://i.postimg.cc/VkRcGKtJ/2024-09-28-15-57-09.png)](https://postimg.cc/87j3sBtG)
 [![2024-09-28-16-01-02.png](https://i.postimg.cc/13PQrk8x/2024-09-28-16-01-02.png)](https://postimg.cc/pp0421Qk)
 
@@ -49,7 +51,7 @@ Add this to your root projet importmap.php
     ....
 
 ```
-**Modular and Autonomous System: Operating Independently from the Main Project!!**
+
 
  ..... Done 🎈
 
