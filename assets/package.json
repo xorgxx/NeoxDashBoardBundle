@@ -41,7 +41,8 @@
             "@sweetalert2/theme-dark/dark.css": "^5.0",
             "@sweetalert2/theme-bootstrap-4/bootstrap-4.css": "^5.0",
             "sweetalert2/dist/sweetalert2.esm.min": "^11.0",
-            "sweetalert2/dist/sweetalert2.esm.all.min": "^11.0"
+            "sweetalert2/dist/sweetalert2.esm.all.min": "^11.0",
+            "tom-select/dist/css/tom-select.default.css" : "^2.0"
         }
     },
     "peerDependencies": {
