@@ -4,6 +4,7 @@
 
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\doctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\frameworkConfig;
+    use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\importmapConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\routerConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\stofDoctrineExtensionsConfig;
     use NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection\Config\twigComponentsConfig;
@@ -46,12 +47,14 @@
             if ($this->isAssetMapperAvailable($container)) {
                 $this->prependConfigurations($container);
             }
+
         }
 
         private function prependConfigurations(ContainerBuilder $container): void
         {
             $configurations = [
                 'twig'                     => TwigConfig::getConfig(),
+//                'importmap'                => importmapConfig::getConfig(),
                 'twig_components'          => twigComponentsConfig::getConfig(),
                 'framework'                => frameworkConfig::getConfig(),
                 'router'                   => routerConfig::getConfig(),

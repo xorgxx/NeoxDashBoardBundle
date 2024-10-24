@@ -39,6 +39,17 @@ framework:
             NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage: [what ever transport you want to use or "async"]
 
 ```
+Add this to your root projet importmap.php
+```    
+    ....
+    '@neoxDashBoardAssets/neoxDashBoard' => [
+        'path' => './vendor/xorgxx/neox-dashboard-bundle/assets/neoxDashBoard.js',
+        'entrypoint' => true,
+    ],
+    ....
+
+```
+
 
  ..... Done 🎈
 

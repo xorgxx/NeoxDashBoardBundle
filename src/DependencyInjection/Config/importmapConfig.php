@@ -13,16 +13,15 @@
         ]);
     */
 
-    class frameworkConfig
+    class importmapConfig
     {
         public static function getConfig(): array
         {
             return [
-                'asset_mapper' => [
-                    'paths' => [
-                        __DIR__ . '/../../../assets/dist/'  => "@xorgxx/neox-dashboard-bundle",
-                        __DIR__ . '/../../../assets/'       => '@neoxDashBoardAssets',
-//                        'assets/bootstrap.js' => '@neoxDashBoardAssets/bootstrap.js'
+                'imports' => [
+                    '@neoxDashBoardAssets/neoxDashBoard' => [
+                        'path' => './vendor/xorgxx/neox-dashboard-bundle/assets/neoxDashBoard.js',
+                        'entrypoint' => true,
                     ],
                 ],
             ];
