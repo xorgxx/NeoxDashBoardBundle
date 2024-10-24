@@ -49,7 +49,7 @@ Add this to your root projet importmap.php
     ....
 
 ```
-
+**Modular and Autonomous System: Operating Independently from the Main Project!!**
 
  ..... Done 🎈
 
