@@ -7,6 +7,10 @@ Its main goal is to simplify the integration of additional tools!
 [![2024-09-28-15-57-09.png](https://i.postimg.cc/VkRcGKtJ/2024-09-28-15-57-09.png)](https://postimg.cc/87j3sBtG)
 [![2024-09-28-16-01-02.png](https://i.postimg.cc/13PQrk8x/2024-09-28-16-01-02.png)](https://postimg.cc/pp0421Qk)
 
+##Webpack cohabitation !!
+If you have Webpack installed in your project, you can use this bundle; however, you must be very careful about where the packages are installed. 
+Install only the packages that will be used by Webpack during development using npm or yarn.
+Otherwise, the paths for the packages may not be correct, which will prevent the resources from working properly with AssetMapper.
 
 ## Installation BETA VERSION !!
 Install the bundle via Composer! Since it’s still in beta:

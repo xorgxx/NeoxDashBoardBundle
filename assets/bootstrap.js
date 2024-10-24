@@ -1,7 +1,9 @@
 import { startStimulusApp } from '@symfony/stimulus-bundle';
 
 
-const app = startStimulusApp();
+const neoxDashBoard = startStimulusApp();
+
+console.log('Contrôleur Neox trouvé : xxxx')
 // const neoxDashBoard = startStimulusApp();
 // register any custom, 3rd party controllers here
 // app.register('some_controller_name', SomeImportedController);
