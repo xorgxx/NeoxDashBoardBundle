@@ -17,6 +17,7 @@
     use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
     use RuntimeException;
     use Symfony\Component\Filesystem\Filesystem;
+    use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
     class NeoxDashBoardExtension extends Extension implements PrependExtensionInterface
     {
@@ -27,37 +28,6 @@
 
             // Register Gedmo mappings
 //            $this->registerGedmoMappings($container);
-        }
-
-        private function addImportMapConfiguration(ContainerBuilder $container): void
-        {
-            $projectDir = $container->getParameter('kernel.project_dir');
-            $importmapPath = $projectDir . '/importmap.php';
-
-            if (!file_exists($importmapPath)) {
-                throw new \RuntimeException('Le fichier importmap.php est introuvable.');
-            }
-
-            $content = file_get_contents($importmapPath);
-            $entry = <<<PHP
-    '@neoxDashBoardAssets/neoxDashBoard' => [
-        'path' => './vendor/xorgxx/neox-dashboard-bundle/assets/neoxDashBoard.js',
-        'entrypoint' => true,
-    ],
-PHP;
-
-            // Vérifier si l'entrée existe déjà pour éviter les doublons
-            if (!str_contains($content, '@neoxDashBoardAssets/neoxDashBoard')) {
-                // Ajouter l'entrée après 'app' => [...]
-                $newContent = preg_replace(
-                    "/('app' => \[.*?\],)/s",
-                    "$1\n$entry",
-                    $content
-                );
-
-                $filesystem = new Filesystem();
-                $filesystem->dumpFile($importmapPath, $newContent);
-            }
         }
 
         // Not use yet. maybe will need later so quipe for now !!!
@@ -86,7 +56,6 @@ PHP;
         {
             $configurations = [
                 'twig'                     => TwigConfig::getConfig(),
-//                'importmap'                => importmapConfig::getConfig(),
                 'twig_components'          => twigComponentsConfig::getConfig(),
                 'framework'                => frameworkConfig::getConfig(),
                 'router'                   => routerConfig::getConfig(),
@@ -117,7 +86,26 @@ PHP;
             $configuration = $this->getConfiguration($configs, $container);
             $this->processConfiguration($configuration, $configs);
 
-            $this->addImportMapConfiguration($container);
+            // Add import map configuration
+            importmapConfig::addImportMapConfiguration($container);
+
+            // Add route configuration
+//            $this->registerRoutes($container);
+
+        }
+
+        private function registerRoutes(ContainerBuilder $container): void
+        {
+            $neoxConfig = routerConfig::getConfig();
+            $router = $container->getDefinition('router.default');
+
+            foreach ($neoxConfig as $name => $settings) {
+                $router->addMethodCall('import', [
+                    $settings['resource']['path'],
+                    $settings['type'],
+                    ['namespace' => $settings['resource']['namespace']]
+                ]);
+            }
         }
 
         private function isAssetMapperAvailable(ContainerBuilder $container): bool

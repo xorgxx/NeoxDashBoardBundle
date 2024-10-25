@@ -46,7 +46,7 @@ framework:
             NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage: [what ever transport you want to use or "async"]
 
 ```
-Add this to your root projet importmap.php
+Check if you have in importmap.php
 ```    
     ....
     '@neoxDashBoardAssets/neoxDashBoard' => [
@@ -56,46 +56,29 @@ Add this to your root projet importmap.php
     ....
 
 ```
+Check this you have in router.yaml
+```    
+    ....  
+    controllers_neox_dashboard:
+        resource:
+            path: "../vendor/xorgxx/neox-dashboard-bundle/src/Controller/"
+            namespace: NeoxDashBoard\NeoxDashBoardBundle\Controller
+        # prefix: "/secure" // if you have set firewall 
+            #        trailing_slash_on_root: true
+        type: attribute
+    ....
+
+```
 
 
  ..... Done 🎈
 
 ## Usage
-🚨🚨🚨 In your controller, very important to keep this naming convention: ```#[Route('/', name: 'app_neox_dashboard')]```
-````
-        #[Route('/', name: 'app_neox_dashboard')]
-        public function dashBoard(NeoxDashSetupRepository $setupRepository): Response
-        {
-            /*
-             * Get the first setup
-             * so if you want to add security by user you can do it here
-             * in your entity add join with user <=> NeoxDashsetup
-             * render your dashboard with user current
-             * $NeoxDashSetup = user->getNeoxDashSetup()......
-             */
-             
-            $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
-            return $this->render('neox_dashboard_bundle/index.html.twig', [
-                'NeoxDashSetup' => $NeoxDashSetup,
-                ......
-            ]);
-        }
-````
 
-In your Twig template, add:
-```twig
-    ....
-    
-      <div id="NeoxDashBoardBundle">
-          {{ include('@NeoxDashBoardBundle/index.html.twig') }}
-      </div>
-  
-    ....
-````
-## trying fast 
 ```
     [https//YOURURLWEBSITE]/neox/dash/neox-home
 ```
+
 ## Documentation (coming soon)
 
 
