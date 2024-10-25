@@ -69,7 +69,17 @@ Check this you have in router.yaml
     ....
 
 ```
+## Secure system
+```
+     /*
+      * Get the first setup
+      * so if you want to add security by user you can do it here
+      * in your entity add join OneToOnewith user <=> NeoxDashsetup
+      * render your dashboard with user current
+      * $NeoxDashSetup = user->getNeoxDashSetup()......
+      */
 
+````
 
  ..... Done 🎈
 
