@@ -7,7 +7,7 @@
     {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
         title: "Delete " ~ class.name,
         Text: "All domain inside will also be delete! Do you want to continue?",
-        idElement: path('app_neox_dashboard'),
+        idElement: path('app_neox_dashboard_home'),
         url: path('app_neox_dash_class_delete', { id: class.id })
     })}}
 >

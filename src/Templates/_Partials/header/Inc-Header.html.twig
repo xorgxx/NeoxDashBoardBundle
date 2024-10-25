@@ -75,7 +75,7 @@
                                     <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
                                         title: 'Configuration dash board' ,
                                         text: 'Do you want to continue' ,
-                                        idElement: path('app_neox_dashboard'),
+                                        idElement: path('app_neox_dashboard_home'),
                                         url: path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
 
                                     }) }}
@@ -92,7 +92,7 @@
                                     <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
                                         title: 'Add Content' ,
                                         text: 'Do you want to continue' ,
-                                        idElement: path('app_neox_dashboard'),
+                                        idElement: path('app_neox_dashboard_home'),
                                         url: path('app_neox_dash_class_new', { id: NeoxDashSetup.id })
 
                                     }) }}
