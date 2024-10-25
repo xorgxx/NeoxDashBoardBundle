@@ -46,7 +46,10 @@ framework:
             NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage: [what ever transport you want to use or "async"]
 
 ```
-## In your home controller add route name `#[Route('/', name: 'app_home')]` if it has something else
+## SETUP
+In your home controller add route name `#[Route('/', name: 'app_home')]` if it has something else
+
+In twig add link page `<a class="menu-link" href="{{'path(app_neox_dashboard_home')}}"><div>Neox dash-board</div></a>`
 
 Check if you have in importmap.php
 ```    
