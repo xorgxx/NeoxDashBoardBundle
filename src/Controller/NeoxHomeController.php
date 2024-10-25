@@ -12,6 +12,7 @@
         #[Route('/neox/dash/neox-home', name: 'app_neox_dashboard_home')]
         public function dashBoard(NeoxDashSetupRepository $setupRepository): Response
         {
+
             $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
             return $this->render('@NeoxDashBoardBundle/IndexHome.html.twig', [
                 'NeoxDashSetup' => $NeoxDashSetup,

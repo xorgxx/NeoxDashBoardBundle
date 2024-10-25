@@ -46,6 +46,8 @@ framework:
             NeoxDashBoard\NeoxDashBoardBundle\Message\NeoxDashDomainMessage: [what ever transport you want to use or "async"]
 
 ```
+## In your home controller add route name `#[Route('/', name: 'app_home')]` if it has something else
+
 Check if you have in importmap.php
 ```    
     ....
