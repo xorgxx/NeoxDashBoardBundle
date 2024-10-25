@@ -6,23 +6,10 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>" >
 
-    {% block stylesheets %}
-        {#            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.css" integrity="sha256-6f3nk52nZiGz1sU8nMbSTboE9krEDAGjAlLXpl+t1BQ=" crossorigin="anonymous"> #}
-        {#            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css"> #}
-        {#            <link rel="stylesheet" href="{{ asset('vendor/@sweetalert2/theme-dark/dark.css') }}"> #}
-        {#            <link rel="stylesheet" href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}"> #}
+    {% block importmap %} {{ importmap('@neoxDashBoardAssets/neoxDashBoard') }} {% endblock %}
+    {% block stylesheets %} {% endblock %}
 
-    {% endblock %}
-
-    {% block javascripts %}
-        {#            <script type="module"> import swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/+esm' </script> #}
-        {#            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.min.js" integrity="sha256-Ag8wF/6nmKCyNyTya+uW5V0zxQuXsq52EJ8mlA9j9pw=" crossorigin="anonymous"></script> #}
-        {#            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.13.3/dist/sweetalert2.all.min.js" integrity="sha256-18N7pC9Qv1ETr7js7sCPAk7fimY5izHX2bFZf5aK8o0=" crossorigin="anonymous"></script> #}
-
-        {% block importmap %} {{ importmap('@neoxDashBoardAssets/neoxDashBoard') }} {% endblock %}
-
-
-    {% endblock %}
+    {% block javascripts %} {% endblock %}
 </head >
 <body >
 
