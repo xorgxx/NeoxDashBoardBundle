@@ -18,7 +18,7 @@
         {
             return [
                 'paths' => [
-                    '%kernel.project_dir%\\vendor\\xorgxx\\neox-dashboard-bundle\\src\\Templates' => 'NeoxDashBoardBundle',
+                    '%kernel.project_dir%/vendor/xorgxx/neox-dashboard-bundle/src/Templates' => 'NeoxDashBoardBundle',
                 ],
             ];
         }
