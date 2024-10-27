@@ -14,7 +14,7 @@
         {
 
             $NeoxDashSetup = $setupRepository->findOneBy(["id"=>1]);
-            return $this->render('@NeoxDashBoardBundle/IndexHome.html.twig', [
+            return $this->render('@NeoxDashBoardBundle/indexHome.html.twig', [
                 'NeoxDashSetup' => $NeoxDashSetup,
             ]);
         }
