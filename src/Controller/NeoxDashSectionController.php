@@ -77,6 +77,36 @@
             ;
         }
 
+        #[Route('/exchange', name: 'app_neox_dash_section_exchange', methods: [
+            'GET',
+            'POST'
+        ])]
+        public function exchange(Request $request, NeoxDashSectionRepository $neoxDashSectionRepository, entityManagerInterface $entityManager): Response|JsonResponse
+        {
+            $content = $request->getContent();
+            $data    = json_decode($content, true) ?? null;
+
+            // Recover both domains
+            $draggedSction = $neoxDashSectionRepository->find($data[ "draggedId" ]);
+            $targetSction  = $neoxDashSectionRepository->find($data[ "targetId" ]);
+
+            if ($draggedSction && $targetSction) {
+                $tempPosition = $targetSction->getPosition();
+                $draggedSction->setPosition($tempPosition);
+
+                // Save changes
+                $entityManager->flush();
+
+                return new JsonResponse("true");
+            }
+
+            return new jsonResponse($targetId
+                    ->getSection()
+                    ->getId() === $draggedId
+                    ->getSection()
+                    ->getId());
+        }
+
         #[Route('/{id}', name: 'app_neox_dash_section_delete', methods: [ 'POST' ])]
         public function delete(Request $request, NeoxDashSection $neoxDashSection, EntityManagerInterface $entityManager): Response
         {

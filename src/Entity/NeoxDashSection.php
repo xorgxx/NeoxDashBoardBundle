@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: NeoxDashSectionRepository::class)]
 class NeoxDashSection
@@ -39,11 +40,15 @@ class NeoxDashSection
 
     #[ORM\ManyToOne(inversedBy: 'neoxDashSections')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\SortableGroup()]
     private ?NeoxDashClass $class = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $timer = null;
 
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\SortablePosition()]
+    private ?int $position = null;
 
     public function __construct()
     {
@@ -166,6 +171,17 @@ class NeoxDashSection
     public function setEdit(?bool $edit): static
     {
         $this->edit = $edit;
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): NeoxDashSection
+    {
+        $this->position = $position;
         return $this;
     }
 

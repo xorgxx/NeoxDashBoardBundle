@@ -36,8 +36,18 @@
 
 {% macro navItemBottomHeader(section, class, loop) %}
     {% set headerC = section.name|replace({' ': ''})|lower %}
-    <li class="nav-item" role="presentation" >
-        <button class="nav-link {{ loop.first? 'active' : '' }}" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ section.id ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
+
+    {#  HERE import neox_drag_tabs stimulus take control !!!  #}
+    <li {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_tabs') }}
+        class="nav-item"
+        id="neoxTab-{{ section.id }}"
+        data-xorgxx--neox-dashboard-bundle--neox-drag-tabs-target="tab"
+        data-id="{{ section.id }}"
+        data-api="{{ path('app_neox_dash_section_exchange') }}"
+        draggable="true"
+        role="presentation" >
+
+        <button  class="nav-link {{ loop.first? 'active' : '' }}" id="alert-{{ headerC }}-tab" data-bs-toggle="tab" data-bs-target="#{{ section.id ~"-"~headerC }}" type="button" role="tab" aria-controls="{{ section.name }}"
             aria-selected="{{ loop.first? 'true' : '' }}" >{{ section.name }} <span class="text-danger">{{ section.edit? '*' : '' }}</span></button >
 
     </li >

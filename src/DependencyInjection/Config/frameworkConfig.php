@@ -22,7 +22,7 @@
                     'paths' => [
                         __DIR__ . '/../../../assets/dist/'  => "@xorgxx/neox-dashboard-bundle",
                         __DIR__ . '/../../../assets/'       => '@neoxDashBoardAssets',
-                        './assets/bootstrap.js' => '@neoxDashBoardAssets/bootstrap.js'
+//                        './assets/bootstrap.js' => '@neoxDashBoardAssets/bootstrap.js'
                     ],
                 ],
             ];

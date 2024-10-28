@@ -1,11 +1,15 @@
 {% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
 {% if NeoxDashClass %}
-    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+    {## sort data section by position #}
+    {% set NeoxSections = NeoxDashClass.NeoxDashSections|sort((a, b) => a.position <=> b.position) %}
+
+    <ul
+        class="nav nav-tabs mb-4" id="myTab" role="tablist">
         {# Item Title ============== #}
         {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }}
 
         {# Item TABS Title ========= #}
-        {% for section in NeoxDashClass.NeoxDashSections %}
+        {% for section in NeoxSections %}
             {% if section %}
                 {{ neox_macro.navItemBottomHeader(section, NeoxDashClass, loop) }}
             {% endif %}
@@ -19,7 +23,7 @@
 
     </ul>
     <div class="tab-content" id="myTabContent">
-        {% for section in NeoxDashClass.NeoxDashSections %}
+        {% for section in NeoxSections %}
             {% include'@NeoxDashBoardBundle/_Partials/_TabsCardtest.html.twig' %}
         {% endfor %}
     </div>
