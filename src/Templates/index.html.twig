@@ -6,6 +6,10 @@
             display: flex;
             flex-wrap: wrap;
         }
+        .dragging{
+            opacity: 0.5; /* Visual feedback when dragging */
+            cursor: copy !important;
+        }
         .loader {
             display: none; /* Masqué par défaut */
             position: fixed; /* Fixe au centre de l'écran */
@@ -32,11 +36,12 @@
 
         .domain {
             border: 2px dashed !important; /* Couleur de la bordure invisible */
-            cursor: grab; /* Curseur de glissement */
+            cursor: grab ; /* Curseur de glissement */
         }
 
         .drag-hover {
-            background-color: #e1ee76 !important; /* Couleur verte */
+            background-color: #c3d706 !important; /* Couleur verte */
+            cursor: not-allowed !important;
         }
 
         .domain:hover {
@@ -74,10 +79,15 @@
             border-color: #dc3545;
         }
     </style >
+
     <div id="loader" class="loader" >
         <img src="{{ '@neoxDashBoardAssets/Infinity.gif' }}" alt="Loading..." >
     </div >
-    <twig:NeoxDashBoard :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashBoard"/>
+
+    <div {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_drop') }} >
+        <twig:NeoxDashBoard :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashBoard"/>
+    </div>
+
 </turbo-frame>
 
 

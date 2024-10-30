@@ -27,9 +27,9 @@ export class coreDashController extends Controller {
         this.#initializeStAttValues();
     }
     
-    initializeDataAtt(){
+    initializeDataAtt(link){
         // Initialize values based on data- attributes
-        this.#initializeDataAttValues();
+        this.#initializeDataAttValues(link);
     }
     
     async fetchForm(body, signal){
@@ -172,19 +172,33 @@ export class coreDashController extends Controller {
         }
     }
     
-    // Get by data-attributes
-    #initializeDataAttValues() {
+    #initializeDataAttValues(link) {
         for (const key of Object.keys(this.constructor.values)) {
-            // Récupérer la valeur de l'attribut data-* correspondant
-            const dataValue = this.element.dataset[this.#camelCaseToDash(key)];
+            // Convert the key from camelCase to kebab-case (e.g., idElement -> id-element)
+            const dataAttr = `data-${this.#camelCaseToDash(key)}`;
             
-            // Si la valeur data-* est fournie, on la convertit et l'utilise
-            // Sinon, on utilise la valeur par défaut
-            this[`${key}Value`] = dataValue !== undefined
-                ? this.convertDataValue(dataValue)  // Convertir la valeur si nécessaire
+            // Read the corresponding data-* attribute
+            const dataValue = link.getAttribute(dataAttr);
+            
+            // If the data-* attribute exists, convert it as needed; otherwise, use the default value
+            this[`${key}Value`] = dataValue !== null
+                ? this.#convertDataValue(dataValue)  // Convert if necessary
                 : this.constructor.values[key].default;
         }
     }
+    // // Get by data-attributes
+    // #initializeDataAttValues() {
+    //     for (const key of Object.keys(this.constructor.values)) {
+    //         // Récupérer la valeur de l'attribut data-* correspondant
+    //         const dataValue = this.element.dataset[this.#camelCaseToDash(key)];
+    //
+    //         // Si la valeur data-* est fournie, on la convertit et l'utilise
+    //         // Sinon, on utilise la valeur par défaut
+    //         this[`${key}Value`] = dataValue !== undefined
+    //             ? this.#convertDataValue(dataValue)  // Convertir la valeur si nécessaire
+    //             : this.constructor.values[key].default;
+    //     }
+    // }
 
 // Fonction utilitaire pour convertir le nom camelCase en format dash-case
     #camelCaseToDash(key) {

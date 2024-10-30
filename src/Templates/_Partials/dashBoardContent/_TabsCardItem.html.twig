@@ -1,5 +1,5 @@
-{# ok i know!!!! but quipe for now 👀😉#}
-<div class="card h-100 {{ section.edit|default(false) ? "domain" : "domain" }}"
+{# ok i know!!!! but quipe for now{{ section.edit|default(false) ? "domain" : "domain" }} 👀😉#}
+<div class="card h-100"
 
     style="border-width: 0!important;
        " >
@@ -45,7 +45,7 @@
 
         <!-- Edit and Delete Button on the top-right for the Icons -->
         <div class="position-absolute top-0 end-0 p-1" > <!-- Top right positioning -->
-            {{ include('@NeoxDashBoardBundle/_Partials/_TabsCardItemButton.html.twig') }}
+            {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItemButton.html.twig') }}
         </div >
     </div >
 </div >

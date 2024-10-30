@@ -31,6 +31,7 @@ export default class extends Controller {
     handleDragStart(event){
         // Vérifiez si l'élément draggable est la cible
         const item = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
+        event.dataTransfer.setData("type", item.data.type);
         if(item){
             event.dataTransfer.setData("text/url", item.dataset.id);   // URL associée
             event.dataTransfer.setData("text/plain", item.dataset.site);
@@ -45,14 +46,25 @@ export default class extends Controller {
         }
     }
     
-    handleDragOver(event){
+    handleDragOver(event) {
         event.preventDefault();
+        const type = event.dataTransfer.getData("type");
+        
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
         const domainChild = targetElement.querySelector('.domain'); // Find child with class 'domain'
-        if(domainChild){
-            domainChild.classList.add('drag-hover'); // Add hover effect during drag on the child
+        
+        if (domainChild && type === "domain-move") {
+            // Add hover effect during drag on the child
+            domainChild.classList.add('drag-hover');
+            
+            // Change cursor style when dragging over
+            domainChild.style.cursor = 'copy'; // Example: copy cursor for "domain-browser" type
+        } else if (domainChild) {
+            // Reset to default cursor for other types
+            domainChild.style.cursor = 'not-allowed';
         }
     }
+    
     
     handleDragLeave(event){
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');

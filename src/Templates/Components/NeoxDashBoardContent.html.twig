@@ -1,10 +1,10 @@
 <div {{ attributes }}>
     {% if NeoxDashClass.mode.value|default('Tabs') == 'Accordion' %}
-        {% include '@NeoxDashBoardBundle/_Partials/_TabsAccord.html.twig' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_buildAccord.html.twig' %}
     {% elseif NeoxDashClass.mode.value|default('Tabs') == 'Tabs' %}
-        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_buildTabs.html.twig' %}
     {% else %}
-        {% include '@NeoxDashBoardBundle/_Partials/_Tabs.html.twig' %}
+        {% include '@NeoxDashBoardBundle/_Partials/_buildTabs.html.twig' %}
     {% endif %}
 </div>
 

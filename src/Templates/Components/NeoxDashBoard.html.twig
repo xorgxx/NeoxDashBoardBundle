@@ -8,73 +8,17 @@
             {#    {% include '@NeoxDashBoardBundle/_Partials/header/Inc-Header.html.twig' %} #}
         </div >
         <div class="container" >
-            {#    <div class="accordion" id="accordionExample"> #}
+            {#  ===== Builder Class ====== #}
             <div id="NeoxDashBoardContent" >
                 {% if NeoxDashSetup.class is not empty %}
+                    {#  ===== LOOP to builder Class ====== #}
                     {% for class in  NeoxDashSetup.class %}
                         <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" >
                             <twig:NeoxDashBoardContent :NeoxDashClass="class" :loopn="loop" id="live-NeoxDashBoardContent@{{ class.id }}" />
                         </turbo-frame >
                     {% endfor %}
                 {% else %}
-                    <h1>Hello Neox DashBoard BUNDLE ! 🤪 🦖 🦖 🦖</h1>
-                    <p>
-                        This project aims to offer users a streamlined and efficient solution for integrating a dashboard into their website. Designed with ease of use and speed in mind, it simplifies the process of
-                        creating customizable and dynamic dashboards, enabling users to quickly access and manage important data on their platforms. Whether for monitoring metrics, visualizing performance, or organizing
-                        key information, this solution provides a user-friendly approach to implementing dashboards in a fast and intuitive way.
-
-                        <span style="font-weight: bold; color: tomato">All are not finsh !!! it's still on beta version.</span>
-                    </p>
-                    <p>
-                        1 - Edit the Navigation Bar :
-                        <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                            title: 'Configuration dash board' ,
-                            text: 'Do you want to continue' ,
-                            idElement: "live-NeoxDashHeader",
-                            url: path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
-
-                        }) }}
-                            data-modal="modal"
-                            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                            class="btn btn-primary btn-sm"
-                            type="button"
-                        >
-                            <twig:ux:icon class="flex-shrink-0 icon-normal me-2" name="fa6-solid:user-gear" width="20" style="height: auto;" />
-                            Menu...
-                        </button >
-                    </p>
-                    <p>
-                        2 - Add a Minimum of One Content Element :
-                        <button {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                            title: 'Add Content' ,
-                            text: 'Do you want to continue' ,
-                            idElement: path('app_neox_dashboard_home'),
-                            url: path('app_neox_dash_class_new', { id: NeoxDashSetup.id })
-
-                        }) }}
-                            data-modal="modal"
-                            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                            class="btn btn-primary btn-sm"
-                        >
-                            <twig:ux:icon class="flex-shrink-0 icon-normal me-2" name="fa6-solid:folder-plus" width="20" style="height: auto;" />
-                            Add Content ...
-                        </button >
-                    </p>
-                    <div class="">
-                        <h4 class="my-3">
-                            Usage in future
-                        </h4>
-                        <div class="border-bottom mb-3 text-dark"></div> <!-- Ligne horizontale -->
-                        <p>
-                            In the future you will having to click on main menu : <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:sliders" width="30" style="height: auto;" color="black" />
-
-                        </p>
-                    </div>
-
-                    <p>
-                        <h4>In conclusion 🎉</h4> have fun exploring and implementing these features! Whether you're building a dynamic dashboard or enhancing user interactions with modals, the possibilities are endless. Enjoy the
-                        process, experiment with new ideas, and let your creativity shine. Happy coding!
-                    </p>
+                    {{ include('@NeoxDashBoardBundle/_Partials/dashBoardMain/iniDashBoard.html.twig')}}
                 {% endif %}
             </div >
 

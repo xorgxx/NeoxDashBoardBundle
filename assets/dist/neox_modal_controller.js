@@ -1,14 +1,16 @@
 import {coreDashController} from './coreDashController.js';
 
 export default class NeoxModalController extends coreDashController {
+    static targets = ["link"];
+    
     modal(event) {
         event.preventDefault();
         event.stopPropagation();
         
         const domain = this.element.getAttribute('data-domain') || null;
-        
+        const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
         // Initialize stimulus attributes with default values
-        this.initializeStimulusAtt();
+        this.initializeDataAtt(link);
         
         this.showModal({
             title: this.titleValue,

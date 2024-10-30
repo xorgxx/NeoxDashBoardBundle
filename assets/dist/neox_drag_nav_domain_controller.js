@@ -24,6 +24,7 @@ export default class extends Controller {
     handleDragStart(event){
         // Vérifiez si l'élément draggable est la cible
         const item = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
+        event.dataTransfer.setData("type", item.dataset.type);
         event.dataTransfer.setData("text/plain", item.dataset.site);
         item.classList.add('dragging'); // Add visual effect during drag
  
@@ -32,6 +33,10 @@ export default class extends Controller {
     handleDragOver(event){
         event.preventDefault();
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-domain-target="item"]');
+        const type = event.dataTransfer.getData("type");
+        if(type== "domain-move"){
+            return
+        }
         const domainChild = targetElement.querySelector('.domain'); // Find child with class 'domain'
         if(domainChild){
             domainChild.classList.add('drag-hover'); // Add hover effect during drag on the child

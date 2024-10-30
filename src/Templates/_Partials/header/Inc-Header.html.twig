@@ -55,13 +55,12 @@
                             </a >
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" >
                                 <li >
-                                    <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                                        title: 'Configuration dash board' ,
-                                        text: 'Do you want to continue' ,
-                                        idElement: "live-NeoxDashHeader",
-                                        url: path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
-
-                                    }) }}
+                                    <a
+                                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                                        data-title='Configuration dash board' ,
+                                        data-text='Do you want to continue' ,
+                                        data-idElement="live-NeoxDashHeader" ,
+                                        data-url="{{ path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id }) }}"
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                                         class="dropdown-item"
@@ -72,13 +71,11 @@
                                     </a >
                                 </li >
                                 <li >
-                                    <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
-                                        title: 'Configuration dash board' ,
-                                        text: 'Do you want to continue' ,
-                                        idElement: path('app_neox_dashboard_home'),
-                                        url: path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
-
-                                    }) }}
+                                    <a
+                                        data-title='Configuration dash board' ,
+                                        data-text='Do you want to continue' ,
+                                        data-idElement=path('app_neox_dashboard_home'),
+                                        data-url=path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                                         class="dropdown-item"
@@ -89,13 +86,11 @@
                                     </a >
                                 </li >
                                 <li >
-                                    <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', {
-                                        title: 'Add Content' ,
-                                        text: 'Do you want to continue' ,
-                                        idElement: path('app_neox_dashboard_home'),
-                                        url: path('app_neox_dash_class_new', { id: NeoxDashSetup.id })
-
-                                    }) }}
+                                    <a
+                                        data-title='Add Content' ,
+                                        data-text='Do you want to continue' ,
+                                        data-idElement=path('app_neox_dashboard_home'),
+                                        data-url=path('app_neox_dash_class_new', { id: NeoxDashSetup.id })
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                                         class="dropdown-item"
