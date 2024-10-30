@@ -1,20 +1,20 @@
-import { Controller } from "@hotwired/stimulus";
+import {Controller} from "@hotwired/stimulus";
 
 let DraggedItem = null;
 
 export default class extends Controller {
     static targets = ["item"]; // Cible tous les éléments à déplacer
-
     
-    connect() {
+    
+    connect(){
         this.bindEvents();
     }
     
-    disconnect() {
+    disconnect(){
         this.unbindEvents();
     }
     
-    bindEvents() {
+    bindEvents(){
         // Liaison des méthodes pour garder le bon contexte
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
@@ -34,7 +34,7 @@ export default class extends Controller {
         this.element.addEventListener('dragenter', this.handleDragEnter);
     }
     
-    unbindEvents() {
+    unbindEvents(){
         // Suppression des événements de glisser-déposer
         this.element.removeEventListener('dragstart', this.handleDragStart);
         this.element.removeEventListener('drag', this.handleDrag);
@@ -45,96 +45,101 @@ export default class extends Controller {
         this.element.removeEventListener('dragenter', this.handleDragEnter);
     }
     
-    handleDragStart(event) {
+    handleDragStart(event){
         this.DraggedItem = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (this.DraggedItem) {
+        if(this.DraggedItem){
             event.dataTransfer.setData("text/plain", this.DraggedItem.dataset.site);
             // "section" | "domain-browser" | "domain-move"
             event.dataTransfer.setData("text/type", this.DraggedItem.dataset.type);
             event.dataTransfer.setData("text/id", this.DraggedItem.dataset.id);
+            event.dataTransfer.setData("text/idClass", this.DraggedItem.dataset.idclass);
             this.DraggedItem.classList.add('dragging'); // Added a visual effect during drag
         }
     }
     
-    handleDragEnter(event) {
+    handleDragEnter(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (targetElement) {
+        if(targetElement){
             const draggedId = event.dataTransfer.getData("text/id");
-            if (targetElement.dataset.id !== draggedId) {
+            if(targetElement.dataset.id !== draggedId){
                 targetElement.classList.remove('dragging');
                 targetElement.style.cursor = 'not-allowed';
             }
         }
     }
     
-    handleDrag(event) {
+    handleDrag(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (targetElement) {
+        if(targetElement){
             const draggedId = event.dataTransfer.getData("text/id");
-            if (targetElement.dataset.id !== draggedId) {
+            if(targetElement.dataset.id !== draggedId){
                 targetElement.classList.add('drag-hover');
             }
         }
     }
-    handleDragOver(event) {
+    
+    handleDragOver(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (targetElement) {
+        if(targetElement){
             const draggedId = event.dataTransfer.getData("text/id");
-            if (targetElement.dataset.id !== draggedId) {
+            if(targetElement.dataset.id !== draggedId){
                 targetElement.classList.add('drag-hover');
             }
         }
     }
-    handleDragLeave(event) {
+    
+    handleDragLeave(event){
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (targetElement) {
+        if(targetElement){
             targetElement.classList.remove('drag-hover');
             targetElement.style.cursor = ''; // Réinitialiser le curseur
         }
     }
-    handleDragEnd(event) {
+    
+    handleDragEnd(event){
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if (targetElement) {
+        if(targetElement){
             targetElement.classList.remove('drag-hover');
             targetElement.classList.remove('dragging');
             targetElement.style.cursor = ''; // Réinitialiser le curseur
         }
     }
     
-    async handleDrop(event) {
+    async handleDrop(event){
         event.preventDefault();
-        
-        const loader = document.getElementById('loader');
-        const loading = document.getElementById('loading');
-        // Afficher le loader et réduire l'opacité
-        
-        loading.classList.add('no-select', 'body-loading'); // Add loading styles
-        loader.style.display = 'block';
-        
-        // Get dragged data
-        const draggedElement = this.DraggedItem;
-        const draggedId = event.dataTransfer.getData("text/id");
-        
         // Get current target data
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
         
-        if (targetElement) {
+        if(targetElement){
+            const loader = document.getElementById('loader');
+            const loading = document.getElementById('loading');
+            // Afficher le loader et réduire l'opacité
+            
+            loading.classList.add('no-select', 'body-loading'); // Add loading styles
+            loader.style.display = 'block';
+            
+            // Get dragged data
+            const draggedElement  = this.DraggedItem;
+            const draggedId = event.dataTransfer.getData("text/id");
+            const draggedIdClass = event.dataTransfer.getData("text/idClass");
+            
             // "section" | "domain-browser" | "domain-move"
             const type = targetElement.dataset.type;
             const targetId = targetElement.dataset.id;
             const targetApi = targetElement.dataset.api;
+            const targetIdClass = targetElement.dataset.idclass;
             
             // log for dev ==========
-            console.log(`Type:  ${type} Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}`);
+            console.log(`Type:  ${type} Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}, idClass ${draggedIdClass} = ${targetIdClass}`);
             targetElement.classList.remove('drag-hover', 'dragging');
             
             // if id different we do
-            if (draggedId !== targetId) {
+            if(draggedId !== targetId & draggedIdClass === targetIdClass){
                 try {
-                    switch (type) {
+                    switch(type) {
                         case 'section':
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
                             await this.updateEntity(draggedId, targetId, targetApi);
@@ -149,6 +154,10 @@ export default class extends Controller {
                             // Move the dragged element before the target element
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
                             await this.updateEntity(draggedId, targetId, targetApi);
+                            const refreshButton = document.getElementById('refreshClass');
+                            if(refreshButton){
+                                refreshButton.click(); // Simulate a button click
+                            }
                             break;
                         
                         default:
@@ -156,8 +165,11 @@ export default class extends Controller {
                             await this.updateEntity(draggedId, targetId, targetApi);
                             break;
                     }
-                } catch (error) {
+                } catch(error) {
                     console.error('Failed to update entity:', error);
+                } finally {
+                    // Hide the loader and restore body opacity
+                    this.cleanUp(targetElement)
                 }
             }
             
@@ -215,10 +227,10 @@ export default class extends Controller {
     //     }
     // }
     
-    updateCursorStyle(targetElement) {
+    updateCursorStyle(targetElement){
         // Mise à jour du style du curseur en fonction du type d'élément
         const itemType = targetElement.dataset.type;
-        switch (itemType) {
+        switch(itemType) {
             case 'tab':
                 targetElement.style.cursor = 'move'; // Curseur pour les onglets
                 break;
@@ -231,22 +243,22 @@ export default class extends Controller {
         }
     }
     
-    async updateEntity(draggedId, targetId, targetApi) {
+    async updateEntity(draggedId, targetId, targetApi){
         try {
             const response = await fetch(targetApi, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ draggedId, targetId })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({draggedId, targetId})
             });
             
-            if (!response.ok) {
+            if(!response.ok){
                 throw new Error(`Error: ${response.status}`);
             }
             
             const data = await response.json();
             console.log("Entity updated:", data);
             return data; // Return data if needed for further processing
-        } catch (error) {
+        } catch(error) {
             console.error('Error updating entity:', error);
             throw error; // Re-throw the error for handling in the caller
         }
@@ -265,7 +277,7 @@ export default class extends Controller {
     //     .catch(error => console.error('Error updating entity:', error));
     // }
     
-    cleanUp() {
+    cleanUp(){
         // Hide the loader and restore opacity
         const loader = document.getElementById('loader');
         const loading = document.getElementById('loading');
