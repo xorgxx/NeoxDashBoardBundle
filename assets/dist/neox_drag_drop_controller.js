@@ -83,7 +83,7 @@ export default class extends Controller {
     handleDragOver(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if(targetElement){
+        if(targetElement & targetElement.dataset.type !== "domain-browser" ){
             const draggedId = event.dataTransfer.getData("text/id");
             if(targetElement.dataset.id !== draggedId){
                 targetElement.classList.add('drag-hover');
@@ -147,7 +147,7 @@ export default class extends Controller {
                         
                         case 'domain-browser':
                             // Logic for 'domain-browser' can be added here if needed
-                            await this.updateEntity(draggedId, targetId, targetApi);
+                           
                             break;
                         
                         case 'domain-move':
