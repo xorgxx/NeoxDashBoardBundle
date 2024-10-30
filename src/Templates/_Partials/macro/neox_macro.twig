@@ -40,8 +40,9 @@
     {#    <li {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_tabs') }} #}
     <li
         class="nav-item"
-        id="neoxTab-{{ section.id }}"
-        data-xorgxx--neox-dashboard-bundle--neox-drag-tabs-target="tab"
+        id="neox_dash_tab_{{ section.id }}"
+        data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"
+        data-type="section"
         data-id="{{ section.id }}"
         data-api="{{ path('app_neox_dash_section_exchange') }}"
         draggable="true"

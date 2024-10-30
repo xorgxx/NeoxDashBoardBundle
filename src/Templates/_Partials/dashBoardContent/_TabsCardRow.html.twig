@@ -5,7 +5,7 @@
             {% for rowSet in row|batch(columns_per_row) %}
                 <div class="row justify-content-center "
 {#                    {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav_domain') }}#}
-                    {{  turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }}
+                    {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}
                 >
                     {% for item in rowSet %}
                         {% if item %}

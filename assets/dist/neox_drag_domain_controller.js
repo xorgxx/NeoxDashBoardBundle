@@ -104,7 +104,7 @@ export default class extends Controller {
     
     sendData(draggedId, targetId, targetApi){
         const loader = document.getElementById('loader');
-        const body = document.getElementById('bbbbb'); // Ou n'importe quel élément à rendre semi-transparent
+        const body = document.getElementById('NeoxDashControl'); // Ou n'importe quel élément à rendre semi-transparent
         
         // Afficher le loader et réduire l'opacité
         loader.style.display = 'block';

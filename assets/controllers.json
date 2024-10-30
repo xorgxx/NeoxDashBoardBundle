@@ -24,15 +24,7 @@
                 "enabled": true,
                 "fetch": "eager"
             },
-            "neox_drop": {
-                "enabled": true,
-                "fetch": "eager"
-            },
-            "neox_drag_domain": {
-                "enabled": true,
-                "fetch": "eager"
-            },
-            "neox_drag_nav_domain": {
+            "neox_drag_drop": {
                 "enabled": true,
                 "fetch": "eager"
             }

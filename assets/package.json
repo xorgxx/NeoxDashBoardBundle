@@ -11,26 +11,6 @@
                 "fetch": "eager",
                 "enabled": true
             },
-            "neox_drop": {
-                "main": "dist/neox_drop_controller.js",
-                "fetch": "eager",
-                "enabled": true
-            },
-            "neox_drag_domain": {
-                "main": "dist/neox_drag_domain_controller.js",
-                "fetch": "eager",
-                "enabled": true
-            },
-            "neox_drag_tabs": {
-                "main": "dist/neox_drag_tabs_controller.js",
-                "fetch": "eager",
-                "enabled": true
-            },
-            "neox_drag_nav_domain": {
-                "main": "dist/neox_drag_nav_domain_controller.js",
-                "fetch": "eager",
-                "enabled": true
-            },
             "neox_drag_drop": {
                 "main": "dist/neox_drag_drop_controller.js",
                 "fetch": "eager",

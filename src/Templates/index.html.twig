@@ -1,93 +1,61 @@
 
-
 <turbo-frame id="NeoxDashControl" >
-    <style >
+    <style>
         .row {
             display: flex;
             flex-wrap: wrap;
         }
-        .dragging{
-            opacity: 0.5; /* Visual feedback when dragging */
-            cursor: copy !important;
-        }
+
         .loader {
-            display: none; /* Masqué par défaut */
-            position: fixed; /* Fixe au centre de l'écran */
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed to the center of the screen */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* Centre l'image */
-            z-index: 99999; /* Assurez-vous qu'il est au-dessus des autres éléments */
-            width: 50px; /* Ajustez la taille selon votre GIF */
-            height: 50px; /* Ajustez la taille selon votre GIF */
+            transform: translate(-50%, -50%); /* Center the image */
+            z-index: 99999; /* Ensure it is above other elements */
+        }
+
+        .loader img {
+            width: 100%; /* Make the image responsive to the loader's size */
+            opacity: 1; /* Fully opaque */
         }
 
         .no-select {
-            -webkit-user-select: none; /* Safari et Chrome */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* Internet Explorer/Edge */
-            user-select: none;         /* Standard */
+            -webkit-user-select: none; /* Safari and Chrome */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Standard */
         }
 
-        /* Appliquer à tout le body lors du chargement */
+        /* Apply to the entire body during loading */
         .body-loading {
-            opacity: 0.5; /* Facultatif : Opacité pour indiquer le chargement */
-            pointer-events: none; /* Désactive tous les événements de la souris */
-        }
-
-        .domain {
-            border: 2px dashed !important; /* Couleur de la bordure invisible */
-            cursor: grab ; /* Curseur de glissement */
+            opacity: 0.5 !important; /* Opacity for the body to indicate loading */
+            pointer-events: none; /* Disable all mouse events */
+            position: relative; /* Ensures that the body respects stacking context */
+            z-index: 500; /* Lower z-index than loader */
         }
 
         .drag-hover {
-            background-color: #c3d706 !important; /* Couleur verte */
-            cursor: not-allowed !important;
+            border: 0.5px dashed #cb932b;
+            background-color: #8dc05e;
         }
 
-        .domain:hover {
-            border: 5px dashed #007bff !important; /* Bordure visible lors du survol */
-            background-color: rgba(0, 123, 255, 0.1) !important; /* Couleur de fond lors du survol */
+        .dragging {
+            opacity: 0.5;
         }
-
-        .domain.dragging {
-            opacity: 0.5; /* Visual feedback when dragging */
-        }
-
-        .dropzone {
-            border: 2px dashed #ccc;
-            padding: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropzone-hover-false {
-            background-color: #d34532; /* Couleur de survol */
-            border: 2px dashed #a38a23;
-        }
-
-        .dropzone-hover {
-            background-color: #23ff00; /* Couleur de survol */
-            border: 2px dashed #0b4903;
-        }
-
-        .dropzone-valid {
-            background-color: #d4edda; /* Vert clair pour une URL valide */
-            border-color: #28a745;
-        }
-
-        .dropzone-invalid {
-            background-color: #f8d7da; /* Rouge clair pour une URL invalide */
-            border-color: #dc3545;
-        }
-    </style >
-
-    <div id="loader" class="loader" >
-        <img src="{{ '@neoxDashBoardAssets/Infinity.gif' }}" alt="Loading..." >
+    </style>
+    <div id="loader" class="loader">
+        <img src="{{ asset('bundles/neoxdashboard/images/Infinity.gif') }}" alt="Loading...">
+    </div>
+    <div id="loading"
+        {{
+            stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_drop') |
+            stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_modal')
+        }}
+    >
+        <twig:NeoxDashBoard :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashBoard" />
     </div >
 
-    <div {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_drop') }} >
-        <twig:NeoxDashBoard :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashBoard"/>
-    </div>
-
-</turbo-frame>
+</turbo-frame >
 
 
