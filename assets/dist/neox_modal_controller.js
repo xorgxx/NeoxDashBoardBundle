@@ -30,7 +30,9 @@ export default class NeoxModalController extends coreDashController {
         
         // Initialize stimulus attributes with default values
         // this.initializeDataAtt();
-        this.initializeStimulusAtt();
+        const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
+        // Initialize stimulus attributes with default values
+        this.initializeDataAtt(link);
         
         // const button = event.currentTarget;
         // const url = this.urlValue; // Valeur passée via stimulus_action

@@ -57,9 +57,9 @@
                                 <li >
                                     <a
                                         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
-                                        data-title='Configuration dash board' ,
-                                        data-text='Do you want to continue' ,
-                                        data-idElement="live-NeoxDashHeader" ,
+                                        data-title='Configuration dash board'
+                                        data-text='Do you want to continue'
+                                        data-id-element="live-NeoxDashHeader"
                                         data-url="{{ path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id }) }}"
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
@@ -72,10 +72,11 @@
                                 </li >
                                 <li >
                                     <a
-                                        data-title='Configuration dash board' ,
-                                        data-text='Do you want to continue' ,
-                                        data-idElement=path('app_neox_dashboard_home'),
-                                        data-url=path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id })
+                                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                                        data-title='Configuration dash board'
+                                        data-text='Do you want to continue'
+                                        data-id-element="{{ path('app_neox_dashboard_home') }}"
+                                        data-url="{{ path('app_neox_dash_setup_edit', { id: NeoxDashSetup.id }) }}"
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                                         class="dropdown-item"
@@ -87,10 +88,11 @@
                                 </li >
                                 <li >
                                     <a
-                                        data-title='Add Content' ,
-                                        data-text='Do you want to continue' ,
-                                        data-idElement=path('app_neox_dashboard_home'),
-                                        data-url=path('app_neox_dash_class_new', { id: NeoxDashSetup.id })
+                                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                                        data-title='Add Content'
+                                        data-text='Do you want to continue'
+                                        data-id-element="live-NeoxDashHeader"
+                                        data-url="{{ path('app_neox_dash_class_new', { id: NeoxDashSetup.id }) }}"
                                         data-modal="modal"
                                         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                                         class="dropdown-item"

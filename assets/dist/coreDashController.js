@@ -82,6 +82,7 @@ export class coreDashController extends Controller {
             'html': "",
             'icon': "question"
         });
+        
         swal.showLoading();
         
         // Envoi de la requête avec les données du formulaire
