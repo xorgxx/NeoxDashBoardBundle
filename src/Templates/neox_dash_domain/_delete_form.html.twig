@@ -1,25 +1,30 @@
 
-
-
 <form method="post" action="{{ path('app_neox_dash_domain_delete', {'id': item.id}) }}"
-    {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
-        title: "Delete Domain : " ~ item.name,
-        text: "Do you want to continue?",
-        idElement: null,
-        url: path('app_neox_dash_domain_delete', { id: item.id })
-    })}}
+    data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+    data-title="Delete domaine {{ item.name }}"
+    data-text="Section and all domain inside will also be delete! Do you want to continue?"
+    data-id-element="{{ path('app_neox_dashboard_home')}}"
+    data-url="{{ path('app_neox_dash_domain_delete', { id: item.id }) }}"
 >
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
 
     <button
-        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}
+        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}/
+{#        ===== Form here i dont see where is probmeme !! if we use [{{ stimulus_action() }}] it will work ! but if use
+#}        data-action="click->@xorgxx--neox-dashboard-bundle--neox-modal#deleteConfirm" It das not work #}
+
+{#        data-action="click->@xorgxx--neox-dashboard-bundle--neox-modal#deleteConfirm"#}
+{#        data-title="Delete domaine {{ item.name }}"#}
+{#        data-text="Section and all domain inside will also be delete! Do you want to continue?"#}
+{#        data-id-element="{{ path('app_neox_dashboard_home')}}"#}
+{#        data-url="{{ path('app_neox_dash_domain_delete', { id: item.id }) }}"#}
+{#        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"#}
         class="nav-link"
         type="button"
         aria-selected="false"
         style="margin-right: -10px"
     >
         <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
-
     </button>
 </form>
-

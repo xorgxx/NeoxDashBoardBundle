@@ -1,5 +1,6 @@
 {% if section.edit %}
-    <div class="ml-auto d-flex" >
+
+    <div class="ml-auto d-flex"    >
         <div class="left-item" >
             <button
                 type="button"
@@ -21,7 +22,7 @@
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
                 data-title='find icon'
                 data-text='Do you want to continue'
-                data-idElement="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
+                data-id-element="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
                 data-url="{{ path('app_neox_dash_find-icon', { id: section.id }) }}"
 
                 data-modal="modal"
@@ -37,7 +38,7 @@
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
                 data-title='Edit Section'
                 data-text='Do you want to continue'
-                data-idElement="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
+                data-id-element="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
                 data-url="{{ path('app_neox_dash_section_edit', { id: section.id }) }}"
                 data-modal="modal"
                 data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
@@ -57,7 +58,7 @@
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
         data-title='New Domain'
         data-text='Do you want to continue'
-        data-idElement="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
+        data-id-element="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
         data-url="{{path('app_neox_dash_domain_new', { id: section.id })}}"
         class="d-flex flex-column align-items-center"
         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" >

@@ -10,7 +10,7 @@ export default class NeoxModalController extends coreDashController {
         const domain = this.element.getAttribute('data-domain') || null;
         const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
         // Initialize stimulus attributes with default values
-        this.initializeDataAtt(link);
+        this.initializeAttributes(link);
         
         this.showModal({
             title: this.titleValue,
@@ -29,17 +29,17 @@ export default class NeoxModalController extends coreDashController {
         event.stopPropagation();
         
         // Initialize stimulus attributes with default values
-        // this.initializeDataAtt();
+        // this.initializeAttributes();
         const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
         // Initialize stimulus attributes with default values
-        this.initializeDataAtt(link);
+        this.initializeAttributes(link);
         
         // const button = event.currentTarget;
         // const url = this.urlValue; // Valeur passée via stimulus_action
         // const token = button.closest('form').querySelector('input[name="_token"]').value;
         // const button = this.element.querySelector('button');
         const url = this.urlValue; //button.dataset.url;
-        const token = this.element.querySelector('input[name="_token"]').value;
+        const token = this.element.querySelector('input[name="_token"]').value.toString();
         
         this.showModal({
             title: this.titleValue,
@@ -106,7 +106,7 @@ export default class NeoxModalController extends coreDashController {
         // Définissez un délai d'attente pour la requête
         const timeout = setTimeout(() => {
             controller.abort(); // Annule la requête si le délai est dépassé
-        }, 5000); // Délai d'attente de 5 secondes
+        }, 15000); // Délai d'attente de 5 secondes
         
         try {
             const response = await fetch(url, {
@@ -129,10 +129,8 @@ export default class NeoxModalController extends coreDashController {
                 icon: "success",
                 title: "Supprimé! L'élément a été supprimé avec succès."
             });
-            
-            if (this.idElementValue !== "element") {
-                const idElement = this.idElementValue// Do something with idElement
-            } else {
+            const idElement = this.idElementValue// Do something with idElement
+            if (idElement === "element") {
                 // Handle the case where idElement is null meaning that we dont have to render any !! maybe is Mercure "broadcast" ???🦖
                 console.log('idElement is null');
                 return ;

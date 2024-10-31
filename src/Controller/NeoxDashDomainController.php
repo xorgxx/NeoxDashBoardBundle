@@ -15,6 +15,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\Attribute\Route;
+    use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
     use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
     use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
     use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -107,7 +108,7 @@
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("edit", $neoxDashDomain);
 
-            $icon = $this->findIconOnWebSite->getFaviconUrl($neoxDashDomain->getUrl());
+//            $icon = $this->findIconOnWebSite->getFaviconUrl($neoxDashDomain->getUrl());
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
@@ -151,15 +152,19 @@
         }
 
         #[Route('/{id}', name: 'app_neox_dash_domain_delete', methods: [ 'POST' ])]
-        public function delete(Request $request, NeoxDashDomain $neoxDashDomain, EntityManagerInterface $entityManager): Response
+        public function delete(Request $request, NeoxDashDomain $neoxDashDomain, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
         {
-            $submit = false;
-            if ($this->isCsrfTokenValid('delete' . $neoxDashDomain->getId(), $request
-                ->getPayload()
-                ->getString('_token'))) {
+
+            $csrfToken = $csrfTokenManager->getToken('delete' . $neoxDashDomain->getId())->getValue();
+            $submittedToken = $request->get('_token');
+            $id = "delete".(string)$neoxDashDomain->getId();
+
+            $submit = $this->isCsrfTokenValid($id, $csrfToken);
+
+            if ($submit)
+            {
                 $entityManager->remove($neoxDashDomain);
                 $entityManager->flush();
-                $submit = true;
             }
 
             $crudHandleBuilder = $this->setInit("index");

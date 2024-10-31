@@ -22,6 +22,11 @@ export class coreDashController extends Controller {
         idElement: {type: String, default: 'element'},
     };
     
+    initializeAttributes(link = null) {
+        // Use either data-* or Stimulus attributes based on the presence of link
+        link ? this.initializeDataAtt(link) : this.initializeStimulusAtt();
+    }
+    
     initializeStimulusAtt(){
         // Initialize values based on data- attributes
         this.#initializeStAttValues();

@@ -4,12 +4,12 @@
 {#</form>#}
 
 <form method="post" action="{{ path('app_neox_dash_class_delete', {'id': class.id}) }}"
-    {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal',{
-        title: "Delete " ~ class.name,
-        Text: "All domain inside will also be delete! Do you want to continue?",
-        idElement: path('app_neox_dashboard_home'),
-        url: path('app_neox_dash_class_delete', { id: class.id })
-    })}}
+    data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+    data-title="Delete {{ class.name }}"
+    data-text="All domain inside will also be delete! Do you want to continue?"
+    data-id-element="{{ path('app_neox_dashboard_home')}}"
+    data-url="{{ path('app_neox_dash_class_delete', { id: class.id }) }}"
 >
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ class.id) }}">
 
