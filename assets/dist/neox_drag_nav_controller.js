@@ -4,7 +4,6 @@ export default class extends Controller {
     static targets = ['dropzone'];
     
     connect() {
-        this.isProcessing = false;
         this.addEventListeners();
     }
     
@@ -112,22 +111,13 @@ export default class extends Controller {
     }
     
     processURL(url) {
-        this.updateURLField(url);
         this.updateDropzoneStyle(true);
         
         const modalTriggerElement = this.DropItem;
         if (modalTriggerElement) {
-            modalTriggerElement.setAttribute('data-domain', url); // Update URL in a data-url attribute
-            this.urlField = url; // Stock temporaire pour l'URL
-            modalTriggerElement.click();
-        }
-    }
-    
-    updateURLField(url) {
-        const urlField = document.querySelector('#urlField');
-        if (urlField) {
-            urlField.value = url;
             console.log('Stimulus controller initialized for dropzone with ID:', this.dropzoneTarget.dataset.id);
+            modalTriggerElement.setAttribute('data-domain', url); // Update URL in a data-url attribute
+            modalTriggerElement.click();
         }
     }
     
