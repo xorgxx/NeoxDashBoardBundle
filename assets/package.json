@@ -11,6 +11,11 @@
                 "fetch": "eager",
                 "enabled": true
             },
+            "neox_drag_nav": {
+                "main": "dist/neox_drag_nav_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
             "neox_drag_drop": {
                 "main": "dist/neox_drag_drop_controller.js",
                 "fetch": "eager",

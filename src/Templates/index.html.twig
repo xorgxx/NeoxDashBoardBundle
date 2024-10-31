@@ -43,6 +43,33 @@
         .dragging {
             opacity: 0.5;
         }
+
+        .dropzone {
+            border: 2px dashed #ccc;
+            padding: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropzone-hover-false {
+            background-color: #d34532; /* Couleur de survol */
+            border: 2px dashed #a38a23;
+        }
+
+        .dropzone-hover {
+            background-color: #23ff00; /* Couleur de survol */
+            border: 2px dashed #0b4903;
+        }
+
+        .dropzone-valid {
+            background-color: #d4edda; /* Vert clair pour une URL valide */
+            border-color: #28a745;
+        }
+
+        .dropzone-invalid {
+            background-color: #f8d7da; /* Rouge clair pour une URL invalide */
+            border-color: #dc3545;
+        }
+
     </style>
     <div id="loader" class="loader">
         <img src="{{ asset('bundles/neoxdashboard/images/Infinity.gif') }}" alt="Loading...">

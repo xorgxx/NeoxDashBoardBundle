@@ -7,8 +7,12 @@ export default class NeoxModalController extends coreDashController {
         event.preventDefault();
         event.stopPropagation();
         
-        const domain = this.element.getAttribute('data-domain') || null;
+        
         const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
+        // Find the child element within 'link' that has the 'data-domain' attribute
+        const childWithDomain = link.querySelector('[data-domain]');
+        const domain = childWithDomain ? childWithDomain.getAttribute('data-domain') : null;
+        
         // Initialize stimulus attributes with default values
         this.initializeAttributes(link);
         

@@ -55,6 +55,7 @@
 {% else %}
     {#  ===== Botton ADD DOMAIN ======            #}
     <div
+        {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
         data-title='New Domain'
         data-text='Do you want to continue'
@@ -62,10 +63,10 @@
         data-url="{{path('app_neox_dash_domain_new', { id: section.id })}}"
         class="d-flex flex-column align-items-center"
         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" >
-        <div {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drop') }} class="left-item" >
+        <div class="left-item" >
 
             <div class="dropzone btn btn-primary btn-sm"
-                data-xorgxx--neox-dashboard-bundle--neox-drop-target="dropzone"
+                data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"
                 data-id="{{ section.id }}"
             >
                 <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />

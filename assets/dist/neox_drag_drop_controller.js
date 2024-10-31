@@ -83,7 +83,7 @@ export default class extends Controller {
     handleDragOver(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if(targetElement & targetElement.dataset.type !== "domain-browser" ){
+        if(targetElement && targetElement.dataset.type !== "domain-browser" ){
             const draggedId = event.dataTransfer.getData("text/id");
             if(targetElement.dataset.id !== draggedId){
                 targetElement.classList.add('drag-hover');
@@ -111,31 +111,32 @@ export default class extends Controller {
     async handleDrop(event){
         event.preventDefault();
         // Get current target data
+
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
         
         if(targetElement){
             const loader = document.getElementById('loader');
             const loading = document.getElementById('loading');
             // Afficher le loader et réduire l'opacité
-            
+
             loading.classList.add('no-select', 'body-loading'); // Add loading styles
             loader.style.display = 'block';
-            
+
             // Get dragged data
             const draggedElement  = this.DraggedItem;
             const draggedId = event.dataTransfer.getData("text/id");
             const draggedIdClass = event.dataTransfer.getData("text/idClass");
-            
+
             // "section" | "domain-browser" | "domain-move"
             const type = targetElement.dataset.type;
             const targetId = targetElement.dataset.id;
             const targetApi = targetElement.dataset.api;
             const targetIdClass = targetElement.dataset.idclass;
-            
+
             // log for dev ==========
             console.log(`Type:  ${type} Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}, idClass ${draggedIdClass} = ${targetIdClass}`);
             targetElement.classList.remove('drag-hover', 'dragging');
-            
+
             // if id different we do
             if(draggedId !== targetId & draggedIdClass === targetIdClass){
                 try {
@@ -144,12 +145,12 @@ export default class extends Controller {
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
                             await this.updateEntity(draggedId, targetId, targetApi);
                             break;
-                        
+
                         case 'domain-browser':
                             // Logic for 'domain-browser' can be added here if needed
-                           
+
                             break;
-                        
+
                         case 'domain-move':
                             // Move the dragged element before the target element
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
@@ -159,7 +160,7 @@ export default class extends Controller {
                                 refreshButton.click(); // Simulate a button click
                             }
                             break;
-                        
+
                         default:
                             // Optionally handle any other types if needed
                             await this.updateEntity(draggedId, targetId, targetApi);
@@ -172,7 +173,7 @@ export default class extends Controller {
                     this.cleanUp(targetElement)
                 }
             }
-            
+
             this.cleanUp(targetElement)
         }
     }
