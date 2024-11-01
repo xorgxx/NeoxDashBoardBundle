@@ -1,15 +1,18 @@
 {% set sectionC             = section.name|replace({' ': ''})|lower %}
 {% set sectionId            = section.id ~ "-" ~ sectionC %}
-{% set columns_per_row      = section.edit ? 4 : section.row %}
-{% set rows_per_carousel    = section.edit ? 100 : section.colonne %}
+{% set columns_per_row      = section.edit|default(false) ? 4 : section.colonne %}
+{% set rows_per_carousel    = section.edit|default(false) ? ((section.NeoxDashDomains|length)/columns_per_row) : section.row %}
 {% set cards_per_row        = 12 %}
-{% set nb_section           = section.NeoxDashDomains|length // (columns_per_row * rows_per_carousel) %}
+{% set nb_section           = ((section.NeoxDashDomains|length) / (columns_per_row * rows_per_carousel)) %}
+{% set nb_section           = nb_section < 1 ? 1 : nb_section %}
+{% set height = section.heigth|default('2.8') ~ 'rem' %}
+
 
 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
     <div class="container"
         {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}
     >
-        <div class="row row-cols-1 row-cols-md-{{ cards_per_row }} g-4 mb-5" >
+        <div class="row row-cols-1 row-cols-md-12 g-4 mb-5" >
 
             {#   ===== EDITION MENU SECTION ======     #}
             <div class="d-flex justify-content-between align-items-center shadow-sm bg-body pb-1 rounded bg-transparent" >
@@ -20,8 +23,8 @@
             <div id="carousel{{ sectionId }}" class="carousel carousel-dark slide" data-bs-ride="carousel" >
 
                 <div class="carousel-indicators" style="bottom: -40px" >
-                    {% if nb_section %}
-                        {% for i in 0..nb_section %}
+                    {% if nb_section | length > 1 %}
+                        {% for i in 0..nb_section|round(1,"floor")  %}
                             <button type="button" data-bs-target="#carousel{{ sectionId }}" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}" ></button >
                         {% endfor %}
                     {% endif %}
@@ -32,7 +35,7 @@
                     {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardRow.html.twig') }}
 
                 </div >
-                {% if nb_section %}
+                {% if nb_section | length > 1  %}
                     <button class="carousel-control-prev" style="top: unset !important; bottom: -30px !important" data-bs-target="#carousel{{ sectionId }}" data-bs-slide="prev" >
                         <span class="carousel-control-prev-icon" aria-hidden="true" ></span >
                         <span class="visually-hidden" >Previous</span >

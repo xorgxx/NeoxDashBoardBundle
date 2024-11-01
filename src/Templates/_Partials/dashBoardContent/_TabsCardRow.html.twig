@@ -1,12 +1,15 @@
-
-{% for row in section.NeoxDashDomains|sort((a, b) => a.position <=> b.position)|batch(columns_per_row * rows_per_carousel, '') %}
+{#   #}
+{% for row in section.NeoxDashDomains|sort((a, b) => a.position <=> b.position)|batch(columns_per_row * rows_per_carousel,"")%}
+{#    {{ section.NeoxDashDomains|length }}#}
     <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer | setTimer }}" >
         <div class="container" >
-            {% for rowSet in row|batch(columns_per_row) %}
+
+            {% for rowSet in row|batch(columns_per_row,"") %}
                 <div class="row justify-content-center "
 {#                    {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav_domain') }}#}
 {#                    {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}#}
                 >
+
                     {% for item in rowSet %}
                         {% if item %}
                             <div id="neox_dash_domain_{{ item.id }}"
@@ -21,7 +24,12 @@
                             >
                                 {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
                             </div >
+                        {% else %}
+                            <div class="col-md-3 mb-3">
 
+                                <div class="col d-flex align-items-center" style="height: {{ height }};">
+                                </div>
+                            </div >
                         {% endif %}
                     {% endfor %}
                 </div >

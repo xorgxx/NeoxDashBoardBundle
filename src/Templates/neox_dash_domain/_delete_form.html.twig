@@ -10,7 +10,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
 
     <button
-        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}/
+        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}
 {#        ===== Form here i dont see where is probmeme !! if we use [{{ stimulus_action() }}] it will work ! but if use
 #}        data-action="click->@xorgxx--neox-dashboard-bundle--neox-modal#deleteConfirm" It das not work #}
 

@@ -52,8 +52,8 @@
             {{ include('@NeoxDashBoardBundle/neox_dash_section/_delete_form.html.twig') }}
         </div >
     </div >
+
 {% else %}
-    {#  ===== Botton ADD DOMAIN ======            #}
     <div
         {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
@@ -75,17 +75,29 @@
 
         </div >
     </div >
-
 {% endif %}
+{#  ===== Botton ADD DOMAIN ======            #}
+
 <div class="right-item" >
     <button
+{#        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'activateFirstSlide', 'click') }}#}
+{#        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"#}
+{#        data-controller="xorgxx--neox-dashboard-bundle--neox-modal"#}
+        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#activateFirstSlide"
         type="button"
         class="btn btn-secondary btn-sm"
-        id="delayedInput"
-        data-action="live#action"
-        data-live-action-param="mode"
-        data-live-query-param="{{ section.id }}"
+        data-id="{{ section.id }}"
+        data-class="{{ NeoxDashClass.id }}"
+{#        id="activateFirstSlide"#}
+{#        data-action="live#action"#}
+{#        data-live-action-param="mode"#}
+{#        data-live-query-param="{{ section.id }}"#}
+        data-carousel="{{ sectionId }}"
+{#        data-controller="live"#}
+        {#        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#activateFirstSlide"#}
+
     >
+
         {% if section.edit %}
             <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="m-1" />
         {% else %}
@@ -93,4 +105,5 @@
         {% endif %}
 
     </button >
+
 </div >

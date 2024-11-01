@@ -1,9 +1,11 @@
 import {coreDashController} from './coreDashController.js';
+import * as bootstrap from 'bootstrap';
 
 export default class NeoxModalController extends coreDashController {
     static targets = ["link"];
     
-    modal(event) {
+    
+    modal(event){
         event.preventDefault();
         event.stopPropagation();
         
@@ -22,13 +24,13 @@ export default class NeoxModalController extends coreDashController {
             icon: this.iconValue,
             showCancelButton: this.showCancelButtonValue,
             confirmButtonText: this.confirmButtonTextValue,
-            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch({ domain })),
+            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch({domain})),
         });
         // Automatically trigger the confirmation button after the first step
         swal.clickConfirm();
     }
     
-    deleteConfirm(event) {
+    deleteConfirm(event){
         event.preventDefault();
         event.stopPropagation();
         
@@ -59,7 +61,7 @@ export default class NeoxModalController extends coreDashController {
         });
     }
     
-    showModal(options) {
+    showModal(options){
         // Fonction générique pour afficher SweetAlert avec options personnalisées
         swal.fire({
             ...options,
@@ -67,7 +69,7 @@ export default class NeoxModalController extends coreDashController {
         });
     }
     
-    async fetch(data) {
+    async fetch(data){
         const response = await this.handleRequestWithTimeout(() => this.fetchForm(data)); // Pass a function that returns a promise
         return swal.fire({
             title: this.titleValue,
@@ -79,7 +81,7 @@ export default class NeoxModalController extends coreDashController {
         });
     }
     
-    async handleRequestWithTimeout(requestFunc, timeout = 30000) { // Augmentez le timeout à 30 secondes
+    async handleRequestWithTimeout(requestFunc, timeout = 30000){ // Augmentez le timeout à 30 secondes
         const timeoutId = setTimeout(() => {
             throw new Error("Request timed out");
         }, timeout);
@@ -87,7 +89,7 @@ export default class NeoxModalController extends coreDashController {
         try {
             const result = await this.withTimeout(requestFunc(), timeout);
             return result; // Retourne le résultat de la requête
-        } catch (error) {
+        } catch(error) {
             swal.fire({
                 icon: 'error',
                 title: 'Request failed',
@@ -99,13 +101,13 @@ export default class NeoxModalController extends coreDashController {
         }
     }
     
-    async handleFormSubmit() {
+    async handleFormSubmit(){
         return await this.handleRequestWithTimeout(() => this.submitForm()); // Pass a function that returns a promise
     }
     
-    async deleteItem(url, token) {
+    async deleteItem(url, token){
         const controller = new AbortController(); // Crée un contrôleur d'abort
-        const { signal } = controller;
+        const {signal} = controller;
         
         // Définissez un délai d'attente pour la requête
         const timeout = setTimeout(() => {
@@ -121,12 +123,12 @@ export default class NeoxModalController extends coreDashController {
                     'Accept': 'application/json',
                 },
                 credentials: 'include',
-                body: new URLSearchParams({ '_token': token }),
+                body: new URLSearchParams({'_token': token}),
                 signal // Ajoute le signal d'abort
             });
             
             // Si la réponse n'est pas OK, lance une erreur
-            if (!response.ok) throw new Error('Erreur de suppression');
+            if(!response.ok) throw new Error('Erreur de suppression');
             
             // Affichez le message de succès
             toast.fire({
@@ -134,19 +136,19 @@ export default class NeoxModalController extends coreDashController {
                 title: "Supprimé! L'élément a été supprimé avec succès."
             });
             const idElement = this.idElementValue// Do something with idElement
-            if (idElement === "element") {
+            if(idElement === "element"){
                 // Handle the case where idElement is null meaning that we dont have to render any !! maybe is Mercure "broadcast" ???🦖
                 console.log('idElement is null');
-                return ;
+                return;
             }
             
-            if (this.#isRelativeUrl(idElement)) {
+            if(this.#isRelativeUrl(idElement)){
                 // If the URL is valid, we execute a turbo.visit to refresh the page
                 console.log('L\'élément est une URL:', idElement);
                 Turbo.visit(idElement)
             } else {
                 // If it's not a URL, treat it like a normal identifier
-                const id = idElement.split('@')[1]; // Extract the id
+                const id = idElement.split('@')[ 1 ]; // Extract the id
                 // const id = this.idElementValue.split('@')[ 1 ];
                 const component = document.getElementById(idElement).__component; // Get the parent div
                 // or call an action
@@ -156,8 +158,8 @@ export default class NeoxModalController extends coreDashController {
                 console.log('L\'élément n\'est pas une URL, l\'id est:', id);
             }
             
-        } catch (error) {
-            if (error.name === 'AbortError') {
+        } catch(error) {
+            if(error.name === 'AbortError'){
                 swal.fire('Erreur', 'La requête a expiré. Veuillez réessayer.', 'error');
             } else {
                 swal.fire('Erreur', error.message, 'error');
@@ -167,10 +169,42 @@ export default class NeoxModalController extends coreDashController {
         }
     }
     
-    withTimeout(promise, ms) {
+    async activateFirstSlide(event){
+        
+        const link = event.currentTarget;
+        // const link = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"]');
+        const id = link.dataset.carousel;
+        const idt = link.dataset.id;
+        const idClass = link.dataset.class;
+        const carouselElement = document.getElementById(`carousel${id}`);
+        
+        if(carouselElement){
+            const carousel = new bootstrap.Carousel(carouselElement);
+            carousel.to(0); // Activer la première diapositive (index 0)
+            
+            try {
+                const component = document.getElementById(`live-NeoxDashBoardContent@${idClass}`).__component; // Get the parent div
+                // or call an action
+                component.action('mode', {'query': idt});
+                
+                // const element = document.getElementById(`live-NeoxDashBoardContent@${idClass}`); // Get the parent div
+                // const component = getComponent(element); // Get the parent div
+                // // or call an action
+                // component.action('mode', {'query': idt});
+                
+                
+            } catch(error) {
+                console.error('Component Live introuvable pour cet élément:', error);
+            }
+        } else {
+            console.warn(`Carousel avec l'ID Carousel${id} introuvable.`);
+        }
+    }
+    
+    withTimeout(promise, ms){
         const controller = new AbortController();
-        const { signal } = controller;
-
+        const {signal} = controller;
+        
         return Promise.race([
             promise, // Pass the promise directly now
             new Promise((_, reject) =>
@@ -182,7 +216,7 @@ export default class NeoxModalController extends coreDashController {
         ]);
     }
     
-    #isRelativeUrl(url) {
+    #isRelativeUrl(url){
         // Vérifie si la chaîne commence par "/", "./" ou "../", typiquement des indicateurs d'URL relative
         return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }

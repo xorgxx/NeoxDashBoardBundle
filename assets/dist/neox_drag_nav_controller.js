@@ -8,10 +8,14 @@ export default class extends Controller {
     }
     
     disconnect() {
-        const { dropzoneTarget } = this;
-        dropzoneTarget.removeEventListener('dragover', this.handleDragOver.bind(this));
-        dropzoneTarget.removeEventListener('dragleave', this.handleMouseOut.bind(this));
-        dropzoneTarget.removeEventListener('drop', this.handleDrop.bind(this));
+        if (this.hasOwnProperty('dropzoneTarget') && this.dropzoneTarget) {
+            const { dropzoneTarget } = this;
+            dropzoneTarget.removeEventListener('dragover', this.handleDragOver.bind(this));
+            dropzoneTarget.removeEventListener('dragleave', this.handleMouseOut.bind(this));
+            dropzoneTarget.removeEventListener('drop', this.handleDrop.bind(this));
+        } else {
+            console.info('dropzoneTarget n\'existe pas ou est indéfini.');
+        }
     }
     
     addEventListeners() {
