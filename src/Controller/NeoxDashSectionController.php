@@ -3,6 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Controller;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
     use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\CrudHandleBuilder;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
@@ -77,34 +78,32 @@
             ;
         }
 
-        #[Route('/exchange', name: 'app_neox_dash_section_exchange', methods: [
+        #[Route('/exchange-{action}', name: 'app_neox_dash_section_exchange', defaults: [ 'action' => 'index'], methods: [
             'GET',
             'POST'
         ])]
-        public function exchange(Request $request, NeoxDashSectionRepository $neoxDashSectionRepository, entityManagerInterface $entityManager): Response|JsonResponse
+        public function exchange(Request $request, string $action, NeoxDashSectionRepository $neoxDashSectionRepository, entityManagerInterface $entityManager): Response|JsonResponse
         {
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
 
-            // Recover both domains
-            $draggedSction = $neoxDashSectionRepository->find($data[ "draggedId" ]);
-            $targetSction  = $neoxDashSectionRepository->find($data[ "targetId" ]);
-
-            if ($draggedSction && $targetSction) {
-                $tempPosition = $targetSction->getPosition();
-                $draggedSction->setPosition($tempPosition);
-
-                // Save changes
-                $entityManager->flush();
-
-                return new JsonResponse("true");
+            if ($action === "index") {
+                // Recover both domains
+                $draggedSection = $neoxDashSectionRepository->find($data[ "draggedId" ]);
+                $targetSection  = $neoxDashSectionRepository->find($data[ "targetId" ]);
+                $tempPosition = $targetSection->getPosition();
+                $draggedSection->setPosition($tempPosition);
+            }else{
+                $draggedSection = $entityManager->getRepository(neoxDashDomain::class)->find($data[ "draggedId" ]);
+                $targetSection  = $neoxDashSectionRepository->find($data[ "targetId" ]);
+                $draggedSection->setSection($targetSection);
+                $draggedSection->setPosition(0);
             }
 
-            return new jsonResponse($targetId
-                    ->getSection()
-                    ->getId() === $draggedId
-                    ->getSection()
-                    ->getId());
+            $entityManager->flush();
+
+            return new JsonResponse("true");
+
         }
 
         #[Route('/{id}', name: 'app_neox_dash_section_delete', methods: [ 'POST' ])]

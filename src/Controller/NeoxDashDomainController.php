@@ -121,11 +121,11 @@
 
         }
 
-        #[Route('/exchange', name: 'app_neox_dash_domain_exchange', methods: [
+        #[Route('/exchange-{action}', defaults: ['action' => 'index'], name: 'app_neox_dash_domain_exchange', methods: [
             'GET',
             'POST'
         ])]
-        public function exchange(Request $request, NeoxDashDomainRepository $neoxDashDomainRepository, entityManagerInterface $entityManager): Response|JsonResponse
+        public function exchange(Request $request, string $action, NeoxDashDomainRepository $neoxDashDomainRepository, entityManagerInterface $entityManager): Response|JsonResponse
         {
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;

@@ -126,44 +126,61 @@ export default class extends Controller {
             const draggedElement  = this.DraggedItem;
             const draggedId = event.dataTransfer.getData("text/id");
             const draggedIdClass = event.dataTransfer.getData("text/idClass");
+            const draggedType = event.dataTransfer.getData("text/type");
 
             // "section" | "domain-browser" | "domain-move"
             const type = targetElement.dataset.type;
             const targetId = targetElement.dataset.id;
             const targetApi = targetElement.dataset.api;
             const targetIdClass = targetElement.dataset.idclass;
-
+            /*
+             typeTarget + typeDragged = module
+             section + section | section + domain-browser | section + domain-move |
+             domain-move + domain-move | domain-browser + null
+            */
+            let action = `${draggedType}->${type}`;
+            
             // log for dev ==========
-            console.log(`Type:  ${type} Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}, idClass ${draggedIdClass} = ${targetIdClass}`);
+            console.log(`TypeModule: ${action} | Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}, idClass ${draggedIdClass} = ${targetIdClass}`);
             targetElement.classList.remove('drag-hover', 'dragging');
-
+     
+            
             // if id different we do
             if(draggedId !== targetId & draggedIdClass === targetIdClass){
+                const refreshButton = document.getElementById('refreshClass');
                 try {
-                    switch(type) {
-                        case 'section':
+                    switch(action) {
+                        case 'section->section':
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
                             await this.updateEntity(draggedId, targetId, targetApi);
                             break;
 
-                        case 'domain-browser':
+                        case '->domain-browser':
                             // Logic for 'domain-browser' can be added here if needed
-
                             break;
 
-                        case 'domain-move':
+                        case 'domain-move->domain-move':
                             // Move the dragged element before the target element
                             targetElement.insertAdjacentElement('beforebegin', draggedElement);
                             await this.updateEntity(draggedId, targetId, targetApi);
-                            const refreshButton = document.getElementById('refreshClass');
+                            // const refreshButton = document.getElementById('refreshClass');
                             if(refreshButton){
                                 refreshButton.click(); // Simulate a button click
                             }
                             break;
-
+                        case 'domain-move->section':
+                            // Move the dragged element before the target element
+                            // targetElement.insertAdjacentElement('beforebegin', draggedElement);
+                            await this.updateEntity(draggedId, targetId, targetApi + "-domain");
+                            // const refreshButton = document.getElementById('refreshClass');
+                            if(refreshButton){
+                                refreshButton.click(); // Simulate a button click
+                            }
+                            console.log("domain-move->section");
+                            break;
                         default:
                             // Optionally handle any other types if needed
-                            await this.updateEntity(draggedId, targetId, targetApi);
+                            // await this.updateEntity(draggedId, targetId, targetApi);
                             break;
                     }
                 } catch(error) {
