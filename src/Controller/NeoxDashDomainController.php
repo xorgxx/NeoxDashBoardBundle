@@ -46,7 +46,8 @@
 //            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
-
+            
+            
             // build entity
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
@@ -82,11 +83,24 @@
             *   return $handleSubmit->flushHandleForm()->render();
             */
 
-            return $crudHandleBuilder
-                ->handleCreateForm()
-                ->handleForm($request)
-                ->render()
-            ;
+            $handleSubmit = $crudHandleBuilder->handleCreateForm()->preHandleForm($request);
+            $url = $handleSubmit->getIniHandleNeoxDashModel()->getEntity()->geturl();
+            // check if it exist in dBase
+            if ($url) {
+                $hash   = hash('sha256', $url);
+                $o      = $crudHandleBuilder->entityManager->getRepository(neoxDashDomain::class)->findOneBy([ "hash" => $hash ]);
+                if ( $o ) {
+                    return new jsonResponse("exist");
+                }
+            }
+
+            return $handleSubmit->flushHandleForm()->render();
+
+//            return $crudHandleBuilder
+//                ->handleCreateForm()
+//                ->handleForm($request)
+//                ->render()
+//            ;
 
         }
 
@@ -113,6 +127,7 @@
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
             */
+
             return $crudHandleBuilder
                 ->handleCreateForm()
                 ->handleForm($request)

@@ -95,6 +95,7 @@
 
             // submit form
             if ($this->iniHandleNeoxDashModel->getFormInterface()->isSubmitted() && $this->iniHandleNeoxDashModel->getFormInterface()->isValid()) {
+                
                 $this->entityManager->persist($this->iniHandleNeoxDashModel->getEntity());
                 $this->entityManager->flush();
                 $return[ "submit" ] = true;

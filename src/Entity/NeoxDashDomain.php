@@ -11,6 +11,7 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[Broadcast(template: '@NeoxDashBoardBundle\broadcast\NeoxDashDomain.stream.html.twig')]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
 class NeoxDashDomain
 {
@@ -43,6 +44,9 @@ class NeoxDashDomain
     #[ORM\Column(type: 'integer')]
     #[Gedmo\SortablePosition()]
     private ?int $position = null;
+
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private ?string $hash = null;
 
     public function __construct()
     {
@@ -133,6 +137,28 @@ class NeoxDashDomain
     {
         $this->position = $position;
         return $this;
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(?string $hash): NeoxDashDomain
+    {
+        $this->hash = $hash;
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function generateHash(): void
+    {
+        // Concatène les attributs à hacher
+        $concatenatedValue = $this->url;
+
+        // Générez le hash et définissez-le
+        $this->hash = hash('sha256', $concatenatedValue);
     }
 
 }
