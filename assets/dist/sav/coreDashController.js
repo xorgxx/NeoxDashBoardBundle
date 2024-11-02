@@ -20,10 +20,24 @@ export class coreDashController extends Controller {
         replie: {type: String, default: 'Recherche ...'},
         url: {type: String, default: 'Fetching ...'},
         idElement: {type: String, default: 'element'},
-        timeout: {type: Number, default: 5000},
     };
     
-    async fetchForm(body){
+    initializeAttributes(link = null) {
+        // Use either data-* or Stimulus attributes based on the presence of link
+        link ? this.initializeDataAtt(link) : this.initializeStimulusAtt();
+    }
+    
+    initializeStimulusAtt(){
+        // Initialize values based on data- attributes
+        this.#initializeStAttValues();
+    }
+    
+    initializeDataAtt(link){
+        // Initialize values based on data- attributes
+        this.#initializeDataAttValues(link);
+    }
+    
+    async fetchForm(body, signal){
         
         swal.update({
             'text': `Loading form waiting ...`,
@@ -32,30 +46,17 @@ export class coreDashController extends Controller {
         swal.showLoading()
         
         let $f = JSON.stringify(body);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => {
-            controller.abort();
-            return {type: 'timeout', message: 'timeout'};
-        }, this.timeoutValue); // Set timeout to 5 seconds
-        
-        try {
-            const response = await fetch(this.urlValue, {
-                method: "post",
-                body: $f,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                credentials: 'include',
-                signal: controller.signal
-            });
-            clearTimeout(timeoutId);
-            return await this.#handleResponse(response);
-        } catch (error) {
-            if(error.name === 'AbortError'){
-                return {type: 'error', message: `timeout : ${this.timeoutValue / 1000} secondes` };
-            }
-            this.#handleError(error);
-        }
+        return fetch(this.urlValue, {
+            method: "post",
+            body: $f,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            signal,
+            credentials: 'include'
+        })
+        .then(await this.#handleResponse)
+        .catch(this.#handleError)
     }
     
     async submitForm(signal) {
@@ -81,18 +82,6 @@ export class coreDashController extends Controller {
             return; // Empêcher la soumission si le formulaire est invalide
         }
         
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => {
-            controller.abort();
-            swal.fire({
-                title: this.titleValue,
-                html: `timeout : ${this.timeoutValue / 1000} secondes`,
-                showCancelButton: this.showCancelButtonValue,
-                showConfirmButton: false,
-                preConfirm: () => this.submitForm("formNeox"),
-            });
-        }, this.timeoutValue); // Set timeout to 5 seconds
-        
         swal.update({
             'text': `En attente de soumission...`,
             'html': "",
@@ -101,20 +90,20 @@ export class coreDashController extends Controller {
         
         swal.showLoading();
         
-        try {
-            const response = await fetch($form.action, {
-                method: $form.method,
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json',
-                },
-                signal: controller.signal,
-                credentials: 'include'
-            });
-            clearTimeout(timeoutId);
-            const r = await this.#handleResponse(response);
-            if (r == "true") {
+        // Envoi de la requête avec les données du formulaire
+        return fetch($form.action, {
+            method: $form.method,
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            },
+            signal,
+            credentials: 'include'
+        })
+        .then(this.#handleResponse)
+        .then(data => {
+            if (data == "true") {
                 toast.fire({
                     icon: "success",
                     title: "Changements effectués avec succès"
@@ -132,24 +121,29 @@ export class coreDashController extends Controller {
                     }
                     return;
                 }
+                
+                // if (this.#isRelativeUrl(idElement)) {
+                //     Turbo.visit(idElement);
+                // } else {
+                //     const id = idElement.split('@')[1];
+                //     const component = document.getElementById(idElement).__component;
+                //     component.action('refresh', {'query': id});
+                // }
+                
             } else {
                 swal.fire({
                     title: this.titleValue,
-                    html: responseText,
+                    html: data,
                     showCancelButton: this.showCancelButtonValue,
                     confirmButtonText: this.confirmButtonTextValue,
-                    denyButtonText: this.denyButtonTextValue,
+                    allowOutsideClick: false,
                     preConfirm: () => this.submitForm("formNeox"),
                 });
+                swal.showValidationMessage(`${error}`);
             }
-        } catch (error) {
-            if(error.name === 'AbortError'){
-                return;
-            }
-            this.#handleError(error);
-        }
+        })
+        .catch(this.#handleError);
     }
-    
     
     async #handleResponse(result){
         if(!result.ok){
@@ -173,21 +167,7 @@ export class coreDashController extends Controller {
         );
     }
     
-    initializeAttributes(link = null) {
-        // Use either data-* or Stimulus attributes based on the presence of link
-        link ? this.initializeDataAtt(link) : this.initializeStimulusAtt();
-    }
-    
-    initializeStimulusAtt(){
-        // Initialize values based on data- attributes
-        this.#initializeStAttValues();
-    }
-    
-    initializeDataAtt(link){
-        // Initialize values based on data- attributes
-        this.#initializeDataAttValues(link);
-    }
-    // Get by stimulus attributes
+    // Get by stimulus attributes 
     #initializeStAttValues(){
         for(const key of Object.keys(this.constructor.values)) {
             // We use the Stimulus attributes
@@ -212,6 +192,19 @@ export class coreDashController extends Controller {
                 : this.constructor.values[key].default;
         }
     }
+    // // Get by data-attributes
+    // #initializeDataAttValues() {
+    //     for (const key of Object.keys(this.constructor.values)) {
+    //         // Récupérer la valeur de l'attribut data-* correspondant
+    //         const dataValue = this.element.dataset[this.#camelCaseToDash(key)];
+    //
+    //         // Si la valeur data-* est fournie, on la convertit et l'utilise
+    //         // Sinon, on utilise la valeur par défaut
+    //         this[`${key}Value`] = dataValue !== undefined
+    //             ? this.#convertDataValue(dataValue)  // Convertir la valeur si nécessaire
+    //             : this.constructor.values[key].default;
+    //     }
+    // }
 
 // Fonction utilitaire pour convertir le nom camelCase en format dash-case
     #camelCaseToDash(key) {

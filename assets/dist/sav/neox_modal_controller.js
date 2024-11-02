@@ -1,3 +1,4 @@
+<<<<<<<<<<<<<<  ✨ Codeium Command 🌟 >>>>>>>>>>>>>>>>
 import {coreDashController} from './coreDashController.js';
 import * as bootstrap from 'bootstrap';
 
@@ -25,6 +26,7 @@ export default class NeoxModalController extends coreDashController {
             // showCancelButton: false,
             confirmButtonText: this.confirmButtonTextValue,
             preConfirm: () => this.fetch({domain}),
+            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch({domain})),
         });
         // Automatically trigger the confirmation button after the first step
         swal.clickConfirm();
@@ -58,6 +60,7 @@ export default class NeoxModalController extends coreDashController {
             confirmButtonText: 'Oui, supprimer !',
             cancelButtonText: 'Annuler',
             preConfirm: () => this.deleteItem(url, token) // Use a function that returns a promise
+            preConfirm: () => this.handleRequestWithTimeout(() => this.deleteItem(url, token)) // Use a function that returns a promise
         });
     }
     
@@ -68,45 +71,54 @@ export default class NeoxModalController extends coreDashController {
             allowOutsideClick: false
         });
     }
-
+    
     async fetch(data){
+        const response = await this.fetchForm(data); // Pass a function that returns a promise
+        const response = await this.handleRequestWithTimeout(() => this.fetchForm(data)); // Pass a function that returns a promise
+        return swal.fire({
+            title: this.titleValue,
+            html: response,
+            showCancelButton: this.showCancelButtonValue,
+            confirmButtonText: this.confirmButtonTextValue,
+            allowOutsideClick: false,
+            preConfirm: () => this.handleFormSubmit()
+        });
+    }
+    
+    async handleRequestWithTimeout(requestFunc, timeout = 30000){ // Augmentez le timeout à 30 secondes
+        const timeoutId = setTimeout(() => {
+            throw new Error("Request timed out");
+        }, timeout);
+        
         try {
-            const response = await this.fetchForm(data); // Pass a function that returns a promise
-            if (response.type === 'error' || response.type === 'AbortError') {
-                return swal.fire({
-                    title: this.titleValue,
-                    html: response.message,
-                    showCancelButton: this.showCancelButtonValue,
-                    allowOutsideClick: false
-                });
-            }
-            return swal.fire({
-                title: this.titleValue,
-                html: response,
-                showCancelButton: this.showCancelButtonValue,
-                confirmButtonText: this.confirmButtonTextValue,
-                allowOutsideClick: false,
-                preConfirm: () => this.handleFormSubmit()
+            const result = await this.withTimeout(requestFunc(), timeout);
+            return result; // Retourne le résultat de la requête
+        } catch(error) {
+            swal.fire({
+                icon: 'error',
+                title: 'Request failed',
+                text: error.message
             });
-        } catch (error) {
-            if (error === 'timeout' || error.name === 'AbortError') {
-                return swal.fire({
-                    title: this.titleValue,
-                    html: 'Une erreur est survenue.',
-                    showCancelButton: this.showCancelButtonValue,
-                    confirmButtonText: false,
-                    allowOutsideClick: false
-                });
-            }
-            throw error;
+            throw error; // Rejette l'erreur pour le traitement en amont
+        } finally {
+            clearTimeout(timeoutId); // Arrête le timeout
         }
     }
     
     async handleFormSubmit(){
         return await this.submitForm(); // Pass a function that returns a promise
+        return await this.handleRequestWithTimeout(() => this.submitForm()); // Pass a function that returns a promise
     }
     
     async deleteItem(url, token){
+        const controller = new AbortController(); // Crée un contrôleur d'abort
+        const {signal} = controller;
+        
+        // Définissez un délai d'attente pour la requête
+        const timeout = setTimeout(() => {
+            controller.abort(); // Annule la requête si le délai est dépassé
+        }, 15000); // Délai d'attente de 5 secondes
+        
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -117,6 +129,7 @@ export default class NeoxModalController extends coreDashController {
                 },
                 credentials: 'include',
                 body: new URLSearchParams({'_token': token}),
+                signal // Ajoute le signal d'abort
             });
             
             // Si la réponse n'est pas OK, lance une erreur
@@ -156,6 +169,8 @@ export default class NeoxModalController extends coreDashController {
             } else {
                 swal.fire('Erreur', error.message, 'error');
             }
+        } finally {
+            clearTimeout(timeout); // Efface le délai d'attente
         }
     }
     
@@ -191,9 +206,25 @@ export default class NeoxModalController extends coreDashController {
         }
     }
     
+    withTimeout(promise, ms){
+        const controller = new AbortController();
+        const {signal} = controller;
+        
+        return Promise.race([
+            promise, // Pass the promise directly now
+            new Promise((_, reject) =>
+                setTimeout(() => {
+                    controller.abort();
+                    reject(new Error("Request timed out"));
+                }, ms)
+            )
+        ]);
+    }
+    
     #isRelativeUrl(url){
         // Vérifie si la chaîne commence par "/", "./" ou "../", typiquement des indicateurs d'URL relative
         return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }
     
 }
+<<<<<<<  761d4e68-2cb7-4c07-adc4-a02caf378902  >>>>>>>

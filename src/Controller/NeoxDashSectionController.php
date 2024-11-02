@@ -97,7 +97,7 @@
                 $draggedSection = $entityManager->getRepository(neoxDashDomain::class)->find($data[ "draggedId" ]);
                 $targetSection  = $neoxDashSectionRepository->find($data[ "targetId" ]);
                 $draggedSection->setSection($targetSection);
-                $draggedSection->setPosition(0);
+                $draggedSection->setPosition(1);
             }
 
             $entityManager->flush();
