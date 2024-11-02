@@ -86,7 +86,12 @@ export default class extends Controller {
         if(targetElement && targetElement.dataset.type !== "domain-browser" ){
             const draggedId = event.dataTransfer.getData("text/id");
             if(targetElement.dataset.id !== draggedId){
-                targetElement.classList.add('drag-hover');
+                const cardElement = targetElement.querySelector('.card');
+                if (cardElement) {
+                    cardElement.classList.add('drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
+                } else {
+                    targetElement.classList.add('drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+                }
             }
         }
     }
@@ -94,7 +99,12 @@ export default class extends Controller {
     handleDragLeave(event){
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
         if(targetElement){
-            targetElement.classList.remove('drag-hover');
+            const cardElement = targetElement.querySelector('.card');
+            if (cardElement) {
+                cardElement.classList.remove('drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
+            } else {
+                targetElement.classList.remove('drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+            }
             targetElement.style.cursor = ''; // Réinitialiser le curseur
         }
     }
@@ -102,8 +112,12 @@ export default class extends Controller {
     handleDragEnd(event){
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
         if(targetElement){
-            targetElement.classList.remove('drag-hover');
-            targetElement.classList.remove('dragging');
+            const cardElement = targetElement.querySelector('.card');
+            if (cardElement) {
+                cardElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
+            } else {
+                targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+            }
             targetElement.style.cursor = ''; // Réinitialiser le curseur
         }
     }
@@ -142,7 +156,13 @@ export default class extends Controller {
             
             // log for dev ==========
             console.log(`TypeModule: ${action} | Dragged ID: ${draggedId}, Dropped On ID: ${targetId}, Api: ${targetApi}, idClass ${draggedIdClass} = ${targetIdClass}`);
-            targetElement.classList.remove('drag-hover', 'dragging');
+            
+            const cardElement = targetElement.querySelector('.card');
+            if (cardElement) {
+                cardElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
+            } else {
+                targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+            }
      
             
             // if id different we do
