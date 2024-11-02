@@ -1,4 +1,4 @@
-<<<<<<<<<<<<<<  ✨ Codeium Command 🌟 >>>>>>>>>>>>>>>>
+
 import {coreDashController} from './coreDashController.js';
 import * as bootstrap from 'bootstrap';
 
@@ -26,7 +26,7 @@ export default class NeoxModalController extends coreDashController {
             // showCancelButton: false,
             confirmButtonText: this.confirmButtonTextValue,
             preConfirm: () => this.fetch({domain}),
-            preConfirm: () => this.handleRequestWithTimeout(() => this.fetch({domain})),
+   
         });
         // Automatically trigger the confirmation button after the first step
         swal.clickConfirm();
@@ -60,7 +60,7 @@ export default class NeoxModalController extends coreDashController {
             confirmButtonText: 'Oui, supprimer !',
             cancelButtonText: 'Annuler',
             preConfirm: () => this.deleteItem(url, token) // Use a function that returns a promise
-            preConfirm: () => this.handleRequestWithTimeout(() => this.deleteItem(url, token)) // Use a function that returns a promise
+
         });
     }
     
@@ -74,7 +74,6 @@ export default class NeoxModalController extends coreDashController {
     
     async fetch(data){
         const response = await this.fetchForm(data); // Pass a function that returns a promise
-        const response = await this.handleRequestWithTimeout(() => this.fetchForm(data)); // Pass a function that returns a promise
         return swal.fire({
             title: this.titleValue,
             html: response,
@@ -107,7 +106,6 @@ export default class NeoxModalController extends coreDashController {
     
     async handleFormSubmit(){
         return await this.submitForm(); // Pass a function that returns a promise
-        return await this.handleRequestWithTimeout(() => this.submitForm()); // Pass a function that returns a promise
     }
     
     async deleteItem(url, token){
@@ -227,4 +225,3 @@ export default class NeoxModalController extends coreDashController {
     }
     
 }
-<<<<<<<  761d4e68-2cb7-4c07-adc4-a02caf378902  >>>>>>>

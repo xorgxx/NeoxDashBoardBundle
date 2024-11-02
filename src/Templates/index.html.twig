@@ -1,6 +1,20 @@
 
 <turbo-frame id="NeoxDashControl" >
     <style>
+        .parallax {
+            /* The image used */
+            background-image: url("{{ asset('bundles/neoxdashboard/images/neoxBack.png') }}");
+
+            /* Set a specific height */
+            min-height: 500px;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -72,9 +86,9 @@
 
     </style>
     <div id="loader" class="loader">
-        <img src="{{ asset('bundles/neoxdashboard/images/Infinity.gif') }}" alt="Loading...">
+        <img src="{{ asset('./bundles/neoxdashboard/images/Infinity.gif') }}" alt="Loading...">
     </div>
-    <div id="loading"
+    <div id="loading" class="parallax"
         {{
             stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_drop') |
             stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_modal')

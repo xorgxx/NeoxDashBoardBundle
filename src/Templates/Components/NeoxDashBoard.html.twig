@@ -1,6 +1,7 @@
-{# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} #}
+{# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}"#}
 <div {{ attributes }} >
-    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" >
+{#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" >#}
+    <div class="pb-5" >
         <div class=" sticky-top" >
             <turbo-frame id="NeoxDashHeader" >
                 <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader" />
