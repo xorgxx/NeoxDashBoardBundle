@@ -20,7 +20,7 @@ export class coreDashController extends Controller {
         replie: {type: String, default: 'Recherche ...'},
         url: {type: String, default: 'Fetching ...'},
         idElement: {type: String, default: 'element'},
-        timeout: {type: Number, default: 5000},
+        timeout: {type: Number, default: 15000},
     };
     
     async fetchForm(body){
