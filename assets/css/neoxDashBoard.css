@@ -57,29 +57,29 @@
 }
 
 .dropzone {
-    border: 2px dashed #ccc;
-    padding: 5px;
-    transition: background-color 0.3s ease;
+    border: 2px dashed #ccc !important;
+    padding: 5px !important;
+    transition: background-color 0.3s ease !important;
 }
 
 .dropzone-hover-false {
-    background-color: #d34532; /* Couleur de survol */
-    border: 2px dashed #a38a23;
+    background-color: #d34532 !important; /* Couleur de survol */
+    border: 2px dashed #a38a23 !important;
 }
 
 .dropzone-hover {
-    background-color: #23ff00; /* Couleur de survol */
-    border: 2px dashed #0b4903;
+    background-color: #23ff00 !important; /* Couleur de survol */
+    border: 2px dashed #0b4903 !important;
 }
 
 .dropzone-valid {
-    background-color: #d4edda; /* Vert clair pour une URL valide */
-    border-color: #28a745;
+    background-color: #d4edda !important; /* Vert clair pour une URL valide */
+    border-color: #28a745 !important;
 }
 
 .dropzone-invalid {
-    background-color: #f8d7da; /* Rouge clair pour une URL invalide */
-    border-color: #dc3545;
+    background-color: #f8d7da !important; /* Rouge clair pour une URL invalide */
+    border-color: #dc3545 !important;
 }
 
 /*--------------------------------------------------------------
