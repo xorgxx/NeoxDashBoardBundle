@@ -48,8 +48,8 @@
 }
 
 .drag-hover {
-    border: 0.5px dashed #cb932b;
-    background-color: #8dc05e;
+    border: 0.5px dashed #cb932b !important;
+    background-color: #8dc05e !important;
 }
 
 .dragging {
