@@ -1,15 +1,16 @@
 {# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}"#}
 <div {{ attributes }} >
 {#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" >#}
-    <div class="pb-5" >
-        <div class=" sticky-top" >
+    <section class="container" >
+        <div class="" >
             <turbo-frame id="NeoxDashHeader" >
                 <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader" />
             </turbo-frame >
             {#    {% include '@NeoxDashBoardBundle/_Partials/header/Inc-Header.html.twig' %} #}
         </div >
-        <div class="container" >
-            {#  ===== Builder Class ====== #}
+        <section >
+
+        {#  ===== Builder Class ====== #}
             <div id="NeoxDashBoardContent" >
                 {% if NeoxDashSetup.class is not empty %}
                     {#  ===== LOOP to builder Class ====== #}
@@ -24,7 +25,7 @@
             </div >
 
             {#    </div> #}
-        </div >
+        </section >
     </div >
 </div >
 

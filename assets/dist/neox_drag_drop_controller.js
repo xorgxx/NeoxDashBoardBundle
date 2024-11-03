@@ -59,14 +59,14 @@ export default class extends Controller {
     
     handleDragEnter(event){
         event.preventDefault(); // Nécessaire pour permettre le drop
-        const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
-        if(targetElement){
-            const draggedId = event.dataTransfer.getData("text/id");
-            if(targetElement.dataset.id !== draggedId){
-                targetElement.classList.remove('dragging');
-                targetElement.style.cursor = 'not-allowed';
-            }
-        }
+        // const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
+        // if(targetElement){
+        //     const draggedId = event.dataTransfer.getData("text/id");
+        //     if(targetElement.dataset.id !== draggedId){
+        //         targetElement.classList.remove('dragging');
+        //         targetElement.style.cursor = 'not-allowed';
+        //     }
+        // }
     }
     
     handleDrag(event){
@@ -115,9 +115,9 @@ export default class extends Controller {
             const cardElement = targetElement.querySelector('.card');
             if (cardElement) {
                 cardElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
-            } else {
-                targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
             }
+            targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+     
             targetElement.style.cursor = ''; // Réinitialiser le curseur
         }
     }
@@ -160,9 +160,9 @@ export default class extends Controller {
             const cardElement = targetElement.querySelector('.card');
             if (cardElement) {
                 cardElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à l'élément avec la classe 'card'
-            } else {
-                targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
             }
+            targetElement.classList.remove('dragging', 'drag-hover'); // Ajoute la classe à targetElement si 'card' n'est pas trouvé
+           
      
             
             // if id different we do

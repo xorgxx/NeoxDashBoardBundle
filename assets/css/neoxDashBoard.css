@@ -1,0 +1,136 @@
+
+.parallax {
+    /* The image used */
+    background-image: url("../images/neoxBack.png");
+
+    /* Set a specific height */
+    min-height: 500px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.loader {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed to the center of the screen */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image */
+    z-index: 99999; /* Ensure it is above other elements */
+}
+
+.loader img {
+    width: 100%; /* Make the image responsive to the loader's size */
+    opacity: 1; /* Fully opaque */
+}
+
+.no-select {
+    -webkit-user-select: none; /* Safari and Chrome */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+}
+
+/* Apply to the entire body during loading */
+.body-loading {
+    opacity: 0.5 !important; /* Opacity for the body to indicate loading */
+    pointer-events: none; /* Disable all mouse events */
+    position: relative; /* Ensures that the body respects stacking context */
+    z-index: 1; /* Lower z-index than loader */
+}
+
+.drag-hover {
+    border: 0.5px dashed #cb932b;
+    background-color: #8dc05e;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.dropzone {
+    border: 2px dashed #ccc;
+    padding: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dropzone-hover-false {
+    background-color: #d34532; /* Couleur de survol */
+    border: 2px dashed #a38a23;
+}
+
+.dropzone-hover {
+    background-color: #23ff00; /* Couleur de survol */
+    border: 2px dashed #0b4903;
+}
+
+.dropzone-valid {
+    background-color: #d4edda; /* Vert clair pour une URL valide */
+    border-color: #28a745;
+}
+
+.dropzone-invalid {
+    background-color: #f8d7da; /* Rouge clair pour une URL invalide */
+    border-color: #dc3545;
+}
+
+/*--------------------------------------------------------------
+# Sections General
+--------------------------------------------------------------*/
+section {
+    padding: 60px 0;
+    overflow: hidden;
+}
+
+.section-bg {
+    background-color: #f3f5fa;
+}
+
+.section-title {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+}
+
+.section-title h2::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: #ddd;
+    bottom: 1px;
+    left: calc(50% - 60px);
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: #47b2e4;
+    bottom: 0;
+    left: calc(50% - 20px);
+}
+
+.section-title p {
+    margin-bottom: 0;
+}

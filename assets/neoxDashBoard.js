@@ -7,6 +7,8 @@
  import './bootstrap.js';
 
 /* maine styles for customization */
+import './css/neoxDashBoard.css'
+
 
 /* Manage by Asset-Mapper */
 import './Helper/sweetAlert.js';
