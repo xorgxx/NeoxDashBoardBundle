@@ -54,6 +54,10 @@
     </div >
 
 {% else %}
+
+{% endif %}
+{#  ===== Botton ADD DOMAIN ======            #}
+<div class="right-item" >
     <div
         {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
@@ -75,10 +79,9 @@
 
         </div >
     </div >
-{% endif %}
-{#  ===== Botton ADD DOMAIN ======            #}
-
+</div>
 <div class="right-item" >
+
     <button
 {#        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'activateFirstSlide', 'click') }}#}
 {#        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"#}

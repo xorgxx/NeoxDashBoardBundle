@@ -4,7 +4,7 @@
     data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
     data-title="Delete domaine {{ item.name }}"
     data-text="Section and all domain inside will also be delete! Do you want to continue?"
-    data-id-element="{{ path('app_neox_dashboard_home')}}"
+    data-id-element="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
     data-url="{{ path('app_neox_dash_domain_delete', { id: item.id }) }}"
 >
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">

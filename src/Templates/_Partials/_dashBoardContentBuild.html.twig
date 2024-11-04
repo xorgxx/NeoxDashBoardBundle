@@ -3,9 +3,9 @@
 {% set columns_per_row      = section.edit|default(false) ? 4 : section.colonne %}
 {% set rows_per_carousel    = section.edit|default(false) ? ((section.NeoxDashDomains|length)/columns_per_row) : section.row %}
 {% set cards_per_row        = 12 %}
-{% set nb_section           = ((section.NeoxDashDomains|length) / (columns_per_row * rows_per_carousel)) %}
+{% set nb_section           = section.NeoxDashDomains|length > 1 ? ((section.NeoxDashDomains|length)/ (columns_per_row * rows_per_carousel)) : 1 %}
 {% set nb_section           = nb_section < 1 ? 1 : nb_section %}
-{% set height = section.heigth|default('2.8') ~ 'rem' %}
+{% set height               = section.heigth|default('2.8') ~ 'rem' %}
 
 
 <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
