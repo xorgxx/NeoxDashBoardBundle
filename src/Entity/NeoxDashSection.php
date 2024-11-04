@@ -27,7 +27,7 @@ class NeoxDashSection
     private ?int $colonne = 5;
 
     #[ORM\Column(type: 'decimal', precision: 4, scale: 2, nullable: true)]
-    private ?string $heigth;
+    private ?string $heigth = "2.8";
 
     #[ORM\Column(nullable: true)]
     private ?bool $edit = false;
