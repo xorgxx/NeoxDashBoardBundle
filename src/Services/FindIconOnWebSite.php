@@ -74,19 +74,30 @@
             return "500";
         }
 
+        /**
+         * @throws \Exception
+         */
         public function extractDomain($url) {
 
             if (!preg_match('/^(https?|ftp):\/\//', $url)) {
                 $url = 'http://' . $url; // Ajoute un schéma par défaut
             }
-            $parsedUrl = parse_url($url);
 
-            // Vérifier si le domaine existe et retourner le domaine sans www
-            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
-            return  [
-                "domain"    => $domain,
-                "host"      => $parsedUrl['host'],
+            // Parse URL and retrieve host
+            $parsedUrl = parse_url($url);
+            if ($parsedUrl === false) {
+                return [
+                    throw new \Exception("Invalid URL: $url"), // TODO: throw
+                ];
+            }
+            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : ($_SERVER['HTTP_HOST'] ?? 'localhost');
+
+            // Initialize default output array
+            $o = [
+                "domain" => $domain,
+                "host" => $parsedUrl['host'] ?? 'localhost',
             ];
 
+            return $o;
         }
     }
