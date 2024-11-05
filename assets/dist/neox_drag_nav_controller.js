@@ -4,21 +4,25 @@ let url = null;
 export default class extends Controller {
     static targets = ['dropzone'];
     
+    // Called when the controller is connected to the DOM
     connect() {
         this.addEventListeners();
     }
     
+    // Called when the controller is disconnected from the DOM
     disconnect() {
+        // Remove event listeners if the dropzoneTarget exists
         if (this.hasOwnProperty('dropzoneTarget') && this.dropzoneTarget) {
             const { dropzoneTarget } = this;
             dropzoneTarget.removeEventListener('dragover', this.handleDragOver.bind(this));
             dropzoneTarget.removeEventListener('dragleave', this.handleMouseOut.bind(this));
             dropzoneTarget.removeEventListener('drop', this.handleDrop.bind(this));
         } else {
-            console.info('dropzoneTarget n\'existe pas ou est indéfini.');
+            console.info('dropzoneTarget does not exist or is undefined.');
         }
     }
     
+    // Adds the event listeners to the dropzone target
     addEventListeners() {
         const { dropzoneTarget } = this;
         dropzoneTarget.addEventListener('dragover', this.handleDragOver.bind(this));
@@ -26,68 +30,78 @@ export default class extends Controller {
         dropzoneTarget.addEventListener('drop', this.handleDrop.bind(this));
     }
     
+    // Handles the dragover event by adding a hover effect
     handleDragOver(event) {
         event.preventDefault();
         this.dropzoneTarget.classList.add('dropzone-hover');
     }
     
+    // Removes the hover effect on dragleave event
     handleMouseOut() {
         this.dropzoneTarget.classList.remove('dropzone-hover');
     }
     
+    // Handles the drop event and processes each dropped item
     async handleDrop(event) {
         event.preventDefault();
-  
-        const url  = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
         
-        if(url){
+        // Get the URL from the dropzone data attribute
+        const url = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
+        if (url) {
             this.url = url.dataset.url;
         }
-        const items = event.dataTransfer.items;
+        
+        const items = Array.from(event.dataTransfer.items);
         this.dropzoneTarget.classList.remove('dropzone-hover');
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
+        
+        // Sort items based on preferred types
+        const preferredTypes = ['text/x-moz-url', 'text/plain', 'text/uri-list', 'text/html', 'text/x-moz-place'];
+        items.sort((a, b) => preferredTypes.indexOf(a.type) - preferredTypes.indexOf(b.type));
+        
+        for (let item of items) {
             const shouldBreak = await this.processDrop(item);
             if (shouldBreak) {
-                break; // Sort de la boucle si processDrop retourne true
+                break;
             }
         }
     }
     
+    // Processes each dropped item based on its type and sends it if it's a valid URL
     processDrop(item) {
         return new Promise((resolve) => {
             if (item?.kind !== 'string') {
-                console.warn('L\'élément n\'est pas de type "string".');
+                console.warn('Item is not of type "string".');
                 return resolve(false);
             }
             
-            item.getAsString((text) => {
+            item.getAsString(async (text) => {
                 const cleanedText = text.trim();
                 if (!cleanedText) {
-                    console.warn('Contenu vide ou invalide.');
+                    console.warn('Empty or invalid content.');
                     return resolve(false);
                 }
                 
-                let urls = this.extractURLs(item.type, cleanedText);
+                // Extract URLs based on item type
+                let urls = item.type === '' ? cleanedText : this.extractURLs(item.type, cleanedText);
                 
                 if (urls.length > 0) {
-                    this.sendURLs(urls)
-                    .then(() => {
-                        console.log('Données envoyées avec succès:', urls);
+                    try {
+                        await this.sendURLs(urls);
+                        console.log('Data sent successfully:', urls);
                         resolve(true);
-                    })
-                    .catch(error => {
-                        console.error('Erreur lors de l\'envoi des données:', error);
+                    } catch (error) {
+                        console.error('Error sending data:', error);
                         resolve(false);
-                    });
+                    }
                 } else {
-                    console.warn('Aucune URL à envoyer.');
+                    console.warn('No URLs to send.');
                     resolve(false);
                 }
             });
         });
     }
     
+    // Extracts URLs from the dropped item based on its type
     extractURLs(type, text) {
         let urls = [];
         
@@ -98,11 +112,12 @@ export default class extends Controller {
                 break;
             
             case 'text/uri-list':
+            case 'text/x-moz-url':
                 urls = text.split('\n').filter(url => url.trim() !== '');
                 if (urls.length > 1) {
-                    console.log('Dropped URI List URLs:', urls);
+                    console.log('Dropped URLs:', urls);
                 } else {
-                    console.warn('Liste d\'URI ne contient qu\'une seule URL ou est vide.');
+                    console.warn('Type "text/uri-list" contains fewer than two URLs.');
                 }
                 break;
             
@@ -114,10 +129,10 @@ export default class extends Controller {
                         console.log('Dropped Bookmark URL:', bookmarkURL);
                         urls.push(bookmarkURL);
                     } else {
-                        console.warn('Bookmark URL vide ou invalide.');
+                        console.warn('Empty or invalid bookmark URL.');
                     }
                 } catch (error) {
-                    console.error('Erreur lors de l\'analyse de bookmark:', error);
+                    console.error('Error parsing bookmark:', error);
                 }
                 break;
             
@@ -126,23 +141,15 @@ export default class extends Controller {
                 urls.push(text);
                 break;
             
-            case 'text/x-moz-url':
-                urls = text.split('\n').filter(url => url.trim() !== '');
-                if (urls.length > 1) {
-                    console.log('Dropped URLs:', urls);
-                } else {
-                    console.warn('Type "text/x-moz-url" contient moins de deux URL.');
-                }
-                break;
-            
             default:
-                console.log('Type non pris en charge:', type);
+                console.log('Unsupported type:', type);
                 break;
         }
         
         return urls;
     }
     
+    // Sends the URLs to the server using a POST request
     sendURLs(urls) {
         const payload = { urls };
         return fetch(this.url, {
@@ -154,20 +161,17 @@ export default class extends Controller {
         })
         .then(response => {
             if (response.ok) {
-                // Affiche un toast de succès avec le message reçu
-                return response.json(); // Supposons que la réponse contient des données JSON
+                return response.json();
             } else {
-                throw new Error('La requête a échoué avec le code de statut ' + response.status);
+                throw new Error('Request failed with status code ' + response.status);
             }
         })
         .then(data => {
-            // Affiche le toast si la requête est réussie
             toast.fire({
                 icon: "success",
-                title: data // Utilise la clé 'message' du JSON de la réponse
+                title: data // Display response message
             });
             
-            // Actualise la page si le bouton est présent
             const refreshButton = document.getElementById('refreshClass');
             if (refreshButton) {
                 refreshButton.click();
@@ -176,14 +180,12 @@ export default class extends Controller {
             return true;
         })
         .catch(error => {
-            console.error("Erreur:", error);
-            // Affiche un toast d'erreur
+            console.error("Error:", error);
             toast.fire({
                 icon: "error",
-                title: "Une erreur est survenue : " + error.message
+                title: "An error occurred: " + error.message
             });
+            return false;
         });
-
     }
-    
 }

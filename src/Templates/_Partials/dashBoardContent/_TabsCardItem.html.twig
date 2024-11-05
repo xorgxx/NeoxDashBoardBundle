@@ -16,7 +16,7 @@
                     >
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                         <twig:ux:icon class="flex-shrink-0 icon-normal"
-                            name="mynaui:letter-{{ item.name|getShortDomain["first"] }}-diamond"
+                            name="{{ item.name|getShortDomain["icon"] }}"
                             width="{{ height }}"
                             style="height: auto; transform: rotate({{ 0 }}deg)" color="{{ item.color }}" />
                     {% else %}

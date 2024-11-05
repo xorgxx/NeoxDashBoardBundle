@@ -82,12 +82,27 @@ class NeoxDashBroadExtension extends AbstractExtension
 
         // Extraire la première lettre du domaine principal
         $firstLetter = substr($mainDomain, 0, 1);
+        $icon = "mynaui:aredaze-square";
+        // Check if it's a letter (e.g., for domain names)
+        if (ctype_alpha($firstLetter)) {
+            $icon = "mynaui:letter-$firstLetter-diamond";
+        }
+        // Check if it's a digit (e.g., for IP addresses)
+        elseif (ctype_digit($firstLetter)) {
+            $formatter  = new \NumberFormatter("en", \NumberFormatter::SPELLOUT);
+            $words      = $formatter->format($firstLetter);
+            $icon       = "mynaui:$words-diamond";
+        }
+
+
+
         $a = [
             'url'       => $url,
             'domain'    => $domain,
-            'first'     => $firstLetter
+            'first'     => $firstLetter,
+            'icon'      => $icon
         ];
-        
+
         return $a;
     }
 }
