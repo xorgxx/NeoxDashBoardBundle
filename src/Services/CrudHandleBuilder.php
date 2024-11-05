@@ -158,7 +158,7 @@
             // This will render only what we need to send
             return match ($return[ "status" ]) {
                 "redirect"  => $return[ "submit" ] ? $this->redirectToRoute($this->getIniHandleNeoxDashModel()->getRoute() . '_index') : null,
-                "ajax"      => $return[ "submit" ] ? new JsonResponse(true) : new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getForm(), ['form' => $return[ "formType" ]->createView(), ])),
+                "ajax"      => $return[ "submit" ] ? new JsonResponse($return[ "data" ] ?? true) : new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getForm(), ['form' => $return[ "formType" ]->createView(), ])),
                 "turbo"     => $return[ "submit" ] ? $return[ "data" ] : new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $return[ "formType" ]->createView(), ])),
                 default     => new Response($this->twig->render($this->getIniHandleNeoxDashModel()->getNew(), [ 'form' => $return[ "formType" ]->createView(), ])),
             };

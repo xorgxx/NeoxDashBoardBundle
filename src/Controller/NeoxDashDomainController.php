@@ -10,6 +10,7 @@
     use Doctrine\ORM\EntityManagerInterface;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\FindIconOnWebSite;
+    use Random\RandomException;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Symfony\Component\HttpFoundation\Request;
@@ -101,6 +102,86 @@
 //                ->handleForm($request)
 //                ->render()
 //            ;
+
+        }
+
+        /**
+         * @param Request         $request
+         * @param NeoxDashSection $neoxDashSection
+         *
+         * @return Response
+         * @throws RandomException
+         */
+        #[Route('/new/batch/{id}', name: 'app_neox_dash_domain_new_batch', methods: ['GET', 'POST'])]
+        public function newBatch(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
+        {
+            // Determine the template to use for rendering and render the builder !!
+            $crudHandleBuilder = $this->setInit("new", $neoxDashSection);
+            $return[ "status" ] = "ajax";
+            $r = [
+                "added" => 0,
+                "error" => 0
+            ];
+
+            $content = $request->getContent();
+            $data    = json_decode($content, true) ?? null;
+
+            if ($data && isset($data['urls']) && is_array($data['urls'])) {
+
+                for ($i = 0; $i < count($data['urls']); $i += 2) {
+
+                    // Les index impairs pour les URLs
+                    $url = $data['urls'][$i] ?? null;
+                    $name = $data['urls'][$i + 1] ?? "null"; // Les index pairs pour les noms
+
+                    if ($url && $name) {
+                        $pp     = 'URL: ' . htmlspecialchars($url) . PHP_EOL;
+                        $ppp    = 'Name: ' . htmlspecialchars($name) . PHP_EOL;
+
+                        // check if it exist in dBase
+                        if ($url) {
+                            $hash   = hash('sha256', $url);
+                            $o      = $crudHandleBuilder->entityManager->getRepository(neoxDashDomain::class)->findOneBy([ "hash" => $hash ]);
+                            if ( !$o ) {
+                                $neoxDashDomain = new NeoxDashDomain();
+                                $neoxDashDomain->setSection($neoxDashSection);
+
+                                // Extraction du domaine et configuration de l'entité
+                                $domainData = $this->findIconOnWebSite->extractDomain($url);
+                                $neoxDashDomain->setName($domainData["domain"] ?? $name);
+                                $neoxDashDomain->setUrl($url);
+                                $neoxDashDomain->setUrlIcon("z");
+
+                                // Générer une couleur aléatoire
+                                $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", random_int(0, 255), random_int(0, 255), random_int(0, 255)));
+
+                                $crudHandleBuilder->entityManager->persist($neoxDashDomain);
+                                $r["added"] += 1;
+                            }else{
+                                $r["error"] += 1;
+                            }
+                        }
+
+                    } else {
+                        echo 'Données URL ou nom manquantes pour l\'index ' . $i . PHP_EOL;
+                    }
+                }
+
+                $crudHandleBuilder->entityManager->flush();
+                $return[ "submit" ] = true;
+                $return["data"]     = "Added: " . $r["added"] . " | Error: " . $r["error"] ;
+                $crudHandleBuilder->getIniHandleNeoxDashModel()->setReturn($return);
+
+
+            } else {
+                echo 'Aucune URL valide trouvée ou le format est incorrect.';
+            }
+            return $crudHandleBuilder->render();
+
+            // build entity
+
+
+
 
         }
 

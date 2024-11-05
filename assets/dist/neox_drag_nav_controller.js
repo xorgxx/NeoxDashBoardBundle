@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
+let url = null;
 export default class extends Controller {
     static targets = ['dropzone'];
     
@@ -34,98 +35,155 @@ export default class extends Controller {
         this.dropzoneTarget.classList.remove('dropzone-hover');
     }
     
-    handleDrop(event) {
+    async handleDrop(event) {
         event.preventDefault();
-        const item = event.dataTransfer.items[0];
-        this.DropItem = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
-        this.processDrop(item);
-        this.handleMouseOut();
+  
+        const url  = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
+        
+        if(url){
+            this.url = url.dataset.url;
+        }
+        const items = event.dataTransfer.items;
+        this.dropzoneTarget.classList.remove('dropzone-hover');
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const shouldBreak = await this.processDrop(item);
+            if (shouldBreak) {
+                break; // Sort de la boucle si processDrop retourne true
+            }
+        }
     }
     
     processDrop(item) {
-        if (item?.kind === 'string') {
-            item.getAsString((plainText) => {
-                const text = plainText.trim().split('\n')[0];
-                console.log('Dropped Text:', text);
+        return new Promise((resolve) => {
+            if (item?.kind !== 'string') {
+                console.warn('L\'élément n\'est pas de type "string".');
+                return resolve(false);
+            }
+            
+            item.getAsString((text) => {
+                const cleanedText = text.trim();
+                if (!cleanedText) {
+                    console.warn('Contenu vide ou invalide.');
+                    return resolve(false);
+                }
                 
-                if (item.type === 'text/x-moz-place') {
-                    const bookmarkData = JSON.parse(text);
-                    const bookmarkURL = bookmarkData.uri;
-                    console.log('Dropped Bookmark URL:', bookmarkURL);
-                    this.validateAndProcessURL(bookmarkURL);
+                let urls = this.extractURLs(item.type, cleanedText);
+                
+                if (urls.length > 0) {
+                    this.sendURLs(urls)
+                    .then(() => {
+                        console.log('Données envoyées avec succès:', urls);
+                        resolve(true);
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'envoi des données:', error);
+                        resolve(false);
+                    });
                 } else {
-                    const urlPattern = new RegExp('^(https?:\\/\\/)?'+
-                        '((([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})|'+
-                        'localhost|' +
-                        '\\d{1,3}(\\.\\d{1,3}){3})' +
-                        '(\\:\\d+)?(\\/[-a-zA-Z0-9@:%._\\+~#=]*)*'+
-                        '(\\?[;&a-zA-Z0-9%_.~+=-]*)?'+
-                        '(\\#[-a-zA-Z0-9_]*)?$', 'i');
-                    
-                    if (urlPattern.test(text)) {
-                        console.log('Valid URL:', text);
-                        this.validateAndProcessURL(text);
-                    } else {
-                        console.log('Not a URL, handling as plain text:', text);
-                        this.processPlainText(text);
-                    }
+                    console.warn('Aucune URL à envoyer.');
+                    resolve(false);
                 }
             });
+        });
+    }
+    
+    extractURLs(type, text) {
+        let urls = [];
+        
+        switch (type) {
+            case 'text/plain':
+                console.log('Dropped Plain Text:', text);
+                urls.push(text);
+                break;
+            
+            case 'text/uri-list':
+                urls = text.split('\n').filter(url => url.trim() !== '');
+                if (urls.length > 1) {
+                    console.log('Dropped URI List URLs:', urls);
+                } else {
+                    console.warn('Liste d\'URI ne contient qu\'une seule URL ou est vide.');
+                }
+                break;
+            
+            case 'text/x-moz-place':
+                try {
+                    const bookmarkData = JSON.parse(text);
+                    const bookmarkURL = bookmarkData.uri?.trim();
+                    if (bookmarkURL) {
+                        console.log('Dropped Bookmark URL:', bookmarkURL);
+                        urls.push(bookmarkURL);
+                    } else {
+                        console.warn('Bookmark URL vide ou invalide.');
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'analyse de bookmark:', error);
+                }
+                break;
+            
+            case 'text/html':
+                console.log('Dropped HTML:', text);
+                urls.push(text);
+                break;
+            
+            case 'text/x-moz-url':
+                urls = text.split('\n').filter(url => url.trim() !== '');
+                if (urls.length > 1) {
+                    console.log('Dropped URLs:', urls);
+                } else {
+                    console.warn('Type "text/x-moz-url" contient moins de deux URL.');
+                }
+                break;
+            
+            default:
+                console.log('Type non pris en charge:', type);
+                break;
         }
-    }
-    
-    validateAndProcessURL(url) {
-        if (this.isValidURL(url)) {
-            this.processURL(url);
-        } else {
-            this.handleInvalidURL(url);
-        }
-    }
-    
-    handleInvalidURL(url) {
-        console.warn('Invalid URL dropped:', url);
-        this.updateDropzoneStyle(false);
-        this.showError(`Invalide : ${url}`);
-    }
-    
-    updateDropzoneStyle(isValid) {
-        const { dropzoneTarget } = this;
-        dropzoneTarget.classList.toggle('dropzone-valid', isValid);
-        dropzoneTarget.classList.toggle('dropzone-invalid', !isValid);
         
-        setTimeout(() => {
-            dropzoneTarget.classList.remove('dropzone-valid', 'dropzone-invalid');
-        }, 3000);
+        return urls;
     }
     
-    showError(message) {
-        console.error(message);
-        const initialContent = this.dropzoneTarget.innerHTML;
-        
-        // Utilisation d'un SVG inline pour l'icône d'erreur
-        const errorIcon = `<svg width="20" height="20" fill="red" class="mx-2"><use href="#fa6-solid:exclamation-circle" /></svg>`;
-        
-        this.dropzoneTarget.innerHTML = `${errorIcon} ${message}`;
-        this.dropzoneTarget.style.color = 'red';
-        
-        setTimeout(() => {
-            this.dropzoneTarget.innerHTML = initialContent;
-            this.dropzoneTarget.style.color = '';
-        }, 5000);
+    sendURLs(urls) {
+        const payload = { urls };
+        return fetch(this.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (response.ok) {
+                // Affiche un toast de succès avec le message reçu
+                return response.json(); // Supposons que la réponse contient des données JSON
+            } else {
+                throw new Error('La requête a échoué avec le code de statut ' + response.status);
+            }
+        })
+        .then(data => {
+            // Affiche le toast si la requête est réussie
+            toast.fire({
+                icon: "success",
+                title: data // Utilise la clé 'message' du JSON de la réponse
+            });
+            
+            // Actualise la page si le bouton est présent
+            const refreshButton = document.getElementById('refreshClass');
+            if (refreshButton) {
+                refreshButton.click();
+            }
+            
+            return true;
+        })
+        .catch(error => {
+            console.error("Erreur:", error);
+            // Affiche un toast d'erreur
+            toast.fire({
+                icon: "error",
+                title: "Une erreur est survenue : " + error.message
+            });
+        });
+
     }
     
-    processURL(url) {
-        this.updateDropzoneStyle(true);
-        
-        const modalTriggerElement = this.DropItem;
-        if (modalTriggerElement) {
-            console.log('Stimulus controller initialized for dropzone with ID:', this.dropzoneTarget.dataset.id);
-            modalTriggerElement.setAttribute('data-domain', url); // Update URL in a data-url attribute
-            modalTriggerElement.click();
-        }
-    }
-    
-    isValidURL(url) {
-        return /^(https?:\/\/[^\s/$.?#].[^\s]*|ftp:\/\/[^\s]+|www\.[^\s]+|[^\s/$.?#]+\.[^\s]+(\/[^\s]*)?)$/i.test(url);
-    }
 }
