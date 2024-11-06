@@ -1,53 +1,63 @@
-{# ok i know!!!! but quipe for now{{ section.edit|default(false) ? "domain" : "domain" }} 👀😉#}
-<div class="card h-100"
+<div class="card h-100" style="border-width: 0!important; position: relative;">
+    <!-- Header with Icon and Name -->
+    <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left: calc({{ height }} + 45px); position: relative;">
 
-    style="border-width: 0!important;
-       " >
-    <div class="row no-gutters align-items-center" >
-
-        <!-- Icon Column -->
         {% set height = section.heigth|default('2.8') ~ 'rem' %}
-        <div class="col-auto bg-dark" style="margin-left: 5px; height: {{ height }};" >
-            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};" >
-                <!-- Icon -->
+
+        <!-- Icon fixed to top-left -->
+        <div class="icon-container" style="position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: {{ height }};">
+            <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};">
                 <a href="{{ item.url }}" target="_blank"
                     class="d-flex align-items-center justify-content-center p-2 hover-color"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}"
-                    >
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}">
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
-                        <twig:ux:icon class="flex-shrink-0 icon-normal"
-                            name="{{ item.name|getShortDomain["icon"] }}"
+                        <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
+                            name="{{ item.name|getShortDomain['icon'] }}"
                             width="{{ height }}"
-                            style="height: auto; transform: rotate({{ 0 }}deg)" color="{{ item.color }}" />
+                            style="height: auto; transform: rotate(0deg);" color="white" />
                     {% else %}
-                        <img src="{{ item.urlicon }}" alt="nc" width="30rem" />
-                    {% endif %}
-                </a >
-            </div >
-        </div >
+                        <img src="{{ item.urlicon }}" alt="nc" width="30"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
+                        <span style="display: none;">
+                            <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
+                                name="mynaui:daze-square"
+                                width="{{ height }}"
+                                style="height: auto; transform: rotate(0deg);" color="white" />
+                        </span>
+{#                        <i class="fa-solid fa-circle-exclamation" style="display: none; font-size: 30px; color: red;"></i>#}
 
-        <!-- Content Column -->
-        <div class="col d-flex align-items-center" style="height: {{ height }};">
-            <div class="flex-grow-1 text-start py-1"> <!-- Ajout du message de survol ici -->
-                {{ item.name }}
-                {% if NeoxDashClass.icon == "bell" %}
-                    <p class="mb-0 d-inline-flex align-items-center" title="Autre message de survol ici"> <!-- Message de survol pour l'icône -->
-                                                                                                          <!-- Première icône -->
-                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red" />
-                        {{ random(0, 23) }}
-                                                                                                          <!-- Deuxième icône -->
-                        <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red" />
-                    </p>
-                {% endif %}
+                    {% endif %}
+                </a>
             </div>
         </div>
 
+        <!-- Name aligned to the right of the icon -->
+        <div class="text-start">
+            <strong class="text-light">{{ item.name }}</strong>
+        </div>
+    </div>
 
+    <!-- Content Section -->
+    {% if section.content %}
+        <div class="card-body">
+        <div class="content">
+            <strong>{{ item.slug }}</strong>
+            <p>{{ item.name }}</p>
+            {% if NeoxDashClass.icon == "bell" %}
+                <p class="mb-0 d-inline-flex align-items-center" title="Autre message de survol ici">
+                    <!-- Première icône -->
+                    <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:clock-rotate-left" width="15" style="height: auto;" color="red" />
+                    {{ random(0, 23) }}
+                    <!-- Deuxième icône -->
+                    <twig:ux:icon class="flex-shrink-0 icon-normal" name="fa6-solid:arrow-trend-up" width="15" style="height: auto;" color="red" />
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 
-    </div >
-
-    <!-- Edit and Delete Button on the top-right for the Icons -->
-    {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItemButton.html.twig') }}
-
-</div >
-
+    <!-- Footer Section with Edit and Delete Buttons -->
+    <div class="card-footer d-flex justify-content-end bg-opacity-50" style="background-color: {{ item.color }}; opacity: 0.6">
+        {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItemButton.html.twig') }}
+    </div>
+</div>

@@ -30,6 +30,9 @@ class NeoxDashSection
     private ?string $heigth = "2.8";
 
     #[ORM\Column(nullable: true)]
+    private ?bool $content = false;
+
+    #[ORM\Column(nullable: true)]
     private ?bool $edit = false;
 
     /**
@@ -182,6 +185,17 @@ class NeoxDashSection
     public function setPosition(?int $position): NeoxDashSection
     {
         $this->position = $position;
+        return $this;
+    }
+
+    public function getContent(): ?bool
+    {
+        return $this->content;
+    }
+
+    public function setContent(?bool $content): NeoxDashSection
+    {
+        $this->content = $content;
         return $this;
     }
 

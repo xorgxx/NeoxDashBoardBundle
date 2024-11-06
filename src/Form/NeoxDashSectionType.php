@@ -6,6 +6,7 @@
     use Symfony\Component\Form\Extension\Core\Type\Integer;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+    use Symfony\Component\Form\Extension\Core\Type\CheckBoxType;;
     use Symfony\Component\Form\Extension\Core\Type\NumberType;
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,21 +19,23 @@
 
         public function buildForm(FormBuilderInterface $builder, array $options): void
         {
-            $builder->add('name', textType::class, [
-                    'required'   => true,
+            $builder
+                ->add('name', textType::class, [
+                    'required'           => true,
                     'label'              => $this->getTrans('name'),
                     'translation_domain' => 'neoxDashBoardSection',
-                    'label_attr' => [
+                    'label_attr'         => [
                         "placeholder" => $this->getTrans('name', "placeholder"),
-                        'class' => 'col-form-label text-start',
+                        'class'       => 'col-form-label text-start',
                     ],
-                    'attr'       => [
+                    'attr'               => [
                         'class' => 'form-control',
                     ],
-                    'row_attr'   => [
+                    'row_attr'           => [
                         'class' => 'row mb-3',
                     ],
-                ])->add('row', IntegerType::class, array(
+                ])
+                ->add('row', IntegerType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(
@@ -43,7 +46,8 @@
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
-                ))->add('colonne', IntegerType::class, array(
+                ))
+                ->add('colonne', IntegerType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(
@@ -54,18 +58,32 @@
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
-                ))->add('heigth', NumberType::class, array(
-                // 'disabled'      => true,
-                'required'           => false,
-                "attr"               => array(
-                    "placeholder" => $this->getTrans('heigth', "placeholder"),
-                    'class'       => 'required form-control '
-                ),
-                'label'              => $this->getTrans('heigth'),
-                'translation_domain' => 'neoxDashBoardSection',
-                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
-                'row_attr'           => [ 'class' => 'row mb-3' ],
-            ))->add('timer', IntegerType::class, array(
+                ))
+                ->add('content', CheckBoxType::class, array(
+                    // 'disabled'      => true,
+                    'required'           => false,
+                    "attr"               => array(
+                        "placeholder" => $this->getTrans('content', "placeholder"),
+                        'class'       => 'required form-control '
+                    ),
+                    'label'              => $this->getTrans('content'),
+                    'translation_domain' => 'neoxDashBoardSection',
+                    'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                    'row_attr'           => [ 'class' => 'row mb-3' ],
+                ))
+                ->add('heigth', NumberType::class, array(
+                    // 'disabled'      => true,
+                    'required'           => false,
+                    "attr"               => array(
+                        "placeholder" => $this->getTrans('heigth', "placeholder"),
+                        'class'       => 'required form-control '
+                    ),
+                    'label'              => $this->getTrans('heigth'),
+                    'translation_domain' => 'neoxDashBoardSection',
+                    'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                    'row_attr'           => [ 'class' => 'row mb-3' ],
+                ))
+                ->add('timer', IntegerType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(
@@ -76,7 +94,8 @@
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
-                ));
+                ))
+            ;
         }
 
         public function configureOptions(OptionsResolver $resolver): void

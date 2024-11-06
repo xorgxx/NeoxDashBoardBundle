@@ -114,7 +114,7 @@ export class coreDashController extends Controller {
             });
             clearTimeout(timeoutId);
             const r = await this.#handleResponse(response);
-            if (r == "true") {
+            if (r.status === 200) {
                 toast.fire({
                     icon: "success",
                     title: "Changements effectués avec succès"
@@ -135,7 +135,7 @@ export class coreDashController extends Controller {
             } else {
                 swal.fire({
                     title: this.titleValue,
-                    html: responseText,
+                    html: r.data,
                     showCancelButton: this.showCancelButtonValue,
                     confirmButtonText: this.confirmButtonTextValue,
                     denyButtonText: this.denyButtonTextValue,
@@ -155,7 +155,7 @@ export class coreDashController extends Controller {
         if(!result.ok){
             throw new Error(`Network error: ${result.status} - ${result.statusText}`);
         }
-        return result.text();
+        return result;
     }
     
     #isRelativeUrl(url) {

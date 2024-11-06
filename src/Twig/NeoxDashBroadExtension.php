@@ -82,7 +82,7 @@ class NeoxDashBroadExtension extends AbstractExtension
 
         // Extraire la première lettre du domaine principal
         $firstLetter = substr($mainDomain, 0, 1);
-        $icon = "mynaui:aredaze-square";
+        $icon = "mynaui:daze-square";
         // Check if it's a letter (e.g., for domain names)
         if (ctype_alpha($firstLetter)) {
             $icon = "mynaui:letter-$firstLetter-diamond";

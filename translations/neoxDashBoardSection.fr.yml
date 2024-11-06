@@ -41,3 +41,6 @@ neoxDashBoardSection:
         timer :
             label       : Minuteries
             placeholder : Saisir le vitesse de deffilements en ms...
+        content :
+            label       : Content visible/non visible
+            placeholder : Saisir le vitesse de deffilements en ms...

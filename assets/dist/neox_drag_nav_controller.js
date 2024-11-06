@@ -171,7 +171,7 @@ export default class extends Controller {
                 icon: "success",
                 title: data // Display response message
             });
-            
+   
             const refreshButton = document.getElementById('refreshClass');
             if (refreshButton) {
                 refreshButton.click();

@@ -16,6 +16,7 @@
             {% set item             = entity %}
             {% set section          = item.section %}
             {% set NeoxDashClass    = section.class %}
+            {% set height           = section.heigth|default('2.8') ~ 'rem' %}
             {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
         </template>
     </turbo-stream>

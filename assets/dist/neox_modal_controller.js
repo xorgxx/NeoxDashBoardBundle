@@ -80,9 +80,10 @@ export default class NeoxModalController extends coreDashController {
                     allowOutsideClick: false
                 });
             }
+            const responseText = await response.text();
             return swal.fire({
                 title: this.titleValue,
-                html: response,
+                html: responseText,
                 showCancelButton: this.showCancelButtonValue,
                 confirmButtonText: this.confirmButtonTextValue,
                 allowOutsideClick: false,

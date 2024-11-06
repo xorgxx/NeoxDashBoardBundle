@@ -1,22 +1,9 @@
+
+
 {% if section.edit %}
 
     <div class="ml-auto d-flex"    >
-        <div class="left-item me-2" >
-            <button
-                type="button"
-                hidden="hidden"
-                class="btn btn-light btn-sm"
-                id="refreshClass"
-                data-action="live#action"
-                data-live-action-param="refresh"
-                data-live-query-param="{{ NeoxDashClass.id }}"
-            >
-                {% if section.edit %}
-                    <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
-                {% else %}{% endif %}
 
-            </button >
-        </div >
         <div class="left-item me-2" >
             <button
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
@@ -58,6 +45,22 @@
 {% endif %}
 {#  ===== Botton ADD DOMAIN ======            #}
 <div class="right-item" >
+
+        <button
+            type="button"
+            hidden="hidden"
+            class="btn btn-light btn-sm"
+            id="refreshClass"
+            data-action="live#action"
+            data-live-action-param="refresh"
+            data-live-query-param="{{ NeoxDashClass.id }}"
+        >
+            {% if section.edit %}
+                <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+            {% else %}{% endif %}
+
+        </button >
+
     <div
         {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
