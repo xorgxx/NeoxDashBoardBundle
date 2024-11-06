@@ -4,7 +4,7 @@ Its main goal is to simplify the integration of additional tools!
 
 **Modular and Autonomous System: Operating Independently from the Main Project!!**
 
-[![2024-11-06-21-53-13.png](https://i.postimg.cc/1RJq1jdR/2024-11-06-21-53-13.png)](https://postimg.cc/K43znJFC)
+[![2024-11-06-21-53-13.png](https://i.postimg.cc/dVS6Q0S1/2024-11-06-21-53-13.png)](https://postimg.cc/BjHHMJ39)
 
 ## Webpack cohabitation !!
 
