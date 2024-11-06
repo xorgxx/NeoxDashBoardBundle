@@ -2,6 +2,12 @@
 This bundle provides a dashboard for Symfony  7 in your application. 
 Its main goal is to simplify the integration of additional tools!
 
+Features:
+ - CRUD Link, Class, Section
+ - Customizable Dashboard
+ - Move elements Link, Class, Section with the mouse
+ - ....
+
 **Modular and Autonomous System: Operating Independently from the Main Project!!**
 
 [![2024-11-06-21-53-13.png](https://i.postimg.cc/dVS6Q0S1/2024-11-06-21-53-13.png)](https://postimg.cc/BjHHMJ39)
