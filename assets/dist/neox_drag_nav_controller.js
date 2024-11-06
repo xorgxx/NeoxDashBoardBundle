@@ -45,6 +45,12 @@ export default class extends Controller {
     async handleDrop(event) {
         event.preventDefault();
         
+        const loader = document.getElementById('loader');
+        const loading = document.getElementById('loading');
+        
+        loading.classList.add('no-select', 'body-loading'); // Add loading styles
+        loader.style.display = 'block';
+        
         // Get the URL from the dropzone data attribute
         const url = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
         if (url) {
@@ -64,6 +70,8 @@ export default class extends Controller {
                 break;
             }
         }
+        
+        this.cleanUp()
     }
     
     // Processes each dropped item based on its type and sends it if it's a valid URL
@@ -187,5 +195,13 @@ export default class extends Controller {
             });
             return false;
         });
+    }
+    
+    cleanUp(){
+        // Hide the loader and restore opacity
+        const loader = document.getElementById('loader');
+        const loading = document.getElementById('loading');
+        loader.style.display = 'none';
+        loading.classList.remove('no-select', 'body-loading');
     }
 }

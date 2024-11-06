@@ -48,16 +48,23 @@
         data-api="{{ path('app_neox_dash_section_exchange') }}"
         draggable="true"
         role="presentation" >
-
-        <button class="nav-link {{ loop.first? 'active' : '' }}"
+        {% set n = "(" ~ section.NeoxDashDomains|length ~ ")" %}
+        <button class="nav-link {{ loop.first ? 'active' : '' }}"
             id="alert-{{ headerC }}-tab"
             data-bs-toggle="tab"
-            data-bs-target="#{{ section.id ~"-"~headerC }}"
+            data-bs-target="#{{ section.id ~ '-' ~ headerC }}"
             type="button"
             role="tab"
             aria-controls="{{ section.name }}"
-            aria-selected="{{ loop.first? 'true' : '' }}" >{{ section.name }} <span class="text-danger" >{{ section.edit? '*' : '' }}</span ></button >
+            aria-selected="{{ loop.first ? 'true' : '' }}">
+            {{ section.name }}
 
+                <span  style="font-size: 0.875em;"> {{ n }}</span>
+                {% if section.edit %}
+                    <span class="text-danger"> *</span>
+                {% endif %}
+
+        </button>
     </li >
 {% endmacro %}
 

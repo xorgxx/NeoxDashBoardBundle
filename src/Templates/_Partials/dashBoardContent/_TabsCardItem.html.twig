@@ -1,10 +1,10 @@
 <div class="card h-100" style="border-width: 0!important; position: relative;">
     <!-- Header with Icon and Name -->
-    <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left: calc({{ height }} + 45px); position: relative;">
+    <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left: calc({{ height }} + 15px); position: relative;">
 
         {% set height = section.heigth|default('2.8') ~ 'rem' %}
 
-        <!-- Icon fixed to top-left -->
+        <!-- Icon fixed to top-left   padding-left: calc({{ height }} + 45px) -->
         <div class="icon-container" style="position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: {{ height }};">
             <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};">
                 <a href="{{ item.url }}" target="_blank"
@@ -31,9 +31,9 @@
             </div>
         </div>
 
-        <!-- Name aligned to the right of the icon -->
+        <!-- Name aligned to the right of the icon 30 -->
         <div class="text-start">
-            <strong class="text-light">{{ item.name }}</strong>
+            <strong class="text-light">{{ item.name|u.truncate(30,' ...', true) }}</strong>
         </div>
     </div>
 

@@ -59,9 +59,9 @@
             }
             $neoxDashDomain->setUrlIcon("z");
 
-            $r = random_int(100, 200); // Rouge
-            $g = random_int(100, 200); // Vert
-            $b = random_int(100, 200); // Bleu
+            $r = random_int(0, 255); // Rouge
+            $g = random_int(0, 255); // Vert
+            $b = random_int(0, 255); // Bleu
 
             $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", $r, $g, $b));
 
