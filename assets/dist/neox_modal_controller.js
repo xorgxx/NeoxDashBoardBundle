@@ -45,7 +45,7 @@ export default class NeoxModalController extends coreDashController {
         // const token = button.closest('form').querySelector('input[name="_token"]').value;
         // const button = this.element.querySelector('button');
         const url = this.urlValue; //button.dataset.url;
-        const token = this.element.querySelector('input[name="_token"]').value.toString();
+        const token = link.querySelector('input[name="_token"]').value.toString();
         
         this.showModal({
             title: this.titleValue,

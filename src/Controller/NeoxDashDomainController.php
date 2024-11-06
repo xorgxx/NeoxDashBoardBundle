@@ -47,8 +47,8 @@
 //            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
-            
-            
+
+
             // build entity
             $neoxDashDomain = new NeoxDashDomain();
             $neoxDashDomain->setSection($neoxDashSection);
@@ -84,18 +84,31 @@
             *   return $handleSubmit->flushHandleForm()->render();
             */
 
-            $handleSubmit = $crudHandleBuilder->handleCreateForm()->preHandleForm($request);
-            $url = $handleSubmit->getIniHandleNeoxDashModel()->getEntity()->geturl();
+            $handleSubmit = $crudHandleBuilder
+                ->handleCreateForm()
+                ->preHandleForm($request)
+            ;
+            $url          = $handleSubmit
+                ->getIniHandleNeoxDashModel()
+                ->getEntity()
+                ->geturl()
+            ;
             // check if it exist in dBase
             if ($url) {
-                $hash   = hash('sha256', $url);
-                $o      = $crudHandleBuilder->entityManager->getRepository(neoxDashDomain::class)->findOneBy([ "hash" => $hash ]);
-                if ( $o ) {
+                $hash = hash('sha256', $url);
+                $o    = $crudHandleBuilder->entityManager
+                    ->getRepository(neoxDashDomain::class)
+                    ->findOneBy([ "hash" => $hash ])
+                ;
+                if ($o) {
                     return new jsonResponse("exist");
                 }
             }
 
-            return $handleSubmit->flushHandleForm()->render();
+            return $handleSubmit
+                ->flushHandleForm()
+                ->render()
+            ;
 
 //            return $crudHandleBuilder
 //                ->handleCreateForm()
@@ -112,13 +125,16 @@
          * @return Response
          * @throws RandomException
          */
-        #[Route('/new/batch/{id}', name: 'app_neox_dash_domain_new_batch', methods: ['GET', 'POST'])]
+        #[Route('/new/batch/{id}', name: 'app_neox_dash_domain_new_batch', methods: [
+            'GET',
+            'POST'
+        ])]
         public function newBatch(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
             // Determine the template to use for rendering and render the builder !!
-            $crudHandleBuilder = $this->setInit("new", $neoxDashSection);
+            $crudHandleBuilder  = $this->setInit("new", $neoxDashSection);
             $return[ "status" ] = "ajax";
-            $r = [
+            $r                  = [
                 "added" => 0,
                 "error" => 0
             ];
@@ -126,29 +142,32 @@
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
 
-            if ($data && isset($data['urls']) && is_array($data['urls'])) {
+            if ($data && isset($data[ 'urls' ]) && is_array($data[ 'urls' ])) {
 
-                for ($i = 0; $i < count($data['urls']); $i += 2) {
+                for ($i = 0; $i < count($data[ 'urls' ]); $i += 2) {
 
                     // Les index impairs pour les URLs
-                    $url = $data['urls'][$i] ?? null;
-                    $name = $data['urls'][$i + 1] ?? "null"; // Les index pairs pour les noms
+                    $url  = $data[ 'urls' ][ $i ] ?? null;
+                    $name = $data[ 'urls' ][ $i + 1 ] ?? "null"; // Les index pairs pour les noms
 
                     if ($url && $name) {
-                        $pp     = 'URL: ' . htmlspecialchars($url) . PHP_EOL;
-                        $ppp    = 'Name: ' . htmlspecialchars($name) . PHP_EOL;
+                        $pp  = 'URL: ' . htmlspecialchars($url) . PHP_EOL;
+                        $ppp = 'Name: ' . htmlspecialchars($name) . PHP_EOL;
 
                         // check if it exist in dBase
                         if ($url) {
-                            $hash   = hash('sha256', $url);
-                            $o      = $crudHandleBuilder->entityManager->getRepository(neoxDashDomain::class)->findOneBy([ "hash" => $hash ]);
-                            if ( !$o ) {
+                            $hash = hash('sha256', $url);
+                            $o    = $crudHandleBuilder->entityManager
+                                ->getRepository(neoxDashDomain::class)
+                                ->findOneBy([ "hash" => $hash ])
+                            ;
+                            if (!$o) {
                                 $neoxDashDomain = new NeoxDashDomain();
                                 $neoxDashDomain->setSection($neoxDashSection);
 
                                 // Extraction du domaine et configuration de l'entité
                                 $domainData = $this->findIconOnWebSite->extractDomain($url);
-                                $neoxDashDomain->setName($domainData["domain"] ?? $name);
+                                $neoxDashDomain->setName($domainData[ "domain" ] ?? $name);
                                 $neoxDashDomain->setUrl($url);
                                 $neoxDashDomain->setUrlIcon("z");
 
@@ -156,9 +175,9 @@
                                 $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", random_int(0, 255), random_int(0, 255), random_int(0, 255)));
 
                                 $crudHandleBuilder->entityManager->persist($neoxDashDomain);
-                                $r["added"] += 1;
-                            }else{
-                                $r["error"] += 1;
+                                $r[ "added" ] += 1;
+                            } else {
+                                $r[ "error" ] += 1;
                             }
                         }
 
@@ -169,8 +188,11 @@
 
                 $crudHandleBuilder->entityManager->flush();
                 $return[ "submit" ] = true;
-                $return["data"]     = "Added: " . $r["added"] . " | Error: " . $r["error"] ;
-                $crudHandleBuilder->getIniHandleNeoxDashModel()->setReturn($return);
+                $return[ "data" ]   = "Added: " . $r[ "added" ] . " | Error: " . $r[ "error" ];
+                $crudHandleBuilder
+                    ->getIniHandleNeoxDashModel()
+                    ->setReturn($return)
+                ;
 
 
             } else {
@@ -179,10 +201,6 @@
             return $crudHandleBuilder->render();
 
             // build entity
-
-
-
-
         }
 
         #[Route('/{id}', name: 'app_neox_dash_domain_show', methods: [ 'GET' ])]
@@ -217,7 +235,7 @@
 
         }
 
-        #[Route('/exchange-{action}', defaults: ['action' => 'index'], name: 'app_neox_dash_domain_exchange', methods: [
+        #[Route('/exchange-{action}', defaults: [ 'action' => 'index' ], name: 'app_neox_dash_domain_exchange', methods: [
             'GET',
             'POST'
         ])]
@@ -236,7 +254,7 @@
 
                 // Save changes
                 $entityManager->flush();
-                
+
                 return new JsonResponse("true");
             }
 
@@ -251,14 +269,10 @@
         public function delete(Request $request, NeoxDashDomain $neoxDashDomain, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
         {
 
-            $csrfToken = $csrfTokenManager->getToken('delete' . $neoxDashDomain->getId())->getValue();
-            $submittedToken = $request->get('_token');
-            $id = "delete".(string)$neoxDashDomain->getId();
+            $csrfToken = 'delete' . $neoxDashDomain->getId();
+            $submit    = $this->isCsrfTokenValid($csrfToken, $request->get('_token'));
 
-            $submit = $this->isCsrfTokenValid($id, $csrfToken);
-
-            if ($submit)
-            {
+            if ($submit) {
                 $entityManager->remove($neoxDashDomain);
                 $entityManager->flush();
             }
