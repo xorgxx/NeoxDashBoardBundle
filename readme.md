@@ -6,6 +6,7 @@ Its main goal is to simplify the integration of additional tools!
 
 [![2024-09-28-15-57-09.png](https://i.postimg.cc/VkRcGKtJ/2024-09-28-15-57-09.png)](https://postimg.cc/87j3sBtG)
 [![2024-09-28-16-01-02.png](https://i.postimg.cc/13PQrk8x/2024-09-28-16-01-02.png)](https://postimg.cc/pp0421Qk)
+[![2024-11-06-21-53-13.png](https://i.postimg.cc/1RJq1jdR/2024-11-06-21-53-13.png)](https://postimg.cc/K43znJFC)
 
 ## Webpack cohabitation !!
 
