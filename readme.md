@@ -6,6 +6,7 @@ Features:
  - CRUD Link, Class, Section
  - Customizable Dashboard
  - Move elements Link, Class, Section with the mouse
+ - Add bookmark | liste form your browser, oneBeOne, file, etc ...
  - ....
 
 **Modular and Autonomous System: Operating Independently from the Main Project!!**
