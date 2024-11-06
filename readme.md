@@ -5,8 +5,8 @@ Its main goal is to simplify the integration of additional tools!
 Features:
  - CRUD Link, Class, Section
  - Customizable Dashboard
- - Move elements Link, Class, Section with the mouse
- - Add bookmark | liste form your browser, oneBeOne, file, etc ...
+ - Move elements Link, Class, Section | Drag & Drop
+ - Add bookmark drag & drop | liste form your browser, oneBeOne, file, etc ...
  - ....
 
 **Modular and Autonomous System: Operating Independently from the Main Project!!**
