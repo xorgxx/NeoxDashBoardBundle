@@ -1,23 +1,26 @@
 <!-- Edit and Delete Button on the top-right for the Icons -->
 {% if section.edit %}
-    <div class="neox-edit d-flex justify-content-end align-items-center" style="position: absolute; top: 0px; right: 0px;" >
-        <!-- Delete Form -->
-        {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}
+    <div class="p-2 bg-dark bg-opacity-25" > <!-- Top right positioning -->
+        <div class="neox-edit d-flex justify-content-end align-items-center" style="" >
+            <div class="me-3">
+                {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}
+            </div>
 
-        <!-- Edit Button -->
-        <button
-            data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
-            data-title='Edit Domain'
-            data-text='Do you want to continue'
-{#            data-id-element=null,#}
-            data-url="{{path('app_neox_dash_domain_edit', { id: item.id })}}"
-            data-modal="modal"
-            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-            class="nav-link"
-            type="button"
-            aria-selected="false" >
-            <twig:ux:icon name="fa6-solid:{{ plus|default('pen') }}" width="15" height="15" color="{{ color|default('green') }}" class="mx-2" />
-        </button >
-    </div >
+            <!-- Edit Button -->
+            <button
+                data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                data-title='Edit Domain'
+                data-text='Do you want to continue'
+    {#            data-id-element=null,#}
+                data-url="{{path('app_neox_dash_domain_edit', { id: item.id })}}"
+                data-modal="modal"
+                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                class="btn btn-light btn-sm"
+                type="button"
+                aria-selected="false" >
+                <twig:ux:icon name="fa6-solid:{{ plus|default('pen') }}" width="15" height="15" color="{{ color|default('green') }}" class="mx-2" />
+            </button >
+        </div >
+    </div>
 {% endif %}
 

@@ -1,11 +1,11 @@
 {% if section.edit %}
 
     <div class="ml-auto d-flex"    >
-        <div class="left-item" >
+        <div class="left-item me-2" >
             <button
                 type="button"
                 hidden="hidden"
-                class="btn btn-secondary btn-sm"
+                class="btn btn-light btn-sm"
                 id="refreshClass"
                 data-action="live#action"
                 data-live-action-param="refresh"
@@ -17,7 +17,7 @@
 
             </button >
         </div >
-        <div class="left-item" >
+        <div class="left-item me-2" >
             <button
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
                 data-title='find icon'
@@ -27,13 +27,13 @@
 
                 data-modal="modal"
                 data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                class="nav-link"
+                class="btn btn-light btn-sm"
                 type="button"
                 aria-selected="false" >
                 <twig:ux:icon name="fa6-solid:{{ 'magnifying-glass-location' }}" width="20" height="20" color="{{ color|default('yellow') }}" class="mx-2" />
             </button >
         </div >
-        <div class="left-item" >
+        <div class="left-item me-2" >
             <button
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
                 data-title='Edit Section'
@@ -42,13 +42,13 @@
                 data-url="{{ path('app_neox_dash_section_edit', { id: section.id }) }}"
                 data-modal="modal"
                 data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                class="nav-link"
+                class="btn btn-light btn-sm"
                 type="button"
                 aria-selected="false" >
                 <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
             </button >
         </div >
-        <div class="left-item" >
+        <div class="left-item me-2" >
             {{ include('@NeoxDashBoardBundle/neox_dash_section/_delete_form.html.twig') }}
         </div >
     </div >
@@ -67,7 +67,7 @@
         data-url="{{path('app_neox_dash_domain_new', { id: section.id })}}"
         class="d-flex flex-column align-items-center"
         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" >
-        <div class="left-item" >
+        <div class="left-item me-2" >
 
             <div class="dropzone btn btn-primary btn-sm"
                 data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"
@@ -89,7 +89,7 @@
 {#        data-controller="xorgxx--neox-dashboard-bundle--neox-modal"#}
         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#activateFirstSlide"
         type="button"
-        class="btn btn-secondary btn-sm"
+        class="btn btn-light btn-sm bg-transparent m-2"
         data-id="{{ section.id }}"
         data-class="{{ NeoxDashClass.id }}"
 {#        id="activateFirstSlide"#}
@@ -105,7 +105,7 @@
         {% if section.edit %}
             <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="m-1" />
         {% else %}
-            <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('white') }}" class="m-1" />
+            <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('#022a52') }}" class="m-1" />
         {% endif %}
 
     </button >
