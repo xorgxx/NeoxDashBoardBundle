@@ -16,14 +16,17 @@
                             width="{{ height }}"
                             style="height: auto; transform: rotate(0deg);" color="white" />
                     {% else %}
-                        <img src="{{ item.urlicon }}" alt="nc" width="30"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
-                        <span style="display: none;">
-                            <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
-                                name="mynaui:daze-square"
-                                width="{{ height }}"
-                                style="height: auto; transform: rotate(0deg);" color="white" />
-                        </span>
+                        <div style="display: inline-flex; align-items: center;">
+                            <img src="{{ item.urlicon }}" alt="nc" width="30"
+                                onerror="this.style.display='none'; this.closest('div').querySelector('.fallback-icon').style.display='inline';" />
+                            <span class="fallback-icon" style="display: none;">
+                                <twig:ux:icon
+                                    class="flex-shrink-0 p-1 icon-normal"
+                                    name="mynaui:daze-square"
+                                    width="{{ height }}"
+                                    style="height: auto; transform: rotate(0deg); color: white;" />
+                            </span>
+                        </div>
 {#                        <i class="fa-solid fa-circle-exclamation" style="display: none; font-size: 30px; color: red;"></i>#}
 
                     {% endif %}
