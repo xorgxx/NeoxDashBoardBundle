@@ -8,6 +8,7 @@
     use Symfony\Component\OptionsResolver\OptionsResolver;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\EnumType;
+    use Symfony\Component\Form\Extension\Core\Type\ColorType;
 
     class NeoxDashDomainType extends AbstractType
     {
@@ -39,7 +40,7 @@
                 'row_attr'           => [
                     'class' => 'row mb-3',
                 ],
-            ])->add('color', textType::class, [
+            ])->add('color', ColorType::class, [
                 'required'           => false,
                 'label'              => $this->getTrans('color'),
                 'translation_domain' => 'neoxDashBoardDomain',

@@ -125,7 +125,6 @@ export default class extends Controller {
     async handleDrop(event){
         event.preventDefault();
         // Get current target data
-
         const targetElement = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"]');
         
         if(targetElement){
@@ -135,18 +134,20 @@ export default class extends Controller {
 
             loading.classList.add('no-select', 'body-loading'); // Add loading styles
             loader.style.display = 'block';
-
+            
+            // "section" | "domain-browser" | "domain-move"
+            const type = targetElement.dataset.type;
+            const targetId = targetElement.dataset.id;
+            const targetApi = targetElement.dataset.api;
+            const targetIdClass = targetElement.dataset.idclass;
+            
             // Get dragged data
             const draggedElement  = this.DraggedItem;
             const draggedId = event.dataTransfer.getData("text/id");
             const draggedIdClass = event.dataTransfer.getData("text/idClass");
             const draggedType = event.dataTransfer.getData("text/type");
 
-            // "section" | "domain-browser" | "domain-move"
-            const type = targetElement.dataset.type;
-            const targetId = targetElement.dataset.id;
-            const targetApi = targetElement.dataset.api;
-            const targetIdClass = targetElement.dataset.idclass;
+  
             /*
              typeTarget + typeDragged = module
              section + section | section + domain-browser | section + domain-move |
