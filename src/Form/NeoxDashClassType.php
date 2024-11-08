@@ -10,6 +10,7 @@
     use Symfony\Component\OptionsResolver\OptionsResolver;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\EnumType;
+    use Symfony\Component\Form\Extension\Core\Type\ColorType;
 
     class NeoxDashClassType extends AbstractType
     {
@@ -55,7 +56,19 @@
                     ),
 
                     'row_attr' => [ 'class' => 'row mb-3' ],
-                ));
+                ))->add('headerColor', ColorType::class, [
+                'required'           => false,
+                'label'              => $this->getTrans('color'),
+                'translation_domain' => 'neoxDashBoardDomain',
+                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                'attr'               => [
+                    "placeholder" => $this->getTrans('color', "placeholder"),
+                    'class'       => 'form-control',
+                ],
+                'row_attr'           => [
+                    'class' => 'row mb-3',
+                ],
+            ]);
         }
 
         public function configureOptions(OptionsResolver $resolver): void

@@ -1,9 +1,10 @@
 {% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
 {% if NeoxDashClass %}
     <div class="accordion mb-4" id="accordionExample">
-        <div class="accordion-item bg-transparent">
+        <div class="accordion-item bg-transparent" style="border-color:  #63599282 !important;">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ NeoxDashClass.id }}"
+                <button class="accordion-button bg-opacity-50"
+                    style="background-color : {{ NeoxDashClass.headerColor|default('darkolivegreen') }}36" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ NeoxDashClass.id }}"
                         aria-expanded="{{ loopn.first|default(true) ? "true" : "false" }}" aria-controls="collapseOne{{ NeoxDashClass.id }}">
                     {# Item Title ============== #}
                     {{ neox_macro.navItemBottomSimple(NeoxDashClass, 'black', 'bg-dark') }}
@@ -11,29 +12,30 @@
             </h2>
             <div id="collapseOne{{ NeoxDashClass.id }}" class="bg-transparent accordion-collapse collapse {{ loopn.first|default() ? "show" : "" }}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body bg-transparent">
-                    <ul class="nav nav-tabs bg-transparent" id="myTab" role="tablist">
-                        {#                    #}{# Item Title ============== #}
-                        {#                    {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }} #}
+                    {% include'@NeoxDashBoardBundle/_Partials/_buildTabs.html.twig' %}
+{#                    <ul class="nav nav-tabs bg-transparent" id="myTab" role="tablist">#}
+{#                        #}{#                    #}{##}{# Item Title ============== #}
+{#                        #}{#                    {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }} #}
 
-                        {# Item TABS Title ========= #}
-                        {% for section in NeoxDashClass.NeoxDashSections %}
-                            {% if section %}
-                                {{ neox_macro.navItemBottomHeader(section, NeoxDashClass, loop) }}
-                            {% endif %}
-                        {% endfor %}
+{#                        #}{# Item TABS Title ========= #}
+{#                        {% for section in NeoxDashClass.NeoxDashSections %}#}
+{#                            {% if section %}#}
+{#                                {{ neox_macro.navItemBottomHeader(section, NeoxDashClass, loop) }}#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
 
-                        {# Item ADD Tab Title ======== #}
-                        {{ neox_macro.navItemBottomStd(NeoxDashClass, "plus", 'green') }}
+{#                        #}{# Item ADD Tab Title ======== #}
+{#                        {{ neox_macro.navItemBottomStd(NeoxDashClass, "plus", 'green') }}#}
 
-                        {# Item Main Menu ========= #}
-                        {{ neox_macro.navItemMenu(NeoxDashClass) }}
+{#                        #}{# Item Main Menu ========= #}
+{#                        {{ neox_macro.navItemMenu(NeoxDashClass) }}#}
 
-                    </ul>
-                    <div class="tab-content mt-4" id="myTabContent">
-                        {% for section in NeoxDashClass.NeoxDashSections %}
-                            {% include'@NeoxDashBoardBundle/_Partials/_dashBoardContentBuild.html.twig' %}
-                        {% endfor %}
-                    </div>
+{#                    </ul>#}
+{#                    <div class="tab-content mt-4" id="myTabContent">#}
+{#                        {% for section in NeoxDashClass.NeoxDashSections %}#}
+{#                            {% include'@NeoxDashBoardBundle/_Partials/_dashBoardContentBuild.html.twig' %}#}
+{#                        {% endfor %}#}
+{#                    </div>#}
                 </div>
             </div>
         </div>

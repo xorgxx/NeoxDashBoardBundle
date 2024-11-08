@@ -53,6 +53,9 @@ class NeoxDashSection
     #[Gedmo\SortablePosition()]
     private ?int $position = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $headerColor = null;
+
     public function __construct()
     {
         $this->neoxDashDomains = new ArrayCollection();
@@ -198,5 +201,19 @@ class NeoxDashSection
         $this->content = $content;
         return $this;
     }
+
+    public function getHeaderColor(): ?string
+    {
+        return $this->headerColor;
+    }
+
+    public function setHeaderColor(?string $headerColor): NeoxDashSection
+    {
+        $this->headerColor = $headerColor;
+        return $this;
+    }
+
+
+
 
 }

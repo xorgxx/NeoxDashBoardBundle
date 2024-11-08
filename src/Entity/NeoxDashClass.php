@@ -38,7 +38,9 @@ class NeoxDashClass
 
     #[ORM\ManyToOne(inversedBy: 'class')]
     private ?NeoxDashSetup $neoxDashSetup = null;
-    
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $headerColor = null;
     
     public function __construct()
     {
@@ -137,4 +139,16 @@ class NeoxDashClass
 
         return $this;
     }
+
+    public function getHeaderColor(): ?string
+    {
+        return $this->headerColor;
+    }
+
+    public function setHeaderColor(?string $headerColor): NeoxDashClass
+    {
+        $this->headerColor = $headerColor;
+        return $this;
+    }
+
 }
