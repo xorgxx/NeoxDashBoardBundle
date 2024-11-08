@@ -4,7 +4,9 @@
     {% set NeoxSections = NeoxDashClass.NeoxDashSections|sort((a, b) => a.position <=> b.position) %}
 
     <ul
-        class="nav nav-tabs mb-4 bg-opacity-50 bg-white" id="myTab" role="tablist">
+        class="nav nav-tabs mb-4 " id="myTab" role="tablist"
+        style="background-color : {{ NeoxDashClass.headerColor|default('darkolivegreen') }}ab"
+    >
         {# Item Title ============== #}
         {{ neox_macro.navItemBottom(NeoxDashClass, 'white', 'bg-dark') }}
 
