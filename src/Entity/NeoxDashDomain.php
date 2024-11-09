@@ -48,6 +48,8 @@ class NeoxDashDomain
     #[ORM\Column(nullable: true)]
     private ?bool $favorite = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $content = null;
 
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
     private ?string $hash = null;
@@ -154,7 +156,19 @@ class NeoxDashDomain
         return $this;
     }
 
-    public function getIsFavorite(): ?bool
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): NeoxDashDomain
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+
+    public function getFavorite(): ?bool
     {
         return $this->favorite;
     }

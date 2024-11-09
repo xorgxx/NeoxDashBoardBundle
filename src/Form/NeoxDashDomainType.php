@@ -41,6 +41,18 @@
                 'row_attr'           => [
                     'class' => 'row mb-3',
                 ],
+            ])->add('content', textType::class, [
+                'required'           => true,
+                'label'              => $this->getTrans('url'),
+                'translation_domain' => 'neoxDashBoardDomain',
+                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                'attr'               => [
+                    "placeholder" => $this->getTrans('url', "placeholder"),
+                    'class'       => 'form-control',
+                ],
+                'row_attr'           => [
+                    'class' => 'row mb-3',
+                ],
             ])->add('color', ColorType::class, [
                 'required'           => false,
                 'label'              => $this->getTrans('color'),
@@ -53,7 +65,7 @@
                 'row_attr'           => [
                     'class' => 'row mb-3',
                 ],
-            ])->add('isfavorite', CheckBoxType::class, array(
+            ])->add('favorite', CheckBoxType::class, array(
                 // 'disabled'      => true,
                 'required'           => false,
                 "attr"               => array(

@@ -64,7 +64,7 @@
 
             if ($favorite) {
                 // Inverser la valeur du champ isFavorite
-                $favorite->setFavorite(!$favorite->getIsFavorite());
+                $favorite->setFavorite(!$favorite->getFavorite());
 
                 // Sauvegarder les modifications dans la base de données
                 $this->entityManager->persist($favorite);

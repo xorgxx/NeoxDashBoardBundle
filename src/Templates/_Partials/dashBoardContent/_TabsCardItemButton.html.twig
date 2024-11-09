@@ -10,7 +10,7 @@
         data-live-id-param="{{ item.id }}"
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .20rem;"
     >
-        {% if item.isfavorite %}
+        {% if item.favorite %}
             <twig:ux:icon name="fa6-solid:{{ plus|default('star') }}" width="10" height="10" color="yellow" />
         {% else %}
             <twig:ux:icon name="fa6-regular:{{ plus|default('star') }}" width="10" height="10" color="{{ color|default('#270116') }}" />

@@ -44,8 +44,9 @@
     {% if section.content %}
         <div class="card-body" style="background-color: rgba(255,255,255,0.65)">
         <div class="content">
-            <strong>{{ item.slug }}</strong>
-            <p>{{ item.name }}</p>
+
+            <p>{{ item.content }}</p>
+
             {% if NeoxDashClass.icon == "bell" %}
                 <p class="mb-0 d-inline-flex align-items-center" title="Autre message de survol ici">
                     <!-- Première icône -->
