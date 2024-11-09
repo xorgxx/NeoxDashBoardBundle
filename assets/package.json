@@ -1,12 +1,9 @@
 {
     "name": "@xorgxx/neox-dashboard-bundle",
-    "description": "Xorgxx| Neox Dash board integration for Symfony",
+    "description": "Xorgxx | Neox Dash board integration for Symfony",
     "license": "MIT",
     "version": "1.0.0",
     "main": "dist/neox_modal_controller.js",
-    "scripts": {
-        "enabled": true
-    },
     "symfony": {
         "controllers": {
             "@symfony/ux-autocomplete": {
@@ -53,18 +50,18 @@
             },
             "neox_modal": {
                 "main": "dist/neox_modal_controller.js",
-                "fetch": "eager",
-                "enabled": true
+                "enabled": true,
+                "fetch": "eager"
             },
             "neox_drag_nav": {
                 "main": "dist/neox_drag_nav_controller.js",
-                "fetch": "eager",
-                "enabled": true
+                "enabled": true,
+                "fetch": "eager"
             },
             "neox_drag_drop": {
                 "main": "dist/neox_drag_drop_controller.js",
-                "fetch": "eager",
-                "enabled": true
+                "enabled": true,
+                "fetch": "eager"
             }
         },
         "assets": {
@@ -74,8 +71,8 @@
             "@symfony/ux-live-component": "^3.0",
             "@hotwired/stimulus": "^3.0",
             "@symfony/stimulus-bridge": "^3.0",
-            "@hotwired/turbo" : "^8.0",
-            "@popperjs/core" : "^2.11",
+            "@hotwired/turbo": "^8.0",
+            "@popperjs/core": "^2.11",
             "jquery": "^3.6",
             "bootstrap": "^5.0",
             "bootstrap/dist/css/bootstrap.min.css": "^5.0",
@@ -84,11 +81,11 @@
             "@sweetalert2/theme-bootstrap-4/bootstrap-4.css": "^5.0",
             "sweetalert2/dist/sweetalert2.esm.min": "^11.0",
             "sweetalert2/dist/sweetalert2.esm.all.min": "^11.0",
-            "tom-select/dist/css/tom-select.default.css" : "^2.0"
+            "tom-select/dist/css/tom-select.default.css": "^2.0"
         }
     },
     "peerDependencies": {
-        "tom-select/dist/css/tom-select.default.css" : "^2.0",
+        "tom-select/dist/css/tom-select.default.css": "^2.0",
         "symfony/stimulus-bundle": "^3.0",
         "@symfony/stimulus-bridge": "^3.0",
         "@symfony/ux-live-component": "^3.0",
