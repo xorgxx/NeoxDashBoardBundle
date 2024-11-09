@@ -42,7 +42,7 @@
                     'class' => 'row mb-3',
                 ],
             ])->add('content', textType::class, [
-                'required'           => true,
+                'required'           => false,
                 'label'              => $this->getTrans('url'),
                 'translation_domain' => 'neoxDashBoardDomain',
                 'label_attr'         => [ 'class' => 'col-form-label text-start', ],
