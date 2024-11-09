@@ -90,7 +90,7 @@ class NeoxDashBroadExtension extends AbstractExtension
         // Check if it's a digit (e.g., for IP addresses)
         elseif (ctype_digit($firstLetter)) {
             $formatter  = new \NumberFormatter("en", \NumberFormatter::SPELLOUT);
-            $words      = $formatter->format($firstLetter);
+            $words      = $formatter->format(strtolower($firstLetter));
             $icon       = "mynaui:$words-diamond";
         }
 
