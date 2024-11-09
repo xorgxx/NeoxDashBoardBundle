@@ -45,6 +45,10 @@ class NeoxDashDomain
     #[Gedmo\SortablePosition()]
     private ?int $position = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $favorite = false;
+
+
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
     private ?string $hash = null;
 
@@ -149,6 +153,19 @@ class NeoxDashDomain
         $this->hash = $hash;
         return $this;
     }
+
+    public function getIsFavorite(): ?bool
+    {
+        return $this->favorite;
+    }
+
+    public function setFavorite(?bool $favorite): NeoxDashDomain
+    {
+        $this->favorite = $favorite;
+        return $this;
+    }
+
+
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]

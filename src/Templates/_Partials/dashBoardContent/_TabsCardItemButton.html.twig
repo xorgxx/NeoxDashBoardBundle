@@ -1,26 +1,41 @@
-<!-- Edit and Delete Button on the top-right for the Icons -->
-{% if section.edit %}
-    <div class="p-2 bg-dark bg-opacity-25" > <!-- Top right positioning -->
-        <div class="neox-edit d-flex justify-content-end align-items-center" style="" >
-            <div class="me-3">
+<div class="d-flex align-items-center">
+    <!-- Icon with left margin -->
+
+    <button
+        type="button"
+        class="btn btn-transparent btn-sm"
+        id="dd"
+        data-action="live#action"
+        data-live-action-param="toggleFavorite"
+        data-live-id-param="{{ item.id }}"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .20rem;"
+    >
+        {% if item.isfavorite %}
+            <twig:ux:icon name="fa6-solid:{{ plus|default('star') }}" width="10" height="10" color="yellow" />
+        {% else %}
+            <twig:ux:icon name="fa6-regular:{{ plus|default('star') }}" width="10" height="10" color="{{ color|default('#270116') }}" />
+        {% endif %}
+    </button>
+
+    {% if section.edit %}
+        <div class="ms-auto d-flex align-items-center"> <!-- Aligns to the right side and centers vertically -->
+            <div class="me-2">
                 {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}
             </div>
-
-            <!-- Edit Button -->
+                                                        <!-- Edit Button -->
             <button
                 data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
-                data-title='Edit Domain'
-                data-text='Do you want to continue'
-    {#            data-id-element=null,#}
-                data-url="{{path('app_neox_dash_domain_edit', { id: item.id })}}"
+                data-title="Edit Domain"
+                data-text="Do you want to continue"
+                data-url="{{ path('app_neox_dash_domain_edit', { id: item.id }) }}"
                 data-modal="modal"
                 data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                class="btn btn-light btn-sm"
+                class="btn btn-success btn-sm"
                 type="button"
-                aria-selected="false" >
-                <twig:ux:icon name="fa6-solid:{{ plus|default('pen') }}" width="15" height="15" color="{{ color|default('green') }}" class="mx-2" />
-            </button >
-        </div >
-    </div>
-{% endif %}
-
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .50rem;"
+                aria-selected="false">
+                <twig:ux:icon name="fa6-solid:{{ plus|default('pen') }}" width="10" height="10" color="{{ color|default('white') }}" class="mx-2" />
+            </button>
+        </div>
+    {% endif %}
+</div>

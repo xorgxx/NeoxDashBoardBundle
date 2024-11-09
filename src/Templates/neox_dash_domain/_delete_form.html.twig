@@ -20,12 +20,13 @@
 {#        data-id-element="{{ path('app_neox_dashboard_home')}}"#}
 {#        data-url="{{ path('app_neox_dash_domain_delete', { id: item.id }) }}"#}
 {#        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"#}
-        class="btn btn-light btn-sm"
+        class="btn btn-danger btn-sm"
         type="button"
         aria-selected="false"
-        style="margin-right: -10px"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .50rem; margin-top:-5px"
+
     >
-        <twig:ux:icon name="fa6-solid:{{ plus|default('minus') }}" width="15" height="15" color="{{ color|default('red') }}" class="mx-2" />
+        <twig:ux:icon name="fa6-solid:{{ plus|default('minus') }}" width="10" height="10" color="{{ color|default('white') }}" class="mx-2" />
 
     </button>
 </form>

@@ -9,6 +9,7 @@
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\EnumType;
     use Symfony\Component\Form\Extension\Core\Type\ColorType;
+    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
     class NeoxDashDomainType extends AbstractType
     {
@@ -52,7 +53,19 @@
                 'row_attr'           => [
                     'class' => 'row mb-3',
                 ],
-            ]);
+            ])->add('isfavorite', CheckBoxType::class, array(
+                // 'disabled'      => true,
+                'required'           => false,
+                "attr"               => array(
+                    "placeholder" => $this->getTrans('content', "placeholder"),
+                    'class'       => 'required form-control '
+                ),
+                'label'              => $this->getTrans('content'),
+                'translation_domain' => 'neoxDashBoardSection',
+                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                'row_attr'           => [ 'class' => 'row mb-3' ],
+            ))
+            ;
         }
 
         public function configureOptions(OptionsResolver $resolver): void
