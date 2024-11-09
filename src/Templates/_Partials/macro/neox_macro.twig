@@ -48,7 +48,7 @@
         data-api="{{ path('app_neox_dash_section_exchange') }}"
         draggable="true"
         role="presentation" >
-        {% set n = "(" ~ section.NeoxDashDomains|length ~ ")" %}
+        {% set n = section.NeoxDashDomains|length %}
         <button class="nav-link {{ loop.first ? 'active' : '' }}"
             id="alert-{{ headerC }}-tab"
             data-bs-toggle="tab"
@@ -58,8 +58,8 @@
             aria-controls="{{ section.name }}"
             aria-selected="{{ loop.first ? 'true' : '' }}">
             {{ section.name }}
-
-                <span  style="font-size: 0.875em;"> {{ n }}</span>
+                <span class="badge rounded-pill bg-info text-dark">{{ n }}</span>
+{#                <span  style="font-size: 0.875em;"> {{ n }}</span>#}
                 {% if section.edit %}
                     <span class="text-danger"> *</span>
                 {% endif %}
