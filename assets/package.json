@@ -4,6 +4,9 @@
     "license": "MIT",
     "version": "1.0.0",
     "main": "dist/neox_modal_controller.js",
+    "scripts": {
+        "enabled": true
+    },
     "symfony": {
         "controllers": {
             "@symfony/ux-autocomplete": {
