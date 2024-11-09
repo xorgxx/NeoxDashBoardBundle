@@ -58,11 +58,7 @@
             aria-controls="{{ section.name }}"
             aria-selected="{{ loop.first ? 'true' : '' }}">
             {{ section.name }}
-                <span class="badge rounded-pill bg-info text-dark">{{ n }}</span>
-{#                <span  style="font-size: 0.875em;"> {{ n }}</span>#}
-                {% if section.edit %}
-                    <span class="text-danger"> *</span>
-                {% endif %}
+            <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ n }}</span>
 
         </button>
     </li >
