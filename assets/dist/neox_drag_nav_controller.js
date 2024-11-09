@@ -1,6 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 
 let url = null;
+let TargetItem = null;
+
 export default class extends Controller {
     static targets = ['dropzone'];
     
@@ -52,10 +54,7 @@ export default class extends Controller {
         loader.style.display = 'block';
         
         // Get the URL from the dropzone data attribute
-        const url = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
-        if (url) {
-            this.url = url.dataset.url;
-        }
+        this.TargetItem = event.target.closest('[data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"]');
         
         const items = Array.from(event.dataTransfer.items);
         this.dropzoneTarget.classList.remove('dropzone-hover');
@@ -160,7 +159,8 @@ export default class extends Controller {
     // Sends the URLs to the server using a POST request
     sendURLs(urls) {
         const payload = { urls };
-        return fetch(this.url, {
+        const url = this.TargetItem.dataset.url
+        return fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -179,11 +179,23 @@ export default class extends Controller {
                 icon: "success",
                 title: data // Display response message
             });
-   
-            const refreshButton = document.getElementById('refreshClass');
-            if (refreshButton) {
-                refreshButton.click();
+            
+            const idElement = this.TargetItem.dataset.idElement;
+            if ( idElement !== "element") {
+                if (this.#isRelativeUrl(idElement)) {
+                    Turbo.visit(idElement);
+                } else {
+                    const id = idElement.split('@')[1];
+                    const component = document.getElementById(idElement).__component;
+                    component.action('refresh', {'query': id});
+                }
+                return;
             }
+            // const refreshButton = document.getElementById('refreshClass');
+            // if (refreshButton) {
+            //     refreshButton.click();
+            // }
+            //
             
             return true;
         })
@@ -203,5 +215,10 @@ export default class extends Controller {
         const loading = document.getElementById('loading');
         loader.style.display = 'none';
         loading.classList.remove('no-select', 'body-loading');
+    }
+    
+    #isRelativeUrl(url) {
+        // Vérifie si la chaîne commence par "/", "./" ou "../", typiquement des indicateurs d'URL relative
+        return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }
 }

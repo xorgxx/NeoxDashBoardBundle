@@ -76,6 +76,7 @@
                 data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"
                 data-id="{{ section.id }}"
                 data-url="{{path('app_neox_dash_domain_new_batch', { id: section.id })}}"
+                data-id-element="live-NeoxDashBoardContent@{{ NeoxDashClass.id }}"
             >
                 <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
                 Drop or click to add domain
