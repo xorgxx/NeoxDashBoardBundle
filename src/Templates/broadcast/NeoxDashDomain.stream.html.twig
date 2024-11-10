@@ -13,7 +13,7 @@
                         const component = element ? element.__component : null;
 
                         if (component) {
-                            component.action('refresh', {'query': id});
+                            component.action('refresh', {'query': entity.section.id});
                         }
                     }
                 })();
