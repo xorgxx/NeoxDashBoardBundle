@@ -1,6 +1,6 @@
 {# Learn how to use Turbo Streams: https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="append" target="neox_dash_row_4-technologie">
+    <turbo-stream action="append" target="neox_dash_row_{{ entity.section.id }}-{{ entity.section.name }}">
         <template>
             <script>
                 (function() {
