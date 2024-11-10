@@ -142,7 +142,12 @@
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
 
-            if ($data && isset($data[ 'urls' ]) && is_array($data[ 'urls' ])) {
+            // S'assurer que `urls` est toujours un tableau
+            if (isset($data['urls']) && is_string($data['urls'])) {
+                $data['urls'] = [$data['urls']];
+            }
+
+            if ($data && isset($data[ 'urls' ]) || is_array($data[ 'urls' ])) {
 
                 for ($i = 0; $i < count($data[ 'urls' ]); $i += 2) {
 
