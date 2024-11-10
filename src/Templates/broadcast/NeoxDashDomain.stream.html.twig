@@ -1,13 +1,28 @@
 {# Learn how to use Turbo Streams: https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="append" target="neox_dash_domain_{{ id }}">
-{#        <template>#}
-{#            {% set item             = entity %}#}
-{#            {% set section          = item.section %}#}
-{#            {% set NeoxDashClass    = section.class %}#}
-{#            {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}#}
-{#        </template>#}
+    <turbo-stream action="append" target="neox_dash_domain_{{ entity.section.id }}">
+        <template>
+            <script>
+                (function() {
+
+                    const idElement = "live-NeoxDashBoardContent@{{ entity.section.class.id }}"
+                    console.log(idElement)
+                    if (idElement && idElement.includes('@')) {
+                        const id = idElement.split('@')[1];
+                        const element = document.getElementById(idElement);
+                        const component = element ? element.__component : null;
+
+                        if (component) {
+                            component.action('refresh', {'query': id});
+                        }
+                    }
+                })();
+            </script>
+        </template>
     </turbo-stream>
+
+
+
 {% endblock %}
 
 {% block update %}
