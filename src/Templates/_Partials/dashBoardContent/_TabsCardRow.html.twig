@@ -2,10 +2,10 @@
     {% for row in section.NeoxDashDomains|sort((a, b) => a.position <=> b.position)|batch(columns_per_row * rows_per_carousel,"")%}
         {#    {{ section.NeoxDashDomains|length }}#}
         <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="{{ section.timer | setTimer }}" >
-            <div class="container" >
+            <div id="neox_dash_row_{{ section.id }}" class="container" >
 
                 {% for rowSet in row|batch(columns_per_row,"") %}
-                    <div id="neox_dash_row_{{ sectionId }}" class="row justify-content-center"
+                    <div class="row justify-content-center"
                         {#                    {{ section.edit|default(false) ? stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_domain') : stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav_domain') }}#}
                         {#                    {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}#}
                     >
