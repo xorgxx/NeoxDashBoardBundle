@@ -8,7 +8,7 @@
 {% set height               = section.heigth|default('2.8') ~ 'rem' %}
 
 
-<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ sectionId }}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
+<div id="{{ sectionId }}" class="tab-pane fade {% if loop.first|default(true) %}show active{% endif %}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
     <div class="container"
         {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}
     >
