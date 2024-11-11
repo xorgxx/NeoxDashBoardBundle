@@ -1,11 +1,13 @@
 {# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="update" method="morph" target="{{ entity.section.id }}-{{ entity.section.name|lower }}">
+    <turbo-stream action="update" method="morph" target="{{ (entity.section.id ~ "-" ~ entity.section.name)|u.camel.title }}">
         <template>
             {% set item             = entity %}
             {% set section          = item.section %}
             {% set NeoxDashClass    = section.class %}
             {% set height           = section.heigth|default('2.8') ~ 'rem' %}
+            {% set isFirst          = "false" %}
+
             {{ include('@NeoxDashBoardBundle/_Partials/_dashBoardContentBuild.html.twig') }}
         </template>
     </turbo-stream>

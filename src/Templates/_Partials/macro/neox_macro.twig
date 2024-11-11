@@ -35,6 +35,8 @@
 
 {% macro navItemBottomHeader(section, class, loop) %}
     {% set headerC = section.name|replace({' ': ''})|lower %}
+    {% set sectionC             = section.name|replace({' ': ''})|u.camel.title %}
+    {% set sectionId            = (section.id ~ "-" ~ sectionC)|u.camel.title %}
 
     {#  HERE import neox_drag_tabs stimulus take control !!!  #}
     {#    <li {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_tabs') }} #}
@@ -50,9 +52,9 @@
         role="presentation" >
         {% set n = section.NeoxDashDomains|length %}
         <button class="nav-link {{ loop.first ? 'active' : '' }}"
-            id="alert-{{ headerC }}-tab"
+            id="alert-{{ sectionC }}-tab"
             data-bs-toggle="tab"
-            data-bs-target="#{{ section.id ~ '-' ~ headerC }}"
+            data-bs-target="#{{ sectionId }}"
             type="button"
             role="tab"
             aria-controls="{{ section.name }}"
