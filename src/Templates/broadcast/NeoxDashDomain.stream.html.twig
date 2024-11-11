@@ -4,13 +4,12 @@
         <template>
             <script>
                 (function() {
+                    let idElement = "live-NeoxDashBoardContent@{{ entity.section.class.id }}";
+                    console.log(idElement);
 
-                    const idElement = "live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-                    console.log(idElement)
                     if (idElement && idElement.includes('@')) {
-                        // const id = idElement.split('@')[1];
-                        const element = document.getElementById(idElement);
-                        const component = element ? element.__component : null;
+                        let element = document.getElementById(idElement);
+                        let component = element ? element.__component : null;
 
                         if (component) {
                             component.action('refresh', {'query': {{ entity.section.class.id }}});
@@ -20,6 +19,7 @@
             </script>
         </template>
     </turbo-stream>
+
 
 
 
