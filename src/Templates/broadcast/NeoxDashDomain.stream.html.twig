@@ -2,28 +2,28 @@
 {% block create %}
     <turbo-stream action="append" target="{{ (entity.section.id ~ "-" ~ entity.section.name)|u.camel.title }}">
         <template>
-            <script>
-                (function() {
-                const idElementNeox = "live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-                console.log(idElementNeox)
-                if (idElementNeox && idElementNeox.includes('@')) {
-                    // let id = idElementNeox.split('@')[1];
-                    const element = document.getElementById(idElementNeox);
-                    const component = element ? element.__component : null;
+{#            <script>#}
+{#                (function() {#}
+{#                const idElementNeox = "live-NeoxDashBoardContent@{{ entity.section.class.id }}"#}
+{#                console.log(idElementNeox)#}
+{#                if (idElementNeox && idElementNeox.includes('@')) {#}
+{#                    // let id = idElementNeox.split('@')[1];#}
+{#                    const element = document.getElementById(idElementNeox);#}
+{#                    const component = element ? element.__component : null;#}
 
-                    if (component) {
-                        component.action('refresh', {'query': {{ entity.section.class.id }}});
-                    }
-                }
-                })();
-            </script>
-{#            {% set item             = entity %}#}
-{#            {% set section          = item.section %}#}
-{#            {% set NeoxDashClass    = section.class %}#}
-{#            {% set height           = section.heigth|default('2.8') ~ 'rem' %}#}
-{#            {% set isFirst          = "false" %}#}
+{#                    if (component) {#}
+{#                        component.action('refresh', {'query': {{ entity.section.class.id }}});#}
+{#                    }#}
+{#                }#}
+{#                })();#}
+{#            </script>#}
+            {% set item             = entity %}
+            {% set section          = item.section %}
+            {% set NeoxDashClass    = section.class %}
+            {% set height           = section.heigth|default('2.8') ~ 'rem' %}
+            {% set isFirst          = "false" %}
 
-{#            {{ include('@NeoxDashBoardBundle/_Partials/_dashBoardContentBuild.html.twig') }}#}
+            {{ include('@NeoxDashBoardBundle/_Partials/_dashBoardContentBuild.html.twig') }}
         </template>
     </turbo-stream>
 {% endblock %}
