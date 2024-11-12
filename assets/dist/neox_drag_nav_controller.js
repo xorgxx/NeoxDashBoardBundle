@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 let url = null;
 let TargetItem = null;
@@ -7,15 +7,40 @@ export default class extends Controller {
     static targets = ['dropzone'];
     
     // Called when the controller is connected to the DOM
-    connect() {
+    connect(){
         this.addEventListeners();
+        addEventListener("turbo:before-stream-render", ( (event) => {
+            const fallbackToDefaultActions = event.detail.render
+            
+            event.detail.render = function(streamElement) {
+                // Checks if the target starts with "live-"
+                if (streamElement.target.startsWith("live-")) {
+                    console.log("xorg want to make call to 🦖🦖");
+                    
+                    // Extract element ID after "live-" prefix
+                    const idElement = streamElement.target;
+                    const id = idElement.split('@')[1];
+                    
+                    if (id) {
+                        const component = document.getElementById(idElement).__component;
+                        if (component) {
+                            component.action('refresh', { 'query': id });
+                        } else {
+                            console.warn(`No components found for the item ${idElement}`);
+                        }
+                    } else {
+                        console.warn(`Invalid ID in ${idElement}`);
+                    }
+                }
+            };
+        } ))
     }
     
     // Called when the controller is disconnected from the DOM
-    disconnect() {
+    disconnect(){
         // Remove event listeners if the dropzoneTarget exists
-        if (this.hasOwnProperty('dropzoneTarget') && this.dropzoneTarget) {
-            const { dropzoneTarget } = this;
+        if(this.hasOwnProperty('dropzoneTarget') && this.dropzoneTarget){
+            const {dropzoneTarget} = this;
             dropzoneTarget.removeEventListener('dragover', this.handleDragOver.bind(this));
             dropzoneTarget.removeEventListener('dragleave', this.handleMouseOut.bind(this));
             dropzoneTarget.removeEventListener('drop', this.handleDrop.bind(this));
@@ -25,26 +50,26 @@ export default class extends Controller {
     }
     
     // Adds the event listeners to the dropzone target
-    addEventListeners() {
-        const { dropzoneTarget } = this;
+    addEventListeners(){
+        const {dropzoneTarget} = this;
         dropzoneTarget.addEventListener('dragover', this.handleDragOver.bind(this));
         dropzoneTarget.addEventListener('dragleave', this.handleMouseOut.bind(this));
         dropzoneTarget.addEventListener('drop', this.handleDrop.bind(this));
     }
     
     // Handles the dragover event by adding a hover effect
-    handleDragOver(event) {
+    handleDragOver(event){
         event.preventDefault();
         this.dropzoneTarget.classList.add('dropzone-hover');
     }
     
     // Removes the hover effect on dragleave event
-    handleMouseOut() {
+    handleMouseOut(){
         this.dropzoneTarget.classList.remove('dropzone-hover');
     }
     
     // Handles the drop event and processes each dropped item
-    async handleDrop(event) {
+    async handleDrop(event){
         event.preventDefault();
         
         const loader = document.getElementById('loader');
@@ -63,9 +88,9 @@ export default class extends Controller {
         const preferredTypes = ['text/x-moz-url', 'text/plain', 'text/uri-list', 'text/html', 'text/x-moz-place'];
         items.sort((a, b) => preferredTypes.indexOf(a.type) - preferredTypes.indexOf(b.type));
         
-        for (let item of items) {
+        for(let item of items) {
             const shouldBreak = await this.processDrop(item);
-            if (shouldBreak) {
+            if(shouldBreak){
                 break;
             }
         }
@@ -74,16 +99,16 @@ export default class extends Controller {
     }
     
     // Processes each dropped item based on its type and sends it if it's a valid URL
-    processDrop(item) {
+    processDrop(item){
         return new Promise((resolve) => {
-            if (item?.kind !== 'string') {
+            if(item?.kind !== 'string'){
                 console.warn('Item is not of type "string".');
                 return resolve(false);
             }
             
-            item.getAsString(async (text) => {
+            item.getAsString(async(text) => {
                 const cleanedText = text.trim();
-                if (!cleanedText) {
+                if(!cleanedText){
                     console.warn('Empty or invalid content.');
                     return resolve(false);
                 }
@@ -91,12 +116,12 @@ export default class extends Controller {
                 // Extract URLs based on item type
                 let urls = item.type === '' ? cleanedText : this.extractURLs(item.type, cleanedText);
                 
-                if (urls.length > 0) {
+                if(urls.length > 0){
                     try {
                         await this.sendURLs(urls);
                         console.log('Data sent successfully:', urls);
                         resolve(true);
-                    } catch (error) {
+                    } catch(error) {
                         console.error('Error sending data:', error);
                         resolve(false);
                     }
@@ -109,10 +134,10 @@ export default class extends Controller {
     }
     
     // Extracts URLs from the dropped item based on its type
-    extractURLs(type, text) {
+    extractURLs(type, text){
         let urls = [];
         
-        switch (type) {
+        switch(type) {
             case 'text/plain':
                 console.log('Dropped Plain Text:', text);
                 urls.push(text);
@@ -121,7 +146,7 @@ export default class extends Controller {
             case 'text/uri-list':
             case 'text/x-moz-url':
                 urls = text.split('\n').filter(url => url.trim() !== '');
-                if (urls.length > 1) {
+                if(urls.length > 1){
                     console.log('Dropped URLs:', urls);
                 } else {
                     console.warn('Type "text/uri-list" contains fewer than two URLs.');
@@ -132,13 +157,13 @@ export default class extends Controller {
                 try {
                     const bookmarkData = JSON.parse(text);
                     const bookmarkURL = bookmarkData.uri?.trim();
-                    if (bookmarkURL) {
+                    if(bookmarkURL){
                         console.log('Dropped Bookmark URL:', bookmarkURL);
                         urls.push(bookmarkURL);
                     } else {
                         console.warn('Empty or invalid bookmark URL.');
                     }
-                } catch (error) {
+                } catch(error) {
                     console.error('Error parsing bookmark:', error);
                 }
                 break;
@@ -157,8 +182,8 @@ export default class extends Controller {
     }
     
     // Sends the URLs to the server using a POST request
-    sendURLs(urls) {
-        const payload = { urls };
+    sendURLs(urls){
+        const payload = {urls};
         const url = this.TargetItem.dataset.url
         return fetch(url, {
             method: 'POST',
@@ -168,7 +193,7 @@ export default class extends Controller {
             body: JSON.stringify(payload)
         })
         .then(response => {
-            if (response.ok) {
+            if(response.ok){
                 return response.json();
             } else {
                 throw new Error('Request failed with status code ' + response.status);
@@ -196,7 +221,7 @@ export default class extends Controller {
             // if (refreshButton) {
             //     refreshButton.click();
             // }
-
+            
             
             return true;
         })
@@ -218,7 +243,7 @@ export default class extends Controller {
         loading.classList.remove('no-select', 'body-loading');
     }
     
-    #isRelativeUrl(url) {
+    #isRelativeUrl(url){
         // Vérifie si la chaîne commence par "/", "./" ou "../", typiquement des indicateurs d'URL relative
         return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }
