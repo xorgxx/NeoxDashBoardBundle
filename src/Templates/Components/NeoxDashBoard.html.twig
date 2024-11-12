@@ -11,7 +11,9 @@
         <section >
 
         {#  ===== Builder Class ====== #}
-            <div id="NeoxDashBoardContent" >
+            <div id="NeoxDashBoardContent"
+                {{ turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }}
+            >
                 {% if NeoxDashSetup.class is not empty %}
                     {#  ===== LOOP to builder Class ====== #}
                     {% for class in  NeoxDashSetup.class %}
