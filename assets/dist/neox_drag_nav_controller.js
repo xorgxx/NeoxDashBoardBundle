@@ -31,6 +31,8 @@ export default class extends Controller {
                     } else {
                         console.warn(`Invalid ID in ${idElement}`);
                     }
+                }else{
+                    fallbackToDefaultActions(streamElement);
                 }
             };
         } ))
