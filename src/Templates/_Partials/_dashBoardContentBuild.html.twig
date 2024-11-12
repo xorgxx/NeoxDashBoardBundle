@@ -8,6 +8,7 @@
 {% set height               = section.heigth|default('2.8') ~ 'rem' %}
 {% set isFirst              = isFirst ?? loop.first %}
 
+{# here is bug zzzz-125-Drop !!!! #}
 <div id="{{ sectionId }}" class="tab-pane fade {% if isFirst %}show active{% endif %}" role="tabpanel" aria-labelledby="alert-{{ sectionC }}-tab" >
     <div class="container"
         {{  section.edit|default(false) ? turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') : null }}
