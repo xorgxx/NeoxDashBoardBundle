@@ -2,12 +2,12 @@
     Fast menu
 </button>
 
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-    <div class="offcanvas-header">
+<div class="offcanvas offcanvas-start bg-light bg-opacity-25" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header bg-white">
         <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Section</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body bg-info bg-opacity-25 ">
         <div class="list-group">
             {% for class in NeoxDashSetup.class %}
                 <a href="#live-NeoxDashBoardContent@{{ class.id }}" class="list-group-item list-group-item-action scroll-link">{{ class.name }}</a>

@@ -136,9 +136,15 @@ section {
 }
 
 
+/* Styles pour le header */
+.offcanvas-body {
+    background: rgba(0, 0, 0, 0.5); /* Arrière-plan transparent à 50% */
+}
+
+/* Styles pour le bouton */
 .fixed-bottom-right {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 1050; /* Assure que le bouton soit au-dessus d'autres éléments */
+    z-index: 1; /* Assure que le bouton soit au-dessus d'autres éléments */
 }
