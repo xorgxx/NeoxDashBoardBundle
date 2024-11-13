@@ -4,6 +4,28 @@ import * as bootstrap from 'bootstrap';
 export default class NeoxModalController extends coreDashController {
     static targets = ["link"];
     
+    connect(){
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // Empêche le comportement par défaut du lien
+                
+                // Récupère l'ID de l'élément cible à partir du lien
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                // Si l'élément cible est trouvé, effectuer le défilement
+                if (targetElement) {
+                    const offsetTop = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+                
+                // Fermer l'offcanvas après le clic
+                const offcanvasElement = document.getElementById('offcanvasWithBothOptions');
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                offcanvas.hide(); // Cache l'offcanvas après le clic
+            });
+        });
+    }
     
     modal(event){
         event.preventDefault();

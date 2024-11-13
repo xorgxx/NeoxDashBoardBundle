@@ -134,3 +134,11 @@ section {
 .section-title p {
     margin-bottom: 0;
 }
+
+
+.fixed-bottom-right {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1050; /* Assure que le bouton soit au-dessus d'autres éléments */
+}

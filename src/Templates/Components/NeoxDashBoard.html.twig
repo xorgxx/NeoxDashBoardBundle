@@ -21,6 +21,9 @@
                             <twig:NeoxDashBoardContent :NeoxDashClass="class" :loopn="loop" id="live-NeoxDashBoardContent@{{ class.id }}" />
                         </turbo-frame >
                     {% endfor %}
+                    {#      BULDER menu fast ====   #}
+                    {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_builderMenuLeft.html.twig')}}
+
                 {% else %}
                     {{ include('@NeoxDashBoardBundle/_Partials/dashBoardMain/iniDashBoard.html.twig')}}
                 {% endif %}
