@@ -17,33 +17,45 @@ export default class NeoxModalController extends coreDashController {
                 if (targetElement) {
                     const offsetTop = targetElement.getBoundingClientRect().top + window.scrollY - 100;
                     window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                }
-                
-                // Vérifie si l'élément cible est dans un accordéon
-                const accordionItem = targetElement.querySelector('.accordion-item');
-                if (accordionItem) {
-                    const accordionCollapse = accordionItem.querySelector('.accordion-collapse');
                     
-                    // Si l'élément est dans un accordéon, on l'ouvre
-                    if (accordionCollapse) {
-                        // On crée un objet Collapse Bootstrap et on le "force" à s'ouvrir
-                        const collapse = new bootstrap.Collapse(accordionCollapse, {
-                            toggle: true
-                        });
+                    // Vérifie si l'élément cible est dans un accordéon
+                    const accordionItem = targetElement.querySelector('.accordion-item');
+                    if (accordionItem) {
+                        const accordionCollapse = accordionItem.querySelector('.accordion-collapse');
                         
-                        // Vérifier que l'accordéon est effectivement ouvert (optionnel)
-                        if (!accordionCollapse.classList.contains('show')) {
-                            collapse.show(); // On ouvre explicitement l'élément
+                        // Si l'élément est dans un accordéon, on l'ouvre
+                        if (accordionCollapse) {
+                            const collapse = new bootstrap.Collapse(accordionCollapse, {
+                                toggle: true
+                            });
+                            
+                            // On vérifie si l'élément est déjà ouvert (optionnel)
+                            if (!accordionCollapse.classList.contains('show')) {
+                                collapse.show(); // On ouvre explicitement l'élément
+                            }
+                            
+                            // On ferme tous les autres éléments d'accordéon
+                            document.querySelectorAll('.accordion-collapse').forEach((accordion) => {
+                                if (accordion !== accordionCollapse && accordion.classList.contains('show')) {
+                                    const otherCollapse = new bootstrap.Collapse(accordion, {
+                                        toggle: false // Ne pas basculer l'état, juste fermer
+                                    });
+                                    otherCollapse.hide(); // On ferme explicitement l'élément
+                                }
+                            });
                         }
                     }
                 }
                 
                 // Fermer l'offcanvas après le clic
                 const offcanvasElement = document.getElementById('offcanvasWithBothOptions');
-                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-                offcanvas.hide(); // Cache l'offcanvas après le clic
+                if (offcanvasElement) {
+                    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                    offcanvas.hide(); // Cache l'offcanvas après le clic
+                }
             });
         });
+        
     }
     
     modal(event){
