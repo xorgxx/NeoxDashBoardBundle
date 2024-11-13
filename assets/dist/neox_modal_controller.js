@@ -19,6 +19,25 @@ export default class NeoxModalController extends coreDashController {
                     window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
                 
+                // Vérifie si l'élément cible est dans un accordéon
+                const accordionItem = targetElement.querySelector('.accordion-item');
+                if (accordionItem) {
+                    const accordionCollapse = accordionItem.querySelector('.accordion-collapse');
+                    
+                    // Si l'élément est dans un accordéon, on l'ouvre
+                    if (accordionCollapse) {
+                        // On crée un objet Collapse Bootstrap et on le "force" à s'ouvrir
+                        const collapse = new bootstrap.Collapse(accordionCollapse, {
+                            toggle: true
+                        });
+                        
+                        // Vérifier que l'accordéon est effectivement ouvert (optionnel)
+                        if (!accordionCollapse.classList.contains('show')) {
+                            collapse.show(); // On ouvre explicitement l'élément
+                        }
+                    }
+                }
+                
                 // Fermer l'offcanvas après le clic
                 const offcanvasElement = document.getElementById('offcanvasWithBothOptions');
                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
