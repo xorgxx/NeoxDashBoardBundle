@@ -1,6 +1,6 @@
 {
     "name": "@xorgxx/neox-dashboard-bundle",
-    "description": "Xorgxx | Neox Dash board integration for Symfony",
+    "description": "Xorgxx | Neox Dashboard integration for Symfony",
     "license": "MIT",
     "version": "1.0.0",
     "main": "dist/neox_modal_controller.js",
@@ -21,6 +21,7 @@
                 "enabled": true,
                 "fetch": "eager"
             }
+
         },
         "assets": {
             "path": "assets"

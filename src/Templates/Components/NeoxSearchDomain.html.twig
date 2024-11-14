@@ -1,0 +1,64 @@
+<div{{ attributes }}>
+
+    <input
+        id="delayedInput"
+        type="search"
+        data-model="query"
+        aria-describedby="basic-addon2"
+        placeholder="Search link ...."
+        class="bg-white fw-bold bg-opacity-50 form-control"
+    />
+    {% set height = section.heigth|default('2.8') ~ 'rem' %}
+
+    <div class="container">
+        <div class="row">
+            {% for item in computed.packages %}
+                <div class="col-3 my-2">
+                    <div class="card h-100" style="border-width: 0!important; position: relative; background-color: {{ item.color }}78;">
+                        <!-- Header with Icon and Name -->
+                        <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left: calc({{ height }} + 15px); position: relative;">
+                            <!-- Icon fixed to top-left -->
+                            <div class="icon-container" style="position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: {{ height }};">
+                                <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};">
+                                    <a href="{{ item.url }}" target="_blank"
+                                        class="d-flex align-items-center justify-content-center p-2 hover-color"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}">
+                                        {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
+                                            <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
+                                                name="{{ item.name|getShortDomain['icon'] }}"
+                                                width="{{ height }}"
+                                                style="height: auto; transform: rotate(0deg);" color="white" />
+                                        {% else %}
+                                            <div style="display: inline-flex; align-items: center;">
+                                                <img src="{{ item.urlicon }}" alt="nc" width="30"
+                                                    onerror="this.style.display='none'; this.closest('div').querySelector('.fallback-icon').style.display='inline';" />
+                                                <span class="fallback-icon" style="display: none;">
+                                    <twig:ux:icon
+                                        class="flex-shrink-0 p-1 icon-normal"
+                                        name="mynaui:daze-square"
+                                        width="{{ height }}"
+                                        style="height: auto; transform: rotate(0deg); color: white;" />
+                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Name aligned to the right of the icon -->
+                            <div class="text-start">
+                                <strong class="text-light">{{ item.name|u.truncate(30,' ...', true) }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p>No packages found for "{{ query }}"</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</div>

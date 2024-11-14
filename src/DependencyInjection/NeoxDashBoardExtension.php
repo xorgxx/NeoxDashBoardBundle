@@ -56,7 +56,7 @@
         {
             $configurations = [
                 'twig'                     => TwigConfig::getConfig(),
-                'twig_components'          => twigComponentsConfig::getConfig(),
+                'twig_component'           => twigComponentsConfig::getConfig(),
                 'framework'                => frameworkConfig::getConfig(),
                 'router'                   => routerConfig::getConfig(),
                 'doctrine'                 => doctrineExtensionsConfig::getConfig(),

@@ -16,7 +16,7 @@
         {
             return [
                 'defaults' => [
-                    '%kernel.project_dir%/vendor/xorgxx/neox-dashboard-bundle/src/Twig/Components/' => '~',
+                    '%kernel.project_dir%\\vendor\\xorgxx\\neox-dashboard-bundle\\src\\Twig\\Components\\' => "~",
                 ],
             ];
         }
