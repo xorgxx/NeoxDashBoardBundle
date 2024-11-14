@@ -36,10 +36,10 @@ class NeoxDashDomainRepository extends ServiceEntityRepository
         return match ($value) {
             "", null => [], // If value is null, return an empty array
             default => $this->createQueryBuilder('n')
-                            ->andWhere('n.url LIKE :val OR n.name LIKE :val') // Ajoute un filtre sur "name" avec LIKE
-                            ->setParameter('val', '%' . $value . '%') // Utilise le pourcentage pour faire une recherche partielle
+                            ->andWhere('n.url LIKE :val OR n.name LIKE :val') // Adds a filter on "name" with LIKE
+                            ->setParameter('val', '%' . $value . '%') // Uses % to allow partial matches
                             ->getQuery()
-                            ->getResult(), // Utilise getResult() pour obtenir tous les résultats correspondants
+                            ->getResult(), // Uses getResult() to fetch all matching results
 
         };
     }
