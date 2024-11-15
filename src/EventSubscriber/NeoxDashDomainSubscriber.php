@@ -74,7 +74,7 @@
             if ($entity instanceof NeoxDashDomain) {
 
                 switch ($action) {
-                    case "update":
+//                    case "update":
                     case "postPersist":
                         $this->bus->dispatch(new NeoxDashDomainMessage($entity->getId()));
                         break;
