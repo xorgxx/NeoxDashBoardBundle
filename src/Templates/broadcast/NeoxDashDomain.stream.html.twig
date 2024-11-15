@@ -1,13 +1,19 @@
 {# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="update" target="live-NeoxDashBoardContent@{{ entity.section.class.id }}">
+    <turbo-stream action="update"
+        target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
+        data-neox-refresh="true"
+    >
 
     </turbo-stream>
 
 {% endblock %}
 
 {% block update %}
-    <turbo-stream action="update" method="morph" target="neox_dash_domain_{{ id }}">
+    <turbo-stream action="update" method="morph" target="neox_dash_domain_{{ id }}"
+        data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
+        data-neox-refresh="true"
+    >
         <template>
             {% set item             = entity %}
             {% set section          = item.section %}

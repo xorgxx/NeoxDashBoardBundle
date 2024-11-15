@@ -55,7 +55,6 @@ export default class NeoxModalController extends coreDashController {
                 }
             });
         });
-        
     }
     
     modal(event){

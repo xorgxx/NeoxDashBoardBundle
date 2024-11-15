@@ -9,34 +9,39 @@ export default class extends Controller {
     // Called when the controller is connected to the DOM
     connect(){
         this.addEventListeners();
-        addEventListener("turbo:before-stream-render", ( (event) => {
-            const fallbackToDefaultActions = event.detail.render
+        addEventListener("turbo:before-stream-render", (event) => {
+            const fallbackToDefaultActions = event.detail.render;
             
-            event.detail.render = function(streamElement) {
-                // Checks if the target starts with "live-"
-                if (streamElement.target.startsWith("live-")) {
-                    console.log("xorg want to make call to 🦖🦖");
+            event.detail.render = function(streamElement){
+                // Vérifie si les attributs "data-neox-refresh" et "data-neox-id" sont présents
+                const hasRefreshAttribute = streamElement.hasAttribute("data-neox-refresh");
+                const neoxRefresh = streamElement.getAttribute("data-neox-refresh");
+                const neoxId = streamElement.getAttribute("data-neox-id");
+                
+                if(neoxRefresh && neoxId){
+                    console.log("xorg wants to make a call to 🦖🦖");
                     
-                    // Extract element ID after "live-" prefix
-                    const idElement = streamElement.target;
-                    const id = idElement.split('@')[1];
+                    // Extraire l'ID à partir de l'attribut "data-neox-id"
+                    const id = neoxId.split('@')[ 1 ]; // Suppose que la valeur est au format "live-NeoxDashBoardContent@ID"
                     
-                    if (id) {
-                        const component = document.getElementById(idElement).__component;
-                        if (component) {
-                            component.action('refresh', { 'query': id });
+                    if(id){
+                        const component = document.getElementById(neoxId).__component;
+                        if(component){
+                            component.action('refresh', {query: id});
                         } else {
-                            console.warn(`No components found for the item ${idElement}`);
+                            console.warn(`No components found for the item ${neoxId}`);
                         }
                     } else {
-                        console.warn(`Invalid ID in ${idElement}`);
+                        console.warn(`Invalid ID in ${neoxId}`);
                     }
-                }else{
+                } else {
+                    // Actions par défaut si les attributs ne sont pas présents
                     fallbackToDefaultActions(streamElement);
                 }
             };
-        } ))
+        });
     }
+
     
     // Called when the controller is disconnected from the DOM
     disconnect(){
