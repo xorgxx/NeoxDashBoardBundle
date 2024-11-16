@@ -13,6 +13,26 @@
     background-size: cover;
 }
 
+.sticky-container {
+    position: relative;
+    z-index: 1000; /* Pour gérer la superposition */
+}
+
+/* Header sticky */
+.sticky-header {
+    position: sticky;
+    top: 0; /* Toujours en haut */
+    z-index: 1020; /* Superposition correcte */
+}
+
+/* Search Domain sticky */
+.sticky-search {
+    position: sticky;
+    top: 60px; /* Ajustez cette valeur à la hauteur exacte du Header */
+    z-index: 1010;
+
+}
+
 .row {
     display: flex;
     flex-wrap: wrap;
