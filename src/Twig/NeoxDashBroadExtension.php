@@ -56,11 +56,12 @@ class NeoxDashBroadExtension extends AbstractExtension
         ];
     }
 
-    public function setFavorite( neoxDashDomain $entity ): NeoxDashDomain
+    public function setFavorite( neoxDashDomain $entity ): bool
     {
-        $entity->getSection()->setname("FAVORITE");
-        return $entity;
-    }
+        if ($entity->getFavorite() !== null) {
+            return $entity->getFavorite()->getFavorite();
+        }
+        return false;    }
 
     public function setTimer( $timer = null)
     {

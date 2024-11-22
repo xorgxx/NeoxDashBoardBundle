@@ -11,7 +11,9 @@
         data-live-section-param="{{ item.section.name }}"
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .8rem; --bs-btn-font-size: .20rem;"
     >
-        {% set isFavorite = item.favorite.favorite|default(false) %}
+
+        {% set isFavorite = item|setFavorite() %}
+
         <twig:ux:icon
             name="fa6-{{ isFavorite ? 'solid' : 'regular' }}:{{ plus|default('star') }}"
             width="15"
