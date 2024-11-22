@@ -70,7 +70,7 @@
             $favorite = $domain->getFavorite();
             if (!$favorite) {
                 $favorite = new NeoxDashFavorite();
-                $favorite->setFavorite(true);
+//                $favorite->setFavorite(true);
             }
 
             $favorite->setFavorite(!$favorite->getFavorite());
