@@ -6,6 +6,7 @@
     use Doctrine\ORM\EntityManagerInterface;
 //    use phpDocumentor\Reflection\Types\Collection;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashFavorite;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use phpDocumentor\Reflection\Types\Integer;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,9 @@
 
         #[LiveProp(writable: true)]
         public ?string         $query         = null;
+
+        #[LiveProp(writable: true)]
+        public ?string         $favorite       = null;
 
 //        #[LiveProp(writable: true)]
 //        public ?string         $id         = null;
@@ -60,25 +64,36 @@
         public function toggleFavorite(#[LiveArg] string $id): void
         {
             // Récupérer l'entité Favorite à partir de son ID
-            $favorite = $this->entityManager->getRepository(NeoxDashDomain::class)->findOneBy(['id' => $id]);
-
-            if ($favorite) {
-                // Inverser la valeur du champ isFavorite
-                $favorite->setFavorite(!$favorite->getFavorite());
-
-                // Sauvegarder les modifications dans la base de données
-                $this->entityManager->persist($favorite);
-                $this->entityManager->flush();
-
+            $domain = $this->entityManager->getRepository(NeoxDashDomain::class)->findOneBy(['id' => $id]);
+            $favorite = $domain->getFavorite();
+            if (!$favorite) {
+                $favorite = new NeoxDashFavorite();
                 // Rafraîchir l'état de l'élément, si nécessaire
-                $this->refresh($favorite->getSection()->getClass()->getid());
+//                $this->refresh($favorite->getSection()->getClass()->getid());
             }
+
+            $favorite->setFavorite(!$favorite->getFavorite());
+            $domain->setFavorite($favorite);
+            // Sauvegarder les modifications dans la base de données
+            $this->entityManager->persist($domain);
+            $this->entityManager->flush();
+
+            // Rafraîchir l'état de l'élément, si nécessaire
+            $this->refresh($domain->getSection()->getClass()->getid());
+
+            $this->refreshFavorite();
         }
 
         #[LiveAction]
         public function refresh(#[LiveArg] string $query="link"): void
         {
             $this->NeoxDashClass = $this->entityManager->getRepository(NeoxDashClass::class)->findOneBy(["id" => $query]) ;
+        }
+
+        #[LiveAction]
+        public function refreshFavorite(): array
+        {
+            return $this->entityManager->getRepository(NeoxDashFavorite::class)->findFavorites() ;
         }
 
     }

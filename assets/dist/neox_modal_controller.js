@@ -219,7 +219,7 @@ export default class NeoxModalController extends coreDashController {
         const id = link.dataset.carousel;
         const idt = link.dataset.id;
         const idClass = link.dataset.class;
-        const carouselElement = document.getElementById(`carousel${id}`);
+        const carouselElement = document.getElementById(`${id}`);
         
         if(carouselElement){
             const carousel = new bootstrap.Carousel(carouselElement);

@@ -3,6 +3,8 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Form;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashFavorite;
+    use Symfony\Bridge\Doctrine\Form\Type\EntityType;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,6 +12,8 @@
     use Symfony\Component\Form\Extension\Core\Type\EnumType;
     use Symfony\Component\Form\Extension\Core\Type\ColorType;
     use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+    use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+    use Symfony\Component\Form\Extension\Core\Type\FormType;
 
     class NeoxDashDomainType extends AbstractType
     {
@@ -65,18 +69,11 @@
                 'row_attr'           => [
                     'class' => 'row mb-3',
                 ],
-            ])->add('favorite', CheckBoxType::class, array(
-                // 'disabled'      => true,
-                'required'           => false,
-                "attr"               => array(
-                    "placeholder" => $this->getTrans('content', "placeholder"),
-                    'class'       => 'required form-control '
-                ),
-                'label'              => $this->getTrans('content'),
-                'translation_domain' => 'neoxDashBoardSection',
-                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
-                'row_attr'           => [ 'class' => 'row mb-3' ],
-            ))
+            ])
+//              ->add('favorite',  FormType::class, [
+//                'data_class' => neoxDashFavorite::class,
+//                ]
+//            )
             ;
         }
 

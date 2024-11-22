@@ -1,9 +1,9 @@
 {# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="update"
-        target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-        data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-        data-neox-refresh="true"
+    <turbo-stream action="update" target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
+        data-neox-idComponent="live-NeoxFavorite@0"
+        data-neox-idClass="{{ entity.section.class.id }}"
+        data-neox-action="refreshFavorite"
     >
 
     </turbo-stream>
@@ -11,22 +11,51 @@
 {% endblock %}
 
 {% block update %}
-    <turbo-stream action="update" method="morph" target="neox_dash_domain_{{ id }}"
-        data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-        data-neox-refresh="true"
-    >
+{#    ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %}#}
+{#    {{ (entity.section.class.id ~ "@" ~ entity.section.name)|u.camel.title }}#}
+
+    {#
+    ====== Check if it's a favorite and it have true =====
+    if favorite is activate then wen have to update also the favorite "virtual"
+    #}
+    {% set item             = entity %}
+    {% set section          = item.section %}
+    {#  {% set item             = entity %}#}
+    {#  {% set section          = item.section %}#}
+    {#  {% set section          = item.section %}#}
+    {#  {% set NeoxDashClass    = section.class %}#}
+    {#  {% set height           = section.heigth|default('2.8') ~ 'rem' %}#}
+    <turbo-stream action="update" method="morph" target="domainCard{{ section.name }}@{{ id }}"
+        data-neox-idComponent="live-NeoxFavorite@0"
+        data-neox-idClass="{{ entity.section.class.id }}"
+        data-neox-action="refreshFavorite"
+        >
         <template>
-            {% set item             = entity %}
-            {% set section          = item.section %}
-            {% set NeoxDashClass    = section.class %}
-            {% set height           = section.heigth|default('2.8') ~ 'rem' %}
             {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
         </template>
     </turbo-stream>
+
+{#    {% if entity.favorite|default(false) %}#}
+{#        <turbo-stream action="update"  target="domainCardFAVORITE@{{ id }}">#}
+{#                    data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}"#}
+{#                    data-neox-refresh="false"#}
+{#            >#}
+{#            <template>#}
+{#                {% set item             = entity|setFavorite() %}#}
+{#                {% set section          = item.section %}#}
+{#                {% set NeoxDashClass    = section.class %}#}
+
+{#                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}#}
+{#            </template>#}
+{#        </turbo-stream>#}
+{#    {% endif %}#}
+
+
+
 {% endblock %}
 
 {% block remove %}
-    <turbo-stream action="remove" target="neox_dash_domain_{{ id }}">
+    <turbo-stream action="remove" target="domainCard{{ section.name }}@{{ id }}">
 
     </turbo-stream>
 {% endblock %}

@@ -1,14 +1,16 @@
-<div class="card h-100" style="border-width: 0!important; position: relative; background-color: {{ item.color }}78;">
+{#{% set section          = item.section %}#}
+{% set NeoxDashClass    = section.class %}
+{% set height           = "2.8rem" %}
+{% set idDomainCard     = "domainCard" ~ section.name ~ "@" ~ item.id %}
+
+<div id="{{ idDomainCard }}" class="card h-100" style="border-width: 0!important; position: relative; background-color: {{ item.color }}78;">
     <!-- Header with Icon and Name -->
-    <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left: calc({{ height }} + 15px); position: relative;">
-
-        {% set height = section.heigth|default('2.8') ~ 'rem' %}
-
+    <div class="card-header d-flex align-items-center" style="background-color: {{ item.color }}; padding-left:  3rem; position: relative;">
         <!-- Icon fixed to top-left   padding-left: calc({{ height }} + 45px) -->
         <div class="icon-container" style="position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: {{ height }};">
             <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};">
                 <a href="{{ item.url }}" target="_blank"
-                    class="d-flex align-items-center justify-content-center p-2 hover-color"
+                    class="d-flex align-items-center justify-content-center hover-color"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}">
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                         <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"

@@ -1,0 +1,26 @@
+{# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
+{% block create %}
+    {{ dump(entity) }}
+    <turbo-stream action="update" method="morph" target="domainCardFAVORITEddd@{{ id }}">
+        <template>
+            <h5>created</h5>
+        </template>
+    </turbo-stream>
+
+{% endblock %}
+
+{% block update %}
+    {{ dump(entity) }}
+    <turbo-stream action="update" method="morph" target="domainCardFAVORITEddd@{{ id }}">
+        <template>
+            <h5>update</h5>
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block remove %}
+    {{ dump(entity) }}
+    <turbo-stream action="remove" target="">
+
+    </turbo-stream>
+{% endblock %}

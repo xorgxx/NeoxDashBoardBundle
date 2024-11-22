@@ -191,11 +191,20 @@ export default class extends Controller {
                             break;
                         case 'domain-move->section':
                             // Move the dragged element before the target element
-                            // targetElement.insertAdjacentElement('beforebegin', draggedElement);
+                            //targetElement.insertAdjacentElement('beforebegin', draggedElement);
+                            draggedElement.remove();
                             await this.updateEntity(draggedId, targetId, targetApi + "-domain");
-                            // const refreshButton = document.getElementById('refreshClass');
-                            if(refreshButton){
-                                refreshButton.click(); // Simulate a button click
+                            const id = `live-NeoxDashBoardContent@${draggedIdClass}`; // Suppose que la valeur est au format "live-NeoxDashBoardContent@ID"
+                            
+                            if(id){
+                                const component = document.getElementById(id).__component;
+                                if(component){
+                                    component.action('refresh', {query: draggedIdClass});
+                                } else {
+                                    console.warn(`No components found for the item ${id}`);
+                                }
+                            } else {
+                                console.warn(`Invalid ID in ${id}`);
                             }
                             console.log("domain-move->section");
                             break;

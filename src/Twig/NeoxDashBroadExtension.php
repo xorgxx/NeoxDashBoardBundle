@@ -5,6 +5,7 @@
 use AllowDynamicProperties;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,6 +41,7 @@ class NeoxDashBroadExtension extends AbstractExtension
 //            new TwigFilter('setJsFile', [$this, 'setJsFile']),
             new TwigFilter('getShortDomain', [$this, 'shortDomain']),
             new TwigFilter('setTimer', [$this, 'setTimer']),
+            new TwigFilter('setFavorite', [$this, 'setFavorite']),
         ];
     }
 
@@ -52,6 +54,12 @@ class NeoxDashBroadExtension extends AbstractExtension
 //            )),
 //            new TwigFunction('setTimer', [$this, 'setTimer']),
         ];
+    }
+
+    public function setFavorite( neoxDashDomain $entity ): NeoxDashDomain
+    {
+        $entity->getSection()->setname("FAVORITE");
+        return $entity;
     }
 
     public function setTimer( $timer = null)

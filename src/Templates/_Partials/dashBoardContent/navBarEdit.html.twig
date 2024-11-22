@@ -62,7 +62,7 @@
         </button >
 
     <div
-        {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
+{#        {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}#}
         data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
         data-title='New Domain'
         data-text='Do you want to continue'
@@ -72,7 +72,8 @@
         data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" >
         <div class="left-item me-2" >
 
-            <div class="dropzone btn btn-primary btn-sm"
+            <div {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
+                class="dropzone btn btn-primary btn-sm"
                 data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"
                 data-id="{{ section.id }}"
                 data-url="{{path('app_neox_dash_domain_new_batch', { id: section.id })}}"

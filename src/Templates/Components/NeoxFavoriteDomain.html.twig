@@ -1,0 +1,32 @@
+<section {{ attributes }} class="d-flex flex-column pb-0" >
+    {# ======= MORE IMPORTANT ENTRY POINT ======
+     # This is the main entry point of the dashboard
+     # It will build all the other entry points.
+     # Value will be always the same entity !! neoxDashClass !!
+     # In cas of favorite dashboard, neoxDashClass will be build by function in component as "virtual"
+    #}
+    {% set dashClass                    = NeoxDashClass == null ? computed.Favorite : NeoxDashClass %}
+    {# ======= MORE IMPORTANT ENTRY POINT ====== #}
+
+    {% for class in dashClass %}
+        {% set sections                     = class.neoxDashSections %}     {# List of all items #}
+        {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
+
+        <!-- Header Section: Title and Navigation Tabs -->
+        {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
+
+        <!-- Tab Content + carousel -->
+
+        {% for section in sections %}
+            {# 4 columns x 2 rows = 8 items per carousel-item #}
+            {% set itemsPerPage                 = section.edit ? section.neoxDashDomains|default(1)|length : section.row|default(4) %}
+            {% set domains                      = section.neoxDashDomains %}
+            {% set chunkedItems                 = domains|batch(itemsPerPage) %}
+            {% set idContentCarousel            = ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %}
+            {% set idInnerCarousel              = ( section.name ~ "@" ~ section.id )|u.camel.title %}
+
+            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteCarousel.html.twig') }}
+        {% endfor %}
+    {% endfor %}
+</section >
+

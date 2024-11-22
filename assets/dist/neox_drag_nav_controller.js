@@ -6,43 +6,10 @@ let TargetItem = null;
 export default class extends Controller {
     static targets = ['dropzone'];
     
-    // Called when the controller is connected to the DOM
-    connect(){
+    initialize(){
         this.addEventListeners();
-        addEventListener("turbo:before-stream-render", (event) => {
-            const fallbackToDefaultActions = event.detail.render;
-            
-            event.detail.render = function(streamElement){
-                // Vérifie si les attributs "data-neox-refresh" et "data-neox-id" sont présents
-                const hasRefreshAttribute = streamElement.hasAttribute("data-neox-refresh");
-                const neoxRefresh = streamElement.getAttribute("data-neox-refresh");
-                const neoxId = streamElement.getAttribute("data-neox-id");
-                
-                if(neoxRefresh && neoxId){
-                    console.log("xorg wants to make a call to 🦖🦖");
-                    
-                    // Extraire l'ID à partir de l'attribut "data-neox-id"
-                    const id = neoxId.split('@')[ 1 ]; // Suppose que la valeur est au format "live-NeoxDashBoardContent@ID"
-                    
-                    if(id){
-                        const component = document.getElementById(neoxId).__component;
-                        if(component){
-                            component.action('refresh', {query: id});
-                        } else {
-                            console.warn(`No components found for the item ${neoxId}`);
-                        }
-                    } else {
-                        console.warn(`Invalid ID in ${neoxId}`);
-                    }
-                } else {
-                    // Actions par défaut si les attributs ne sont pas présents
-                    fallbackToDefaultActions(streamElement);
-                }
-            };
-        });
     }
 
-    
     // Called when the controller is disconnected from the DOM
     disconnect(){
         // Remove event listeners if the dropzoneTarget exists

@@ -1,0 +1,56 @@
+
+{% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
+
+<!-- Header Section: Title and Navigation Tabs -->
+<div class="d-flex justify-content-between align-items-center p-2  rounded-top" style="background-color: rgba(139,0,0,0.38)" >
+
+    <!-- Title with Icon -->
+    <h4 class="mb-0 d-flex align-items-center text-white" >
+        <twig:ux:icon name="fa6-solid:{{ class.icon|default('star') }}" width="20" height="20" color="{{ color|default('yellow') }}" class="mx-2" />
+        {{ class.name }}
+    </h4 >
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs" >
+
+        {% for section in sections %}
+            {#  ==== SET domains =====  #}
+            {% set itemsPerPage                 = section.row %} {# 4 columns x 2 rows = 8 items per carousel-item #}
+            {% set domains                      = section.neoxDashDomains %}
+            {% set chunkedItems                 = domains|batch(itemsPerPage) %}
+            {% set idSectionTab                 = "neox_dash_tab_" ~ section.id %}
+
+            <li class="nav-item"
+                id="{{ idSectionTab }}"
+                data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"
+                data-type="section"
+                data-id="{{ section.id }}"
+                data-idclass="{{ class.id }}"
+                data-api="{{ path('app_neox_dash_section_exchange') }}"
+                draggable="true"
+                role="presentation"
+            >
+                <a href="#{{ ( class.id|default(0) ~ "@" ~ section.name)|u.camel.title }}"
+                    class="nav-link {% if loop.first %}show active{% endif %}"
+                    data-bs-toggle="tab"
+                >
+                    {{ section.name|lower }}
+                    <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ domains|length }}</span>
+                </a >
+            </li >
+        {% endfor %}
+
+        {# ===== Add management tab | not for "virtual ======== #}
+        {% if class.id %}
+            <!-- Todo : add menu to manage class -->
+            {# Item ADD Tab Title ======== #}
+            {{ neox_macro.navItemBottomStd(class, "plus", 'green') }}
+
+            {# Item Main Menu ========= #}
+            {{ neox_macro.navItemMenu(class) }}
+        {% endif %}
+
+    </ul >
+</div >
+
+

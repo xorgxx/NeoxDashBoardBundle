@@ -1,47 +1,54 @@
 {# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" #}
 <div {{ attributes }} >
-    {#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" > #}
-    <section class="sticky-container container p-0" >
+    <div class="container-wrap">
+        {#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" > #}
         <!-- Header Sticky -->
-        <div class="sticky-header" >
-            <turbo-frame id="NeoxDashHeader" >
-                <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader" />
-            </turbo-frame >
-        </div >
+        <section class="container p-0" >
+
+            <div class="sticky-header" >
+                <turbo-frame id="NeoxDashHeader" >
+                    <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader" />
+                </turbo-frame >
+            </div >
 
 
-    </section >
-
-    <section class="container mt-5" >
-        {#  ===== Builder Class ====== #}
-        <div id="NeoxDashBoardContent"
-            {{ turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }}
-        >
-            {% if NeoxDashSetup.class is not empty %}
-                {#  ===== LOOP to builder Class ====== #}
-                {% for class in  NeoxDashSetup.class %}
-                    <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" >
-                        <twig:NeoxDashBoardContent :NeoxDashClass="class" :loopn="loop" id="live-NeoxDashBoardContent@{{ class.id }}" />
-                    </turbo-frame >
-                {% endfor %}
-                {#      BULDER menu fast ====   #}
-                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_builderMenuLeft.html.twig') }}
-
-            {% else %}
-                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardMain/iniDashBoard.html.twig') }}
-            {% endif %}
-        </div >
-    </section >
-
-    <section class="container sticky-bottom bg-dark bg-opacity-50 p-0">
+        </section >
         <!-- Search Domain Sticky -->
-        <div class="sticky-search " style="margin-top: 0px" >
-            <turbo-frame id="NeoxDashSearchDomain" >
-                <twig:NeoxSearchDomain id="live-NeoxDashSearchDomain" />
-            </turbo-frame >
-        </div >
-    </section>
+        <section class="container p-0" style="top: 81px; position: sticky; z-index: 1000">
 
+            <div class="sticky-searche bg-dark bg-opacity-50"  >
+                <turbo-frame id="NeoxDashSearchDomain" >
+                    <twig:NeoxSearchDomain id="live-NeoxDashSearchDomain" />
+                </turbo-frame >
+            </div >
+        </section>
+
+        <!-- Content Section -->
+        <section class="container mb-5" >
+            {#  ===== Builder Class ====== #}
+            <div id="NeoxDashBoardContent" {{ turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }} >
+
+                <turbo-frame id="NeoxFavorite-0" >
+                    <twig:NeoxFavoriteDomain :NeoxDashClass="null" id="live-NeoxFavorite@0" />
+                </turbo-frame >
+
+                {% if NeoxDashSetup.class is not empty %}
+                    {#  ===== LOOP to builder Class ====== :loopn="loop" #}
+                    {% for class in  NeoxDashSetup.class %}
+                        <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" >
+                            <twig:NeoxFavoriteDomain :NeoxDashClass="[class]"  id="live-NeoxDashBoardContent@{{ class.id }}" />
+                        </turbo-frame >
+                    {% endfor %}
+
+                    {#      BULDER menu fast ====   #}
+                    {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_builderMenuLeft.html.twig') }}
+
+                {% else %}
+                    {{ include('@NeoxDashBoardBundle/_Partials/dashBoardMain/iniDashBoard.html.twig') }}
+                {% endif %}
+            </div >
+        </section >
+    </div>
 </div >
 
 

@@ -4,20 +4,24 @@
     <button
         type="button"
         class="btn btn-transparent btn-sm"
-        id="dd"
+{#        id="dd"#}
         data-action="live#action"
         data-live-action-param="toggleFavorite"
         data-live-id-param="{{ item.id }}"
-        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .20rem;"
+        data-live-section-param="{{ item.section.name }}"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .8rem; --bs-btn-font-size: .20rem;"
     >
-        {% if item.favorite %}
-            <twig:ux:icon name="fa6-solid:{{ plus|default('star') }}" width="10" height="10" color="yellow" />
-        {% else %}
-            <twig:ux:icon name="fa6-regular:{{ plus|default('star') }}" width="10" height="10" color="{{ color|default('#270116') }}" />
-        {% endif %}
+        {% set isFavorite = item.favorite.favorite|default(false) %}
+        <twig:ux:icon
+            name="fa6-{{ isFavorite ? 'solid' : 'regular' }}:{{ plus|default('star') }}"
+            width="15"
+            height="15"
+            color="{{ isFavorite ? 'yellow' : color|default('#270116') }}"
+        />
     </button>
+{#    {{  section.edit ~ " ~ " ~ section.name }}#}
 
-    {% if section.edit %}
+    {% if section.edit is same as(true) and section.name is not same as('FAVORITE') and neoxSearch|default("true") is same as("true") %}
         <div class="ms-auto d-flex align-items-center"> <!-- Aligns to the right side and centers vertically -->
             <div class="me-2">
                 {{ include('@NeoxDashBoardBundle/neox_dash_domain/_delete_form.html.twig') }}

@@ -1,0 +1,109 @@
+<div class="d-flex justify-content-between align-items-center mb-3 px-2 rounded-bottom "
+    style="background-color : {{ class.headerColor|default('darkolivegreen') }}36" >
+{% if class.id %}
+        {% if section.edit %}
+            <div class="ml-auto d-flex" >
+                <div class="left-item  me-2" >
+                    <button
+                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                        data-title='find icon'
+                        data-text='Do you want to continue'
+                        data-id-element="{{ idLiveClassContainer }}"
+                        data-url="{{ path('app_neox_dash_find-icon', { id: section.id }) }}"
+
+                        data-modal="modal"
+                        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                        class="btn btn-light btn-sm"
+                        type="button"
+                        aria-selected="false" >
+                        <twig:ux:icon name="fa6-solid:{{ 'magnifying-glass-location' }}" width="20" height="20" color="{{ color|default('yellow') }}" class="mx-2" />
+                    </button >
+                </div >
+                <div class="left-item me-2" >
+                    <button
+                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                        data-title='Edit Section'
+                        data-text='Do you want to continue'
+                        data-id-element="{{ idLiveClassContainer }}"
+                        data-url="{{ path('app_neox_dash_section_edit', { id: section.id }) }}"
+                        data-modal="modal"
+                        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                        class="btn btn-light btn-sm"
+                        type="button"
+                        aria-selected="false" >
+                        <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
+                    </button >
+                </div >
+                <div class="left-item me-2" >
+                    {{ include('@NeoxDashBoardBundle/neox_dash_section/_delete_form.html.twig') }}
+                </div >
+            </div >
+
+        {% else %}
+
+        {% endif %}
+        {#  ===== Botton ADD DOMAIN ======            #}
+        <div class="right-item" >
+
+            <button
+                type="button"
+                hidden="hidden"
+                class="btn btn-light btn-sm"
+                id="refreshClass"
+                data-action="live#action"
+                data-live-action-param="refresh"
+                data-live-query-param="{{ class.id }}"
+            >
+                {% if section.edit %}
+                    <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+                {% else %}{% endif %}
+
+            </button >
+
+            <div
+                {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_nav') }}
+                data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                data-title='New Domain'
+                data-text='Do you want to continue'
+                data-id-element="{{ idLiveClassContainer }}"
+                data-url="{{ path('app_neox_dash_domain_new', { id: section.id }) }}"
+                class="d-flex flex-column align-items-center"
+                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" >
+                <div class="left-item me-2" >
+
+                    <div class="dropzone btn btn-primary btn-sm"
+                        data-xorgxx--neox-dashboard-bundle--neox-drag-nav-target="dropzone"
+                        data-id="{{ section.id }}"
+                        data-url="{{ path('app_neox_dash_domain_new_batch', { id: section.id }) }}"
+                        data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
+                    >
+                        <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('green') }}" class="mx-2" />
+                        Drop or click to add domain
+                    </div >
+
+                </div >
+            </div >
+        </div >
+        <div class="right-item" >
+            <button
+                data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#activateFirstSlide"
+                type="button"
+                class="btn btn-light btn-sm bg-light my-2"
+                data-id="{{ section.id }}"
+                data-class="{{ class.id }}"
+                data-carousel="{{ idContentCarousel }}"
+            >
+
+                {% if section.edit %}
+                    <twig:ux:icon name="fa6-solid:{{ plus|default('right-from-bracket') }}" width="15" height="15" color="{{ color|default('red') }}" class="m-1" />
+                {% else %}
+                    <twig:ux:icon name="fa6-solid:{{ plus|default('pen-to-square') }}" width="15" height="15" color="{{ color|default('#022a52') }}" class="m-1" />
+                {% endif %}
+
+            </button >
+
+        </div >
+
+{% endif %}
+</div >
+

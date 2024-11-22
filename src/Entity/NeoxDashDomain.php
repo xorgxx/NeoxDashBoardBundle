@@ -36,7 +36,7 @@ class NeoxDashDomain
     #[Gedmo\Slug(fields: ['name', 'url'])]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne(inversedBy: 'neoxDashDomains')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'neoxDashDomains')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\SortableGroup()]
     private ?NeoxDashSection $section = null;
@@ -45,8 +45,9 @@ class NeoxDashDomain
     #[Gedmo\SortablePosition()]
     private ?int $position = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $favorite = false;
+    #[ORM\ManyToOne(cascade: [ 'persist', 'remove'], inversedBy: 'neoxDashDomains')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?NeoxDashFavorite $favorite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $content = null;
@@ -134,6 +135,18 @@ class NeoxDashDomain
         return $this;
     }
 
+    public function getFavorite(): ?NeoxDashFavorite
+    {
+        return $this->favorite;
+    }
+
+    public function setFavorite(?NeoxDashFavorite $favorite): static
+    {
+        $this->favorite = $favorite;
+
+        return $this;
+    }
+
     public function getPosition(): ?int
     {
         return $this->position;
@@ -168,16 +181,16 @@ class NeoxDashDomain
     }
 
 
-    public function getFavorite(): ?bool
-    {
-        return $this->favorite;
-    }
-
-    public function setFavorite(?bool $favorite): NeoxDashDomain
-    {
-        $this->favorite = $favorite;
-        return $this;
-    }
+//    public function getFavorite(): ?bool
+//    {
+//        return $this->favorite;
+//    }
+//
+//    public function setFavorite(?bool $favorite): NeoxDashDomain
+//    {
+//        $this->favorite = $favorite;
+//        return $this;
+//    }
 
 
 

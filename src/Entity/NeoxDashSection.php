@@ -21,10 +21,10 @@ class NeoxDashSection
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $row = 3;
+    private ?int $row = 4;
 
     #[ORM\Column(nullable: true)]
-    private ?int $colonne = 5;
+    private ?int $colonne = 3;
 
     #[ORM\Column(type: 'decimal', precision: 4, scale: 2, nullable: true)]
     private ?string $heigth = "2.8";

@@ -15,9 +15,12 @@
                 "main": "dist/neox_drag_nav_controller.js",
                 "enabled": true,
                 "fetch": "eager"
-            },
-            "neox_drag_drop": {
+            },"neox_drag_drop": {
                 "main": "dist/neox_drag_drop_controller.js",
+                "enabled": true,
+                "fetch": "eager"
+            },"neox_core_event": {
+                "main": "dist/neox_core_event_controller.js",
                 "enabled": true,
                 "fetch": "eager"
             }
