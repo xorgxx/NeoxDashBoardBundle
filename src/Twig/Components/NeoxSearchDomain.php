@@ -4,6 +4,8 @@
 
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+    use Symfony\UX\LiveComponent\Attribute\LiveAction;
+    use Symfony\UX\LiveComponent\Attribute\LiveArg;
     use Symfony\UX\LiveComponent\Attribute\LiveProp;
     use Symfony\UX\LiveComponent\ComponentToolsTrait;
     use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -26,5 +28,11 @@
         public function getPackages(): array
         {
             return $this->domainRepository->findByUrl($this->query);
+        }
+
+        #[LiveAction]
+        public function toggleFavorite(#[LiveArg] string $id, #[LiveArg] string $section, NeoxFavoriteDomain $favoriteDomain): void
+        {
+            $favoriteDomain->toggleFavorite($id, $section);
         }
     }
