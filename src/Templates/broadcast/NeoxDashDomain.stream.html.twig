@@ -1,18 +1,27 @@
 {# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="update" target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
+    <turbo-stream action="update" method="morph" target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
         data-neox-idComponent="live-NeoxFavorite@0"
         data-neox-idClass="{{ entity.section.class.id }}"
         data-neox-action="refreshFavorite"
     >
+{#        <template >#}
+{#            {% for class in entity.section.class %}#}
+{#                {% set sections                     = class.neoxDashSections %}     #}{# List of all items #}
+{#                {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}#}
 
-    </turbo-stream>
+{#                <!-- Header Section: Title and Navigation Tabs -->#}
+{#                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}#}
+{#            {% endfor %}#}
+{#        </template >#}
+    </turbo-stream >
+
 
 {% endblock %}
 
 {% block update %}
-{#    ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %}#}
-{#    {{ (entity.section.class.id ~ "@" ~ entity.section.name)|u.camel.title }}#}
+    {#    ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %} #}
+    {#    {{ (entity.section.class.id ~ "@" ~ entity.section.name)|u.camel.title }} #}
 
     {#
     ====== Check if it's a favorite and it have true =====
@@ -20,42 +29,42 @@
     #}
     {% set item             = entity %}
     {% set section          = item.section %}
-    {#  {% set item             = entity %}#}
-    {#  {% set section          = item.section %}#}
-    {#  {% set section          = item.section %}#}
-    {#  {% set NeoxDashClass    = section.class %}#}
-    {#  {% set height           = section.heigth|default('2.8') ~ 'rem' %}#}
+    {#  {% set item             = entity %} #}
+    {#  {% set section          = item.section %} #}
+    {#  {% set section          = item.section %} #}
+    {#  {% set NeoxDashClass    = section.class %} #}
+    {#  {% set height           = section.heigth|default('2.8') ~ 'rem' %} #}
     <turbo-stream action="update" method="morph" target="domainCard{{ section.name }}@{{ id }}"
         data-neox-idComponent="live-NeoxFavorite@0"
         data-neox-idClass="{{ entity.section.class.id }}"
         data-neox-action="refreshFavorite"
-        >
-        <template>
+    >
+        <template >
             {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
-        </template>
-    </turbo-stream>
+        </template >
+    </turbo-stream >
 
-{#    {% if entity.favorite|default(false) %}#}
-{#        <turbo-stream action="update"  target="domainCardFAVORITE@{{ id }}">#}
-{#                    data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}"#}
-{#                    data-neox-refresh="false"#}
-{#            >#}
-{#            <template>#}
-{#                {% set item             = entity|setFavorite() %}#}
-{#                {% set section          = item.section %}#}
-{#                {% set NeoxDashClass    = section.class %}#}
+    {#    {% if entity.favorite|default(false) %} #}
+    {#        <turbo-stream action="update"  target="domainCardFAVORITE@{{ id }}"> #}
+    {#                    data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}" #}
+    {#                    data-neox-refresh="false" #}
+    {#            > #}
+    {#            <template> #}
+    {#                {% set item             = entity|setFavorite() %} #}
+    {#                {% set section          = item.section %} #}
+    {#                {% set NeoxDashClass    = section.class %} #}
 
-{#                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}#}
-{#            </template>#}
-{#        </turbo-stream>#}
-{#    {% endif %}#}
+    {#                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }} #}
+    {#            </template> #}
+    {#        </turbo-stream> #}
+    {#    {% endif %} #}
 
 
 
 {% endblock %}
 
 {% block remove %}
-    <turbo-stream action="remove" target="domainCard{{ section.name }}@{{ id }}">
+    <turbo-stream action="remove" target="domainCard{{ section.name }}@{{ id }}" >
 
-    </turbo-stream>
+    </turbo-stream >
 {% endblock %}

@@ -179,17 +179,17 @@ export default class extends Controller {
                 title: data // Display response message
             });
             
-            // const idElement = this.TargetItem.dataset.idElement;
-            // if ( idElement !== "element") {
-            //     if (this.#isRelativeUrl(idElement)) {
-            //         Turbo.visit(idElement);
-            //     } else {
-            //         const id = idElement.split('@')[1];
-            //         const component = document.getElementById(idElement).__component;
-            //         component.action('refresh', {'query': id});
-            //     }
-            //     return;
-            // }
+            const idElement = this.TargetItem.dataset.idElement;
+            if ( idElement !== "element") {
+                if (this.#isRelativeUrl(idElement)) {
+                    Turbo.visit(idElement);
+                } else {
+                    const id = idElement.split('@')[1];
+                    const component = document.getElementById(idElement).__component;
+                    component.action('refresh', {'query': id});
+                }
+                return;
+            }
             
             // const refreshButton = document.getElementById('refreshClass');
             // if (refreshButton) {

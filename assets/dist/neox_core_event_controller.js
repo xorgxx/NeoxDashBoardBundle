@@ -44,9 +44,8 @@ export default class extends Controller {
             
             if (idComponent && action) {
                 console.log("xorg wants to make a call to 🦖🦖");
-       
                 this.triggerComponentAction(idComponent, action, { query: idClass });
-           
+                
             } else {
             
             }
