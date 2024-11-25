@@ -2,6 +2,7 @@
 
 namespace NeoxDashBoard\NeoxDashBoardBundle\Entity;
 
+use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
 use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashSectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,11 +24,11 @@ class NeoxDashSection
     #[ORM\Column(nullable: true)]
     private ?int $row = 4;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $colonne = 3;
+    #[ORM\Column(length: 100, nullable: true, enumType: NeoxSizeEnum::class)]
+    private ?NeoxSizeEnum $size = null;
 
     #[ORM\Column(type: 'decimal', precision: 4, scale: 2, nullable: true)]
-    private ?string $heigth = "2.8";
+    private ?string $height = "2.8";
 
     #[ORM\Column(nullable: true)]
     private ?bool $content = false;
@@ -40,6 +41,12 @@ class NeoxDashSection
      */
     #[ORM\OneToMany(targetEntity: NeoxDashDomain::class, mappedBy: 'section', orphanRemoval: true)]
     private Collection $neoxDashDomains;
+
+    /**
+     * @var Collection<int, NeoxDashWidget> | null
+     */
+    #[ORM\OneToMany(targetEntity: NeoxDashWidget::class, mappedBy: 'section', orphanRemoval: true)]
+    private ?Collection $neoxDashWidgets = null;
 
     #[ORM\ManyToOne(inversedBy: 'neoxDashSections')]
     #[ORM\JoinColumn(nullable: false)]
@@ -90,26 +97,25 @@ class NeoxDashSection
         return $this;
     }
 
-    public function getColonne(): ?int
+    public function getSize(): ?NeoxSizeEnum
     {
-        return $this->colonne;
+        return $this->size;
     }
 
-    public function setColonne(int $colonne): static
+    public function setSize(?NeoxSizeEnum $size): NeoxDashSection
     {
-        $this->colonne = $colonne;
-
+        $this->size = $size;
         return $this;
     }
 
-    public function getHeigth(): string
+    public function getHeight(): string
     {
-        return $this->heigth;
+        return $this->height;
     }
 
-    public function setHeigth(string $heigth): NeoxDashSection
+    public function setHeight(string $height): NeoxDashSection
     {
-        $this->heigth = $heigth;
+        $this->height = $height;
         return $this;
     }
     
@@ -139,6 +145,40 @@ class NeoxDashSection
             // set the owning side to null (unless already changed)
             if ($neoxDashDomain->getSection() === $this) {
                 $neoxDashDomain->setSection(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NeoxDashWidget>
+     */
+    public function getNeoxDashWidgets(): Collection
+    {
+        if ($this->neoxDashWidgets === null) {
+            $this->neoxDashWidgets = new ArrayCollection();
+        }
+
+        return $this->neoxDashWidgets;
+    }
+
+    public function addNeoxDashWidget(NeoxDashWidget $neoxDashWidget): static
+    {
+        if (!$this->neoxDashWidgets->contains($neoxDashWidget)) {
+            $this->neoxDashWidgets->add($neoxDashWidget);
+            $neoxDashWidget->setSection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNeoxDashWidget(NeoxDashWidget $neoxDashWidget): static
+    {
+        if ($this->neoxDashWidgets->removeElement($neoxDashWidget)) {
+            // set the owning side to null (unless already changed)
+            if ($neoxDashWidget->getSection() === $this) {
+                $neoxDashWidget->setSection(null);
             }
         }
 

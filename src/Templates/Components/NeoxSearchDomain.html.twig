@@ -1,4 +1,6 @@
-<div{{ attributes }}>
+{#      BULDER menu fast ====   #}
+
+<section {{ attributes }} class="py-3">
 
     <input
         id="delayedInput"
@@ -9,12 +11,13 @@
         class="bg-white fw-bold bg-opacity-50 form-control"
     />
     {% set height = section.heigth|default('2.8') ~ 'rem' %}
+    {% set classObjet   = classObjet %}
 
     <div class="container" >
         <div class="row pb-2" >
             {% for item in computed.packages %}
-                {% set section = item.section %}
-                {% set neoxSearch = "false" %}
+                {% set section      = item.section %}
+                {% set neoxSearch   = "false" %}
                 <div class="justify-content-start col-3 g-3" >
                     {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
                 </div >
@@ -27,4 +30,4 @@
     </div >
 
 
-</div >
+</section >

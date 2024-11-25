@@ -42,7 +42,7 @@
 
             $section = new NeoxDashSection();
             $section->setName("New (edit to modify");
-            $section->setHeigth(2.5);
+            $section->setHeight(2.5);
 
             $neoxDashClass->addNeoxDashSection($section);
             $neoxDashClass->setNeoxDashSetup($neoxDashSetup);

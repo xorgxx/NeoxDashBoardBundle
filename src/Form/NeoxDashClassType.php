@@ -4,6 +4,7 @@
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
+    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\FormBuilderInterface;
@@ -56,7 +57,20 @@
                     ),
 
                     'row_attr' => [ 'class' => 'row mb-3' ],
-                ))->add('headerColor', ColorType::class, [
+                ))->add('size', EnumType::class, array(
+                // 'disabled'      => true,
+                'class'              => NeoxSizeEnum::class,
+                'required'           => false,
+                'label'              => $this->getTrans('size'),
+                'translation_domain' => 'neoxDashBoardClass',
+                'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+                "attr" => array(
+                    "placeholder" => $this->getTrans('size', "placeholder"),
+                    'class'       => 'required form-control '
+                ),
+
+                'row_attr' => [ 'class' => 'row mb-3' ],
+            ))->add('headerColor', ColorType::class, [
                 'required'           => false,
                 'label'              => $this->getTrans('color'),
                 'translation_domain' => 'neoxDashBoardDomain',

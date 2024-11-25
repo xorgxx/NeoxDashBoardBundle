@@ -5,6 +5,7 @@
 use AllowDynamicProperties;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
 use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -38,10 +39,11 @@ class NeoxDashBroadExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
-//            new TwigFilter('setJsFile', [$this, 'setJsFile']),
-            new TwigFilter('getShortDomain', [$this, 'shortDomain']),
-            new TwigFilter('setTimer', [$this, 'setTimer']),
-            new TwigFilter('setFavorite', [$this, 'setFavorite']),
+            //            new TwigFilter('setJsFile', [$this, 'setJsFile']),
+            new TwigFilter('getShortDomain', $this->shortDomain(...)),
+            new TwigFilter('setTimer', $this->setTimer(...)),
+            new TwigFilter('setFavorite', $this->setFavorite(...)),
+            new TwigFilter('checkSize', $this->checkSize(...)),
         ];
     }
 
@@ -56,12 +58,31 @@ class NeoxDashBroadExtension extends AbstractExtension
         ];
     }
 
+    public function checkSize(?NeoxDashClass $entity): bool
+    {
+        if ($entity) {
+            $size = $entity->getSize()->value ?? null;
+
+            // Check if the size contains a number and capture it
+            if ($size !== null && preg_match('/\d+/', $size, $matches)) {
+                $number = (int)$matches[0]; // Convert the captured number to an integer
+                return $number <= 6; // Return true if the number is less than or equal to 6
+            }
+        }
+
+
+        return false; // Return false if no number is found
+    }
+
+
+
     public function setFavorite( neoxDashDomain $entity ): bool
     {
         if ($entity->getFavorite() !== null) {
             return $entity->getFavorite()->getFavorite();
         }
-        return false;    }
+        return false;
+    }
 
     public function setTimer( $timer = null)
     {
@@ -106,10 +127,11 @@ class NeoxDashBroadExtension extends AbstractExtension
 
 
         $a = [
-            'url'       => $url,
-            'domain'    => $domain,
-            'first'     => $firstLetter,
-            'icon'      => $icon
+            'url'           => $url,
+            'domain'        => $domain,
+            'shortDomain'   => $mainDomain,
+            'first'         => $firstLetter,
+            'icon'          => $icon
         ];
 
         return $a;

@@ -2,6 +2,7 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Twig\Components;
 
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
     use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -20,6 +21,9 @@
 
         #[LiveProp(writable: true, url: true)]
         public ?string $query = null;
+
+        #[LiveProp(writable: true)]
+        public ?NeoxDashClass $classObjet = null;
 
         public function __construct(private NeoxDashDomainRepository $domainRepository)
         {

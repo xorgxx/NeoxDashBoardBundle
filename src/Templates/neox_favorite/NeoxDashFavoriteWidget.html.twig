@@ -1,0 +1,20 @@
+{# ===== Header-Box Favorite - Tools box ====== #}
+
+{# ===== LEFT FAVORITE TABS ===== #}
+{% for section in class.neoxDashSections %}
+    {% for widget in section.neoxDashWidgets %}
+        {% if widget.name is same as("favorite")  %}
+            {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavorite.html.twig') }}
+        {% elseif widget.name is same as("search")  %}
+            <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
+                <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
+            </turbo-frame >
+
+{#            <div class="{{ class.size.value }}">#}
+{#                {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavoriteSearch.html.twig') }}#}
+{#            </div>#}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+{# ===== Header-Box Favorite - Tools box ====== #}

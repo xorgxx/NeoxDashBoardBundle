@@ -1,6 +1,6 @@
 {# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" #}
 <div {{ attributes }} >
-    <div class="container-wrap">
+    <div class="container-wrap" >
         {#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" > #}
         <!-- Header Sticky -->
         <section class="container p-0" >
@@ -14,31 +14,40 @@
 
         </section >
         <!-- Search Domain Sticky -->
-        <section class="container p-0" style="top: 81px; position: sticky; z-index: 1000">
-
-            <div class="sticky-searche bg-dark bg-opacity-50"  >
-                <turbo-frame id="NeoxDashSearchDomain" >
-                    <twig:NeoxSearchDomain id="live-NeoxDashSearchDomain" />
-                </turbo-frame >
-            </div >
-        </section>
+        {#        <section class="container p-0" style="top: 81px; position: sticky; z-index: 1000" > #}
+        {#            <div class="sticky-searche bg-dark bg-opacity-50" > #}
+        {#                <turbo-frame id="NeoxDashSearchDomain" > #}
+        {#                    <twig:NeoxSearchDomain id="live-NeoxDashSearchDomain" /> #}
+        {#                </turbo-frame > #}
+        {#            </div > #}
+        {#        </section > #}
 
         <!-- Content Section -->
-        <section class="container mb-5" >
+        <section class="container mb-5">
             {#  ===== Builder Class ====== #}
-            <div id="NeoxDashBoardContent" {{ turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }} >
+            <div id="NeoxDashBoardContent"
+                class="row"
+                {{ turbo_stream_listen('NeoxDashBoard\\NeoxDashBoardBundle\\Entity\\NeoxDashDomain') }} >
 
-                <turbo-frame id="NeoxFavorite-0" >
-                    <twig:NeoxFavoriteDomain :NeoxDashClass="null" id="live-NeoxFavorite@0" />
-                </turbo-frame >
-
+                {# ===== Header-Box Favorite - Tools box ====== #}
+{#                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteTopBox.html.twig') }}#}
+                {# ===== Header-Box Favorite - Tools box ====== #}
                 {% if NeoxDashSetup.class is not empty %}
                     {#  ===== LOOP to builder Class ====== :loopn="loop" #}
-                    {% for class in  NeoxDashSetup.class %}
-                        <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" >
-                            <twig:NeoxFavoriteDomain :NeoxDashClass="[class]"  id="live-NeoxDashBoardContent@{{ class.id }}" />
-                        </turbo-frame >
+                    {# extracter all tools box #}
+
+                    {% for class in NeoxDashSetup.class %}
+                        {% if class.type.value is same as('Tools') %}
+
+                            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}
+
+                        {% else %}
+                            <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
+                                <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
+                            </turbo-frame >
+                        {% endif %}
                     {% endfor %}
+
 
                     {#      BULDER menu fast ====   #}
                     {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_builderMenuLeft.html.twig') }}
@@ -48,7 +57,7 @@
                 {% endif %}
             </div >
         </section >
-    </div>
+    </div >
 </div >
 
 

@@ -8,4 +8,5 @@
     {
         case LINK  = 'Link';
         case ALERT = 'Alert'; // not install yet this will be done in future !!!
+        case TOOLS = 'Tools'; // not install yet this will be done in future !!!
     }

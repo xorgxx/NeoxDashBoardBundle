@@ -8,6 +8,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashFavorite;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
+    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashFavoriteRepository;
@@ -113,12 +114,14 @@
         {
 
             /** @var NeoxDashFavorite[] $favorites */
-            $favorites = $this->favoriteRepository->findOnlyFavorites();
+            $favorites          = $this->favoriteRepository->findOnlyFavorites();
+            $sectionFavorite    = $this->entityManager->getRepository(NeoxDashSection::class)->findOneBy(['name' => "Widget@favorite"]);
 
             $section = (new NeoxDashSection())
                 ->setName("FAVORITE")
-                ->setHeaderColor("red")
-                ->setRow(8)
+                ->setHeaderColor($sectionFavorite->getHeaderColor())
+                ->setRow($sectionFavorite->getRow())
+                ->setSize($sectionFavorite->getSize())
             ;
 
             foreach ($favorites as $favorite) {
@@ -129,9 +132,10 @@
             $class = (new NeoxDashClass())
                 ->addNeoxDashSection($section)
                 ->setName("FAVORITE")
-                ->setHeaderColor("red")
                 ->setIcon("star")
                 ->setMode(NeoxStyleEnum::TABS)
+                ->setHeaderColor($sectionFavorite->getClass()->getHeaderColor())
+                ->setSize($sectionFavorite->getClass()->getSize())
             ; // Retourne toutes les classes sous forme de collection
 
             return  [$class];

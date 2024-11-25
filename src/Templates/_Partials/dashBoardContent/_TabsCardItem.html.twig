@@ -14,7 +14,7 @@
                     data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}">
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                         <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
-                            name="{{ item.name|getShortDomain['icon'] }}"
+                            name="{{ item.url|getShortDomain['icon'] }}"
                             width="{{ height }}"
                             style="height: auto; transform: rotate(0deg);" color="white" />
                     {% else %}
@@ -38,7 +38,9 @@
 
         <!-- Name aligned to the right of the icon 30 -->
         <div class="text-start">
-            <strong class="text-light">{{ item.name|u.truncate(30,' ...', true) }}</strong>
+            {% set sizeValue = classObjet|checkSize ? 10 : 30 %}
+{#            {{ dump(classCurrant.size.value|default('nc')) }}#}
+            <strong class="text-light">{{ item.name|getShortDomain["shortDomain"]|u.truncate(sizeValue,' ...', true) }}</strong>
         </div>
     </div>
 

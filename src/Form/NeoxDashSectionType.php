@@ -3,6 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Form;
 
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
+    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
     use Symfony\Component\Form\Extension\Core\Type\Integer;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -48,14 +49,16 @@
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
                 ))
-                ->add('colonne', IntegerType::class, array(
+                ->add('size', EnumType::class, array(
+                    // 'disabled'      => true,
+                    'class'              => NeoxSizeEnum::class,
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(
-                        "placeholder" => $this->getTrans('colonne', "placeholder"),
+                        "placeholder" => $this->getTrans('size', "placeholder"),
                         'class'       => 'required form-control '
                     ),
-                    'label'              => $this->getTrans('colonne'),
+                    'label'              => $this->getTrans('size'),
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
@@ -72,14 +75,14 @@
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
                 ))
-                ->add('heigth', NumberType::class, array(
+                ->add('height', NumberType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
                     "attr"               => array(
-                        "placeholder" => $this->getTrans('heigth', "placeholder"),
+                        "placeholder" => $this->getTrans('height', "placeholder"),
                         'class'       => 'required form-control '
                     ),
-                    'label'              => $this->getTrans('heigth'),
+                    'label'              => $this->getTrans('height'),
                     'translation_domain' => 'neoxDashBoardSection',
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],

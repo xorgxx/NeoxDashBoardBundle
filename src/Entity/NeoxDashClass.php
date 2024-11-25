@@ -4,12 +4,15 @@ namespace NeoxDashBoard\NeoxDashBoardBundle\Entity;
 
 use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
 use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
+use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
 use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
 use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashClassRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: NeoxDashClassRepository::class)]
 class NeoxDashClass
 {
@@ -27,21 +30,28 @@ class NeoxDashClass
     /**
      * @var Collection<int, NeoxDashSection>
      */
-    #[ORM\OneToMany(targetEntity: NeoxDashSection::class, mappedBy: 'class', orphanRemoval: true, cascade: ['persist', 'remove'] )]
+    #[ORM\OneToMany(targetEntity: NeoxDashSection::class, mappedBy: 'class', cascade: [ 'persist', 'remove'], orphanRemoval: true)]
     private Collection $neoxDashSections;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $icon = null;
 
-    #[ORM\Column(length: 100, enumType: NeoxStyleEnum::class, nullable: true)]
+    #[ORM\Column(length: 100, nullable: true, enumType: NeoxStyleEnum::class)]
     private ?NeoxStyleEnum $mode = null;
 
     #[ORM\ManyToOne(inversedBy: 'class')]
     private ?NeoxDashSetup $neoxDashSetup = null;
 
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\SortablePosition()]
+    private ?int $position = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $headerColor = null;
-    
+
+    #[ORM\Column(length: 100, nullable: true, enumType: NeoxSizeEnum::class)]
+    private ?NeoxSizeEnum $size = NeoxSizeEnum::COL3;
+
     public function __construct()
     {
         $this->neoxDashSections = new ArrayCollection();
@@ -148,6 +158,28 @@ class NeoxDashClass
     public function setHeaderColor(?string $headerColor): NeoxDashClass
     {
         $this->headerColor = $headerColor;
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): NeoxDashClass
+    {
+        $this->position = $position;
+        return $this;
+    }
+
+    public function getSize(): ?NeoxSizeEnum
+    {
+        return $this->size;
+    }
+
+    public function setSize(?NeoxSizeEnum $size): NeoxDashClass
+    {
+        $this->size = $size;
         return $this;
     }
 
