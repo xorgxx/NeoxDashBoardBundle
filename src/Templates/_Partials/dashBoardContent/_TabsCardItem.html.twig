@@ -38,7 +38,7 @@
 
         <!-- Name aligned to the right of the icon 30 -->
         <div class="text-start">
-            {% set sizeValue = classObjet|checkSize ? 10 : 30 %}
+            {% set sizeValue = classObjet|default(null)|checkSize ? 10 : 30 %}
 {#            {{ dump(classCurrant.size.value|default('nc')) }}#}
             <strong class="text-light">{{ item.name|getShortDomain["shortDomain"]|u.truncate(sizeValue,' ...', true) }}</strong>
         </div>
