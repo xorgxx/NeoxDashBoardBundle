@@ -1,6 +1,6 @@
 {# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" #}
 <div {{ attributes }} >
-    <div class="container-wrap" >
+    <div class="container-wrap mt-5" >
         {#    <div class="pb-5" style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" > #}
         <!-- Header Sticky -->
         <section class="container p-0" >
@@ -37,15 +37,15 @@
                     {# extracter all tools box #}
 
                     {% for class in NeoxDashSetup.class %}
-                        {% if class.type.value is same as('Tools') %}
+{#                        {% if class.type.value is same as('Tools') %}#}
 
-                            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}
+{#                            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}#}
 
-                        {% else %}
+{#                        {% else %}#}
                             <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
                                 <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
                             </turbo-frame >
-                        {% endif %}
+{#                        {% endif %}#}
                     {% endfor %}
 
 

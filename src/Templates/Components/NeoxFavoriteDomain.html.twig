@@ -1,4 +1,4 @@
-<section {{ attributes }} class="d-flex flex-column pb-0" >
+<div {{ attributes }} class="d-flex flex-column pb-0 " >
     {# ======= MORE IMPORTANT ENTRY POINT ======
      # This is the main entry point of the dashboard
      # It will build all the other entry points.
@@ -16,7 +16,12 @@
             {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
 
             <!-- Header Section: Title and Navigation Tabs -->
-            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
+            {# ===== check if widget is favorite | thi widget is speciale we dont want all "building"
+                at liste
+            #}
+            {% if classCurrant.name is not same as("FAVORITE") %}
+                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
+            {% endif %}
 
             <!-- Tab Content + carousel -->
             {% for section in sections %}
@@ -34,5 +39,5 @@
 
         </div >
     {% endfor %}
-</section >
+</div >
 

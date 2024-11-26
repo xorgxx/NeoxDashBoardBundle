@@ -25,8 +25,9 @@
     use Doctrine\Common\Collections\Collection;
 
 
-
     #[AsLiveComponent('NeoxFavoriteDomain', template: '@NeoxDashBoardBundle/Components/NeoxFavoriteDomain.html.twig')]
+
+//    #[AsLiveComponent('NeoxFavoriteDomain', template: '@NeoxDashBoardBundle/neox_favorite/widget/NeoxFavoriteDomain.html.twig')]
     final class NeoxFavoriteDomain extends AbstractController
     {
 
@@ -35,7 +36,6 @@
         use ComponentToolsTrait;
 //        #[LiveProp(writable: true)]
         public  ?array $NeoxDashClass = null;
-
 
 
         public function __construct(
@@ -132,6 +132,7 @@
             $class = (new NeoxDashClass())
                 ->addNeoxDashSection($section)
                 ->setName("FAVORITE")
+                ->setType(NeoxDashTypeEnum::TOOLS)
                 ->setIcon("star")
                 ->setMode(NeoxStyleEnum::TABS)
                 ->setHeaderColor($sectionFavorite->getClass()->getHeaderColor())

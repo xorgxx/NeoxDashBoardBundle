@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-3 px-2 rounded-bottom "
     style="background-color : {{ class.headerColor|default('darkolivegreen') }}36" >
-{% if class.id %}
+    {% if classCurrant.type.value is not same as("Tools") %}
         {% if section.edit %}
             <div class="ml-auto d-flex" >
                 <div class="left-item  me-2" >
@@ -103,7 +103,10 @@
             </button >
 
         </div >
-
-{% endif %}
+    {% else %}
+        {% if classCurrant.name is not same as("FAVORITE") %}
+            <h5>WIDGET Tools bar</h5>
+        {% endif %}
+    {% endif %}
 </div >
 

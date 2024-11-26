@@ -3,7 +3,6 @@
 
 <!-- Header Section: Title and Navigation Tabs -->
 <div class="d-flex justify-content-between align-items-center p-2 rounded-top" style="background-color: rgba(139,0,0,0.38)" >
-
     <!-- Title with Icon -->
     <h4 class="mb-0 d-flex align-items-center text-white" >
         <twig:ux:icon name="fa6-solid:{{ class.icon|default('star') }}" width="20" height="20" color="{{ color|default('yellow') }}" class="mx-2" />
@@ -34,6 +33,7 @@
                     class="nav-link {% if loop.first %}show active{% endif %}"
                     data-bs-toggle="tab"
                 >
+                    {# todo : change name for widget@favorite #}
                     {{ section.name|lower }}
                     <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ domains|length }}</span>
                 </a >
