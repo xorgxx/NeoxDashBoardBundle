@@ -3,6 +3,7 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Services;
 
 
+    use Psr\Container\ContainerExceptionInterface;
     use Psr\Container\NotFoundExceptionInterface;
     use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 

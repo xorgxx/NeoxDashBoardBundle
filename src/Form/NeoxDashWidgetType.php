@@ -28,8 +28,8 @@
         public function buildForm(FormBuilderInterface $builder, array $options): void
         {
             // Récupérer les widgets disponibles
-            $widgets = $this->widgetConfigService->getWidgets();
-            $choices = array_keys($widgets);
+//            $widgets = $this->widgetConfigService->getWidgets();
+//            $choices = array_keys($widgets);
 
 
             $builder
