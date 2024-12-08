@@ -64,6 +64,8 @@
 {% endblock %}
 
 {% block remove %}
+    {% set item             = entity %}
+    {% set section          = item.section %}
     <turbo-stream action="remove" target="domainCard{{ section.name }}@{{ id }}" >
 
     </turbo-stream >

@@ -10,6 +10,7 @@
     use Doctrine\ORM\EntityManagerInterface;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Services\FindIconOnWebSite;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\ToolsBoxService;
     use Random\RandomException;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,10 @@
             return $this->render('@NeoxDashBoardBundle/neox_dash_domain/index.html.twig', [ 'neox_dash_domains' => $domains ]);
         }
 
+        /**
+         * @throws RandomException
+         * @throws \Exception
+         */
         #[Route('/new/{id}', name: 'app_neox_dash_domain_new', methods: [
             'GET',
             'POST'
@@ -59,11 +64,7 @@
             }
             $neoxDashDomain->setUrlIcon("z");
 
-            $r = random_int(0, 255); // Rouge
-            $g = random_int(0, 255); // Vert
-            $b = random_int(0, 255); // Bleu
-
-            $neoxDashDomain->setColor(sprintf("#%02x%02x%02x", $r, $g, $b));
+            $neoxDashDomain->setColor(ToolsBoxService::getColor());
 
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("new", $neoxDashDomain, [ "id" => $neoxDashSection->getId() ]);

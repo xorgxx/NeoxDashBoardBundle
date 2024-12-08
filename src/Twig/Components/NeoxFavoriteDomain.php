@@ -12,6 +12,8 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashFavoriteRepository;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\ToolsBoxService;
+    use Random\RandomException;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\EventDispatcher\EventDispatcherInterface;
     use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -74,54 +76,41 @@
 //                $favorite->setFavorite(true);
             }
 
-            $favorite->setFavorite(!$favorite->getFavorite());
-            $domain->setFavorite($favorite);
+            try {
+                $favorite->setFavorite(!$favorite->getFavorite());
+                $domain->setFavorite($favorite);
 
-            $this->entityManager->persist($domain);
-            $this->entityManager->flush();
+                $this->entityManager->persist($domain);
+                $this->entityManager->flush();
 
-            /*
-             * ============== switch to make ux-live more advance as SAP ===========
-             * PHP will emit signal to front page, Mercure and TurboStream will all the reste
-             * to update specific section for as.
-             */
+                /*
+                 * ============== switch to make ux-live more advance as SAP ===========
+                 * PHP will emit signal to front page, Mercure and TurboStream will all the reste
+                 * to update specific section for as.
+                 */
 
-            if ( $section === "FAVORITE" ) {
-                // TODO : refresh only the favorite
-                $this->dispatchBrowserEvent('favorite:refresh', [
-                    "action"        => "refresh",
-                    "idComponent"   => "live-NeoxDashBoardContent@" . $domain->getSection()->getClass()->getId(),
-                    "idClass"       => $domain->getSection()->getClass()->getId()
-                ]);
-            }else{
-                // refresh content class was select only
-                $this->refresh($domain->getSection()->getClass()->getId());
-
-                $this->dispatchBrowserEvent('favorite:refresh', [
-                "action"        => "refreshFavorite",
-                "idComponent"   => "live-NeoxFavorite@0",
-                "idClass"       => $domain->getSection()->getClass()->getId()
-            ]);
-
-
+                $this->updateFront($domain, $section);
+            } catch (\Exception $e) {
+                return;
             }
 
         }
 
-
+        /**
+         * @throws RandomException
+         */
         #[LiveAction]
         public function getFavorite(): array
         {
 
             /** @var NeoxDashFavorite[] $favorites */
             $favorites          = $this->favoriteRepository->findOnlyFavorites();
-            $sectionFavorite    = $this->entityManager->getRepository(NeoxDashSection::class)->findOneBy(['name' => "Widget@favorite"]);
 
             $section = (new NeoxDashSection())
                 ->setName("FAVORITE")
-                ->setHeaderColor($sectionFavorite->getHeaderColor())
-                ->setRow($sectionFavorite->getRow())
-                ->setSize($sectionFavorite->getSize())
+                ->setHeaderColor(ToolsBoxService::getColor())
+                ->setRow(12)
+                ->setSize(NeoxSizeEnum::COL12)
             ;
 
             foreach ($favorites as $favorite) {
@@ -135,8 +124,8 @@
                 ->setType(NeoxDashTypeEnum::TOOLS)
                 ->setIcon("star")
                 ->setMode(NeoxStyleEnum::TABS)
-                ->setHeaderColor($sectionFavorite->getClass()->getHeaderColor())
-                ->setSize($sectionFavorite->getClass()->getSize())
+                ->setHeaderColor(ToolsBoxService::getColor())
+                ->setSize(NeoxSizeEnum::COL12)
             ; // Retourne toutes les classes sous forme de collection
 
             return  [$class];
@@ -148,9 +137,39 @@
             $this->NeoxDashClass = [$this->entityManager->getRepository(NeoxDashClass::class)->findOneClass( $query)]; ;
         }
 
+        /**
+         * @throws RandomException
+         */
         #[LiveAction]
         public function refreshFavorite(#[LiveArg] string $query="link"): void
         {
             $this->NeoxDashClass = $this->getFavorite(); ;
         }
+
+        private function updateFront($domain, $section): void
+    {
+        if ( $section === "FAVORITE" ) {
+            // TODO : refresh only the favorite
+            $this->dispatchBrowserEvent('favorite:refresh', [
+                "action"        => "refresh",
+                "idComponent"   => "live-NeoxDashBoardContent@" . $domain->getSection()->getClass()->getId(),
+                "idClass"       => $domain->getSection()->getClass()->getId()
+            ]);
+        }else {
+            // refresh content class was select only
+            $this->refresh($domain
+                ->getSection()
+                ->getClass()
+                ->getId());
+
+            $this->dispatchBrowserEvent('favorite:refresh', [
+                "action"      => "refreshFavorite",
+                "idComponent" => "live-NeoxFavorite@0",
+                "idClass"     => $domain
+                    ->getSection()
+                    ->getClass()
+                    ->getId()
+            ]);
+        }
+    }
     }
