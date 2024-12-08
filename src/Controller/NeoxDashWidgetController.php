@@ -69,13 +69,13 @@
 
             // if submit is true we can now add any information before persist and flush !!
             if ($return[ "submit" ]) {
-
+                $formData = $request->request->all()["neox_dash_widget"]["widget"];
                 // look in class if it das exist ? if so then we just toggle publish and render
-                if ( $neoxDashWidget = $neoxDashWidgetRepository->findOneByPublish($neoxDashWidget->getWidget()->value, false) ) {
+                if ( $neoxDashWidget = $neoxDashWidgetRepository->findOneByPublish($formData)) {
                     $neoxDashWidget->setPublish(true);
+                    $neoxDashWidget->getSection()->getClass()->setPublish(true);
                     $crudHandleBuilder->entityManager->persist($neoxDashWidget);
                     $crudHandleBuilder->entityManager->flush();
-
                 }else{
                     $section        = new NeoxDashSection();
                     $section->setName( $neoxDashWidget->getWidget()->value);

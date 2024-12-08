@@ -32,26 +32,29 @@
         //    }
 
         /**
-         * @return NeoxDashWidget[] Returns an array of NeoxDashWidget objects
+         * @param string $widgetName
+         *
+         * @return NeoxDashWidget|null Returns an array of NeoxDashWidget objects
          */
-        public function findOneByPublish(string $widget, bool $publish = true): NeoxDashWidget
+        public function findOneByPublish(string $widgetName ): ?NeoxDashWidget
         {
             $dql = "
-                    SELECT widget, section, class
-                    FROM App\Entity\NeoxDashWidget widget
-                    JOIN widget.section section
-                    JOIN section.class class
-                    WHERE class.publish = :publish
-                    AND neox_dash_class.widget = :widget;
-                ";
+        SELECT widget, section, class
+        FROM NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget widget
+        JOIN widget.section section
+        JOIN section.class class
+        WHERE widget.widget = :widgetName
+    ";
 
             $query = $this
                 ->getEntityManager()
-                ->createQuery($dql)
-            ;
-            $query->setParameter('widget', $widget);
-            $query->setParameter('publish', $publish);
-            return $query->getResult();
+                ->createQuery($dql);
+
+            $query->setParameter('widgetName', $widgetName);
+//            $query->setParameter('publish', $publish);
+
+            // Utilisez getOneOrNullResult() si vous attendez un seul résultat
+            return $query->getOneOrNullResult();
         }
 
         /**
