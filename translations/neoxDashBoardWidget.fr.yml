@@ -1,0 +1,40 @@
+# src/Acme/DemoBundle/Resources/translations/messages.fr.yml
+neoxDashBoardWidget:
+    home:
+        title: Widget
+        sub-title: Interface
+    setup-tool:
+        title: Menu
+    DarkMode:
+        dark: Sombre
+        light: claire
+
+    form:
+        action.label: Action
+        add.label: Ajouter
+        view.label: Voir
+        update.label: Modifier
+        delete.label: Supprimer
+        delete.msg.label: Êtes-vous sûr de bien vouloir supprimer cet élément ?
+        pin.publish.1: Êtes-vous sûr de bien vouloir de-publier cet élément ?
+        pin.publish.0: Êtes-vous sûr de bien vouloir publier cet élément ?
+        save.label: Enregistrer
+        home:
+            title: Widget Manager
+            title-edit: Edit Widget
+            title-new: New Widget
+        id:
+            label: id
+            placeholder: Saisir nom un pour le tags ...
+        widget:
+            label: Widget
+            placeholder: Sectionnez le widget ...
+        type:
+            label: Type
+            placeholder: Saisir type de widget ...
+        options :
+            label       : Option
+            placeholder : Saisir les options du widget
+        url :
+            label       : Url
+            placeholder : Saisir l'url du widget | par default null

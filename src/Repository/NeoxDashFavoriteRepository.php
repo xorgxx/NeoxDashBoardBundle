@@ -53,6 +53,7 @@
                 ->innerJoin('s.class', 'c')           // Join NeoxDashClass
                 ->where('f.favorite = :isFavorite')   // Filter by favorite
                 ->setParameter('isFavorite', true)    // Bind parameter
+                ->orderBy('f.position', 'ASC')
                 ->getQuery()
                 ->getResult();
         }

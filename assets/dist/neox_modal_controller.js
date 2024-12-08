@@ -129,6 +129,7 @@ export default class NeoxModalController extends coreDashController {
                     title: this.titleValue,
                     html: response.message,
                     showCancelButton: this.showCancelButtonValue,
+                    confirmButtonText:false,
                     allowOutsideClick: false
                 });
             }
@@ -151,7 +152,7 @@ export default class NeoxModalController extends coreDashController {
                     allowOutsideClick: false
                 });
             }
-            throw error;
+            this.#handleError(error);
         }
     }
     
@@ -242,6 +243,18 @@ export default class NeoxModalController extends coreDashController {
         } else {
             console.warn(`Carousel avec l'ID Carousel${id} introuvable.`);
         }
+    }
+    
+    #handleError(error) {
+        swal.fire({
+            text: "Request failed |-> network problem. Retry !!",
+            icon: "warning",
+            confirmButtonText: "Close",
+            timer: 5000, // Ferme automatiquement après 5 secondes
+            timerProgressBar: true, // Affiche une barre de progression
+        }).then(() => {
+            console.log("SweetAlert closed");
+        });
     }
     
     #isRelativeUrl(url){

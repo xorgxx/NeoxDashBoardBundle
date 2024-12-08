@@ -9,35 +9,40 @@
     {# ======= MORE IMPORTANT ENTRY POINT ====== #}
 
     {% for class in dashClass %}
+        {# ===== this is priciplarly the main entry point to create the dashboard
+         # And we can filter creation of widget by neoxDashClass
+         #}
 
-        <div class="{{ 'col-12' }}" >
-            {% set classCurrant                 = class %}
-            {% set sections                     = class.neoxDashSections %}     {# List of all items #}
-            {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
+{#        {% if class.publish %}#}
+            <div class="{{ 'col-12' }}" >
+                {% set classCurrant                 = class %}
+                {% set sections                     = class.neoxDashSections %}     {# List of all items #}
+                {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
 
-            <!-- Header Section: Title and Navigation Tabs -->
-            {# ===== check if widget is favorite | thi widget is speciale we dont want all "building"
+                <!-- Header Section: Title and Navigation Tabs -->
+                {# ===== check if widget is favorite | thi widget is speciale we dont want all "building"
                 at liste
-            #}
-            {% if classCurrant.name is not same as("FAVORITE") %}
-                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
-            {% endif %}
+                #}
+                {% if classCurrant.name is not same as("FAVORITE") %}
+                    {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
+                {% endif %}
 
-            <!-- Tab Content + carousel -->
-            {% for section in sections %}
+                <!-- Tab Content + carousel -->
+                {% for section in sections %}
 
-                {# 4 columns x 2 rows = 8 items per carousel-item #}
-                {% set itemsPerPage                 = section.edit ? section.neoxDashDomains|default(1)|length : section.row|default(4) %}
-                {% set domains                      = section.neoxDashDomains %}
-                {% set chunkedItems                 = domains|batch(itemsPerPage) %}
-                {% set idContentCarousel            = ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %}
-                {% set idInnerCarousel              = ( section.name ~ "@" ~ section.id )|u.camel.title %}
+                    {# 4 columns x 2 rows = 8 items per carousel-item #}
+                    {% set itemsPerPage                 = section.edit ? section.neoxDashDomains|default(1)|length : section.row|default(4) %}
+                    {% set domains                      = section.neoxDashDomains %}
+                    {% set chunkedItems                 = domains|batch(itemsPerPage) %}
+                    {% set idContentCarousel            = ( class.id|default(0) ~ "@" ~ section.name )|u.camel.title %}
+                    {% set idInnerCarousel              = ( section.name ~ "@" ~ section.id )|u.camel.title %}
 
-                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteCarousel.html.twig') }}
+                    {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteCarousel.html.twig') }}
 
-            {% endfor %}
+                {% endfor %}
 
-        </div >
+            </div >
+{#        {% endif %}#}
     {% endfor %}
 </div >
 

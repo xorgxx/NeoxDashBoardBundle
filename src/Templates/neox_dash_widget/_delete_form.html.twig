@@ -1,0 +1,24 @@
+{#<form method="post" action="{{ path('app_neox_dash_class_delete', {'id': neox_dash_class.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">#}
+{#    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ neox_dash_class.id) }}">#}
+{#    <button class="btn">Delete</button>#}
+{#</form>#}
+
+<form method="post" action="{{ path('app_neox_dash_class_delete', {'id': class.id}) }}"
+    data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+    data-title="Delete {{ class.name }}"
+    data-text="All domain inside will also be delete! Do you want to continue?"
+    data-id-element="{{ path('app_neox_dashboard_home')}}"
+    data-url="{{ path('app_neox_dash_class_delete', { id: class.id }) }}"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ class.id) }}">
+
+    <a
+        {{ stimulus_action('@xorgxx/neox-dashboard-bundle/neox-modal', 'deleteConfirm', 'click') }}
+        class="dropdown-item text-warning"
+        href="#"
+    >
+        {#                        <twig:ux:icon name="fa6-solid:{{ plus|default('trash-can') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />#}
+        Delete "{{ class.name }}"
+    </a>
+</form>

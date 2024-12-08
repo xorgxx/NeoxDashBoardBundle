@@ -1,0 +1,24 @@
+{# {% include '@NeoxDashBoardBundle/components/BootstrapModal.html.twig' %} style="background-color: {{ NeoxDashSetup.theme|default('#ffffff') }}" #}
+<div {{ attributes }}>
+    <div class="mb-3">
+        {{ form_label(form.widget, 'Widget Type') }}
+        {{ form_widget(form.widget, { attr: { class: 'form-select', 'data-action': 'change->neox-dash-widget#updateFields' } }) }}
+        {{ form_errors(form.widget) }}
+    </div>
+
+    <div id="dynamic-fields">
+        {# Champs dynamiques qui dépendent de "widget" #}
+        {% if form.widgetConfig is defined %}
+            {{ form_widget(form.widgetConfig, { attr: { class: 'form-control' } }) }}
+        {% else %}
+            <p class="text-muted">Sélectionnez un widget pour configurer les options.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+
+
+

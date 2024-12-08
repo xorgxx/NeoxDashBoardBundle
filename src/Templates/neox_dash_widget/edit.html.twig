@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit NeoxDashSetup{% endblock %}
+
+{% block body %}
+    <h1>Edit NeoxDashSetup</h1>
+
+    {{ include('neox_dash_class/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_neox_dash_class_index') }}">back to list</a>
+
+    {{ include('neox_dash_class/_delete_form.html.twig') }}
+{% endblock %}

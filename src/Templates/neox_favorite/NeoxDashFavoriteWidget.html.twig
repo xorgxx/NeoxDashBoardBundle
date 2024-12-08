@@ -1,15 +1,15 @@
 {# ===== Header-Box Favorite - Tools box ====== #}
 
 {# ===== LEFT FAVORITE TABS ===== #}
-
-   {% if widget.name is same as("favorite") %}
-       {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavorite.html.twig') }}
-   {% elseif widget.name is same as("search") %}
-       <div class="col-12" >
-           {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavoriteSearch.html.twig') }}
-       </div >
-   {% endif %}
-
+{% if widget.publish %}
+    {% if widget.widget.value matches '/^favorite$/i' %}
+        {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavorite.html.twig') }}
+    {% elseif widget.widget.value matches '/^search$/i' %}
+        <div class="col-12" >
+            {{ include('@NeoxDashBoardBundle/neox_favorite/Widget/NeoxDashFavoriteSearch.html.twig') }}
+        </div >
+    {% endif %}
+{% endif %}
 
 
 {# ===== Header-Box Favorite - Tools box ====== #}

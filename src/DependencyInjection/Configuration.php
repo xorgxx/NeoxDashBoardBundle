@@ -1,37 +1,52 @@
 <?php
 
-/*
- * This file is part of the SymfonyCasts ResetPasswordBundle package.
- * Copyright (c) SymfonyCasts <https://symfonycasts.com/>
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+    namespace NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection;
 
-namespace NeoxDashBoard\NeoxDashBoardBundle\DependencyInjection;
+    use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+    use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+    use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-/**
- * @author xorg <xorg@i2p.i2p>
- */
-final class Configuration implements ConfigurationInterface
-{
-    public function getConfigTreeBuilder(): TreeBuilder
+    final class Configuration implements ConfigurationInterface
     {
-        $treeBuilder = new TreeBuilder('neox_dash_board');
+        public function getConfigTreeBuilder(): TreeBuilder
+        {
+            $treeBuilder = new TreeBuilder('neox_dash_board');
 
-        /** @var ArrayNodeDefinition $rootNode */
-        $rootNode = $treeBuilder->getRootNode();
+            /** @var ArrayNodeDefinition $rootNode */
+            $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->addDefaultsIfNotSet()
-            ->children()
-                ->scalarNode('directory_bundle')->defaultValue('Library/')->end()
-            ->end()
-        ;
+            $rootNode
+                ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('widget')
+                            ->useAttributeAsKey('name')     // Use dynamic keys
+                            ->arrayPrototype()                    // Allow subnodes for each entry
+                                ->children()
+                                    ->scalarNode('type')->isRequired()->defaultValue('Widget')->end()
+                                    ->booleanNode('enabled')->defaultFalse()->end()
+                                    ->arrayNode('options')        // Define 'options' as an array
+                                        ->scalarPrototype()->end()      // Each option can be a scalar value
+                                        ->defaultValue([])              // Default to an empty array
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Set multiple widgets as default
+                            ->defaultValue([
+                                     'favorite' => [
+                                         'type'     => 'Tools',
+                                         'enabled'  => true,
+                                         "options"  => []
+                                     ],
+                                     'search' => [
+                                         'type'     => 'Tools',
+                                         'enabled'  => true,
+                                         "options"  => []
+                                     ],
+                                ])
+                    ->end()
+                ->end()
+            ;
 
-        return $treeBuilder;
+            return $treeBuilder;
+        }
     }
-}

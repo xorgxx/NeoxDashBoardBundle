@@ -83,8 +83,15 @@
             // Uncomment if needed
             // $loader->load('routes.yaml');
 
-            $configuration = $this->getConfiguration($configs, $container);
-            $this->processConfiguration($configuration, $configs);
+            $configuration  = $this->getConfiguration($configs, $container);
+            $config         = $this->processConfiguration($configuration, $configs);
+
+            // set configuration from config file if not set default
+
+            // set key config as container parameters
+            foreach ($config as $key => $value) {
+                $container->setParameter('neox_dash_board.'.$key, $value);
+            }
 
             // Add import map configuration
             importmapConfig::addImportMapConfiguration($container);

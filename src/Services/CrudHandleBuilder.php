@@ -3,7 +3,10 @@
     namespace NeoxDashBoard\NeoxDashBoardBundle\Services;
 
     use Doctrine\ORM\EntityManagerInterface;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSetup;
     use NeoxDashBoard\NeoxDashBoardBundle\Pattern\IniHandleNeoxDashModel;
+    use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashSetupRepository;
+    use Symfony\Bundle\SecurityBundle\Security;
     use Symfony\Component\Form\FormFactoryInterface;
     use Symfony\Component\Form\FormInterface;
     use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +21,17 @@
 
         public ?IniHandleNeoxDashModel $iniHandleNeoxDashModel = null;
 
-        public function __construct(readonly EntityManagerInterface $entityManager, readonly Environment $twig, readonly FormFactoryInterface $formFactory, readonly RouterInterface $router)
+        public function __construct(
+            readonly EntityManagerInterface $entityManager, 
+            readonly Environment $twig, 
+            readonly FormFactoryInterface $formFactory, 
+            readonly RouterInterface $router,
+            readonly Security $security,
+            readonly NeoxDashSetupRepository $neoxDashSetupRepository
+        )
         {
         }
+
 
 
         // Retourne l'instance actuelle de iniHandleNeoxDashModel
@@ -184,5 +195,26 @@
             ];
         }
 
+        public function getNeoxDasSetup(): NeoxDashSetup
+        {
+            // Vérifier si l'utilisateur est connecté et s'il a un setup
+            $userSetup = $this->security->getUser()?->getNeoxDashSetup();
+
+            // Si l'utilisateur a un setup, on le retourne
+            if ($userSetup) {
+                return $userSetup;
+            }
+
+            // Si l'utilisateur n'a pas de setup, vérifier s'il y a un setup par défaut en base
+            $defaultSetup = $this->neoxDashSetupRepository->findOneBy(['id' => 1]);
+
+            // Si un setup par défaut existe en base, on le retourne
+            if ($defaultSetup) {
+                return $defaultSetup;
+            }
+
+            // Si aucun setup n'est trouvé, lancer une exception ou retourner un setup par défaut
+            throw $this->createNotFoundException('No NeoxDashSetup found for this user or as default.');
+        }
 
     }

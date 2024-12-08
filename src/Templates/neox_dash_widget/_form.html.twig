@@ -1,0 +1,9 @@
+{# templates/form/your_form.html.twig #}
+<div id="NeoxDashWidgetForm" >
+    {{ form_start(form, { 'attr': { 'class': 'form-horizontal' } }) }}
+    {{ form_row(form.widget) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.url) }}
+    {{ form_row(form.options) }}
+    {{ form_end(form) }}
+</div >

@@ -52,6 +52,9 @@ class NeoxDashClass
     #[ORM\Column(length: 100, nullable: true, enumType: NeoxSizeEnum::class)]
     private ?NeoxSizeEnum $size = NeoxSizeEnum::COL3;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $publish = true;
+
     public function __construct()
     {
         $this->neoxDashSections = new ArrayCollection();
@@ -180,6 +183,17 @@ class NeoxDashClass
     public function setSize(?NeoxSizeEnum $size): NeoxDashClass
     {
         $this->size = $size;
+        return $this;
+    }
+
+    public function getPublish(): ?bool
+    {
+        return $this->publish;
+    }
+
+    public function setPublish(?bool $publish): NeoxDashClass
+    {
+        $this->publish = $publish;
         return $this;
     }
 

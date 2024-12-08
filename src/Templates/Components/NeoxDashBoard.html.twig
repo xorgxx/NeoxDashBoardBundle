@@ -10,17 +10,7 @@
                     <twig:NeoxDashHeader :NeoxDashSetup="NeoxDashSetup" id="live-NeoxDashHeader" />
                 </turbo-frame >
             </div >
-
-
         </section >
-        <!-- Search Domain Sticky -->
-        {#        <section class="container p-0" style="top: 81px; position: sticky; z-index: 1000" > #}
-        {#            <div class="sticky-searche bg-dark bg-opacity-50" > #}
-        {#                <turbo-frame id="NeoxDashSearchDomain" > #}
-        {#                    <twig:NeoxSearchDomain id="live-NeoxDashSearchDomain" /> #}
-        {#                </turbo-frame > #}
-        {#            </div > #}
-        {#        </section > #}
 
         <!-- Content Section -->
         <section class="container mb-5">
@@ -37,15 +27,14 @@
                     {# extracter all tools box #}
 
                     {% for class in NeoxDashSetup.class %}
-{#                        {% if class.type.value is same as('Tools') %}#}
-
-{#                            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}#}
-
-{#                        {% else %}#}
+                        {# ===== this is priciplarly the main entry point to create the dashboard
+                         # And we can filter creation of widget by neoxDashClass
+                         #}
+                        {% if class.publish %}
                             <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
                                 <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
                             </turbo-frame >
-{#                        {% endif %}#}
+                        {% endif %}
                     {% endfor %}
 
 

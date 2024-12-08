@@ -87,7 +87,7 @@ export class coreDashController extends Controller {
             swal.fire({
                 title: this.titleValue,
                 html: `timeout : ${this.timeoutValue / 1000} secondes`,
-                showCancelButton: this.showCancelButtonValue,
+                showCancelButton: true,
                 showConfirmButton: false,
                 preConfirm: () => this.submitForm("formNeox"),
             });
@@ -163,14 +163,21 @@ export class coreDashController extends Controller {
         return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
     }
     
-    #handleError(error){
+    #handleError(error) {
+        // Arrêter le loader SweetAlert
+        // Mettre à jour la fenêtre SweetAlert avec le message d'erreur
         swal.update({
-            'text': `Request failed !!`,
-            'icon': "warning"
+            text: "Request failed !!",
+            icon: "warning", // Changer l'icône pour avertir l'utilisateur
         });
+        
         swal.showValidationMessage(
-            `${error}`
+            `Error: ${error.message || error}`
         );
+        
+        swal.stopLoading();
+        // Afficher le message d'erreur dans la validation
+  
     }
     
     initializeAttributes(link = null) {

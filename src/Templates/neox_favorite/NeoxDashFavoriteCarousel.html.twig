@@ -1,24 +1,26 @@
 {% set cardHieght           = "col-md-3" %}
 
 <!-- Tab Content + carousel -->
-<div id="neox-tab-content" class="tab-content" >
-    <div id="{{ idContentCarousel }}" class="tab-pane fade {% if loop.first %}show active{% endif %}" >
-        <!-- Carousel Structure -->
-        {#   ===== EDITION MENU SECTION ======     #}
-        {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashSectionEdition.html.twig', {"class" : class}) }}
-        {#   ===== EDITION MENU SECTION ======     #}
+{#{% if classCurrant.publish %}#}
+    <div id="neox-tab-content" class="tab-content" >
+        <div id="{{ idContentCarousel }}" class="tab-pane fade {% if loop.first %}show active{% endif %}" >
+            <!-- Carousel Structure -->
+            {#   ===== EDITION MENU SECTION ======     #}
+            {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashSectionEdition.html.twig', {"class" : class}) }}
+            {#   ===== EDITION MENU SECTION ======     #}
 
-        {# ==== Setup for builder Widget | if it's section with Widget !! ===== #}
-        {% if section.getNeoxDashWidgets is not empty %}
-            {% for widget in section.neoxDashWidgets %}
-                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}
-            {% endfor %}
-        {% else %}
+            {# ==== Setup for builder Widget | if it's section with Widget !! ===== #}
+            {% if section.getNeoxDashWidgets is not empty %}
+                {% for widget in section.neoxDashWidgets %}
+                    {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteWidget.html.twig') }}
+                {% endfor %}
+            {% else %}
 
-        {% endif %}
+            {% endif %}
 
-        {# ===== Carousel BUILDER ================== #}
-        {{ include('@NeoxDashBoardBundle/neox_favorite/_NeoxDashCarouselBuilder.html.twig')}}
+            {# ===== Carousel BUILDER ================== #}
+            {{ include('@NeoxDashBoardBundle/neox_favorite/_NeoxDashCarouselBuilder.html.twig') }}
 
+        </div >
     </div >
-</div >
+{#{% endif %}#}
