@@ -13,12 +13,12 @@
     {% set height = section.heigth|default('2.8') ~ 'rem' %}
     {% set classObjet   = classObjet %}
 
-    <div class="container" >
+    <div class="container overflow-auto" style="height: 200px;">
         <div class="row pb-2" >
             {% for item in computed.packages %}
                 {% set section      = item.section %}
                 {% set neoxSearch   = "false" %}
-                <div class="justify-content-start col-3 g-3" >
+                <div class="justify-content-start col-3 g-3">
                     {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
                 </div >
             {% else %}
