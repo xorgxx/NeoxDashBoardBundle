@@ -31,15 +31,15 @@
             return $this->render('@NeoxDashBoardBundle/neox_dash_section/index.html.twig', [ 'neox_dash_sections' => $neoxDashSectionRepository->findAll(), ]);
         }
 
-        #[Route('/new', name: 'app_neox_dash_section_new', methods: [
+        #[Route('/new/{id}', name: 'app_neox_dash_section_new', methods: [
             'GET', 'POST'
         ])]
-        public function new(Request $request): Response|JsonResponse
+        public function new(Request $request, NeoxDashClass $dashClass): Response|JsonResponse
         {
             $neoxDashSection    = new NeoxDashSection();
             // Determine the template to use for rendering and render the builder !!
-            $crudHandleBuilder  = $this->setInit("edit", $neoxDashSection);
-            $crudHandleBuilder->iniHandleNeoxDashModel->getEntity()->setClass($crudHandleBuilder->getNeoxDasSetup());
+            $crudHandleBuilder  = $this->setInit("edit", $neoxDashSection, [ "id" => $dashClass->getId() ]);
+            $crudHandleBuilder->iniHandleNeoxDashModel->getEntity()->setClass($dashClass);
 
             /*
             * Call to the generic form management service, with support for turbo-stream

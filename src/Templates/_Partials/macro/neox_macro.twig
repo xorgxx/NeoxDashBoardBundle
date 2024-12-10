@@ -22,7 +22,7 @@
             data-title='New Section'
             data-text='Do you want to continue'
             data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
-            data-url="{{ path('app_neox_dash_section_new')}}"
+            data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
             data-modal="modal"
             data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
             class="nav-link"
@@ -100,7 +100,7 @@
                     data-title='New Section'
                     data-text='Do you want to continue'
                     data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
-                    data-url="{{ path('app_neox_dash_section_new') }}"
+                    data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
                     data-modal="modal"
                     data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
                     class="dropdown-item"

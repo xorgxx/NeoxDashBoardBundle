@@ -39,12 +39,12 @@
         public function findOneByPublish(string $widgetName ): ?NeoxDashWidget
         {
             $dql = "
-        SELECT widget, section, class
-        FROM NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget widget
-        JOIN widget.section section
-        JOIN section.class class
-        WHERE widget.widget = :widgetName
-    ";
+                SELECT widget, section, class
+                FROM NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget widget
+                JOIN widget.section section
+                JOIN section.class class
+                WHERE widget.widget = :widgetName
+            ";
 
             $query = $this
                 ->getEntityManager()
