@@ -75,18 +75,18 @@
                     'label_attr'         => [ 'class' => 'col-form-label text-start', ],
                     'row_attr'           => [ 'class' => 'row mb-3' ],
                 ))
-                ->add('height', NumberType::class, array(
-                    // 'disabled'      => true,
-                    'required'           => false,
-                    "attr"               => array(
-                        "placeholder" => $this->getTrans('height', "placeholder"),
-                        'class'       => 'required form-control '
-                    ),
-                    'label'              => $this->getTrans('height'),
-                    'translation_domain' => 'neoxDashBoardSection',
-                    'label_attr'         => [ 'class' => 'col-form-label text-start', ],
-                    'row_attr'           => [ 'class' => 'row mb-3' ],
-                ))
+//                ->add('height', NumberType::class, array(
+//                    // 'disabled'      => true,
+//                    'required'           => false,
+//                    "attr"               => array(
+//                        "placeholder" => $this->getTrans('height', "placeholder"),
+//                        'class'       => 'required form-control '
+//                    ),
+//                    'label'              => $this->getTrans('height'),
+//                    'translation_domain' => 'neoxDashBoardSection',
+//                    'label_attr'         => [ 'class' => 'col-form-label text-start', ],
+//                    'row_attr'           => [ 'class' => 'row mb-3' ],
+//                ))
                 ->add('timer', IntegerType::class, array(
                     // 'disabled'      => true,
                     'required'           => false,
