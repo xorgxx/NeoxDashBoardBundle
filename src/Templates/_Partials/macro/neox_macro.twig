@@ -58,11 +58,11 @@
             type="button"
             role="tab"
             aria-controls="{{ section.name }}"
-            aria-selected="{{ loop.first ? 'true' : '' }}">
+            aria-selected="{{ loop.first ? 'true' : '' }}" >
             {{ section.name }}
-            <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ n }}</span>
+            <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info' }} " >{{ n }}</span >
 
-        </button>
+        </button >
     </li >
 {% endmacro %}
 
@@ -94,22 +94,24 @@
                     Setup "{{ class.name }}"
                 </a >
             </li >
-            <li >
-                <a
-                    data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
-                    data-title='New Section'
-                    data-text='Do you want to continue'
-                    data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
-                    data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
-                    data-modal="modal"
-                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
-                    class="dropdown-item"
-                    href="#"
-                >
-                    New Content ...
-                </a >
-
-            </li >
+            {# ===== ADD condition WIDGET [SECTION TOOLS BAR] ======= #}
+            {% if class.NeoxDashSections[0].neoxDashWidgets[0] | default(false) is same as false %}
+                <li >
+                    <a
+                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                        data-title='New Section'
+                        data-text='Do you want to continue'
+                        data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
+                        data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
+                        data-modal="modal"
+                        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                        class="dropdown-item"
+                        href="#"
+                    >
+                        New Content ...
+                    </a >
+                </li >
+            {% endif %}
             <li >
                 <hr class="dropdown-divider" >
             </li >

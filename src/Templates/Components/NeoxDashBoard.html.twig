@@ -30,11 +30,21 @@
                         {# ===== this is priciplarly the main entry point to create the dashboard
                          # And we can filter creation of widget by neoxDashClass
                          #}
+                        {% set widget = class.neoxDashSections.0.neoxDashWidgets.0 | default(false) ? class.neoxDashSections.0.neoxDashWidgets.0.widget.value : null %}
+
                         {% if class.publish %}
-                            <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
-                                <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
-                            </turbo-frame >
+                            {# ===== WIDGET FAVORITE HAVE SPECIAL INIT (because is linking to all Domains, and is onwe component) ==== #}
+                            {% if widget == 'Favorite' %}
+                                <turbo-frame  class="{{ class.size.value }}" id="NeoxFavorite-0" >
+                                    <twig:NeoxFavoriteDomain :NeoxDashClass="null"  id="live-NeoxFavorite@0" />
+                                </turbo-frame >
+                            {% else %}
+                                <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
+                                    <twig:NeoxFavoriteDomain :NeoxDashClass="[class]" id="live-NeoxDashBoardContent@{{ class.id }}" />
+                                </turbo-frame >
+                            {% endif %}
                         {% endif %}
+
                     {% endfor %}
 
 

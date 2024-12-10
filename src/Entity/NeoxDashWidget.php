@@ -5,14 +5,14 @@ namespace NeoxDashBoard\NeoxDashBoardBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxWidgetEnum;
 use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxWidgetTypeEnum;
-use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
+use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashWidgetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[Broadcast(template: '@NeoxDashBoardBundle\broadcast\NeoxDashWidget.stream.html.twig')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
+#[ORM\Entity(repositoryClass: NeoxDashWidgetRepository::class)]
 class NeoxDashWidget
 {
     #[ORM\Id]

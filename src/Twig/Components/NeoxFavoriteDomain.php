@@ -7,6 +7,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashFavorite;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
     use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
@@ -102,33 +103,39 @@
         #[LiveAction]
         public function getFavorite(): array
         {
-
-            /** @var NeoxDashFavorite[] $favorites */
+            /**  ====== Find widget FAVORITE ========
+             */
+            $widgetFavorite     = $this->entityManager->getRepository(NeoxDashWidget::class)->findOneByPublish("Favorite");
+            
+            /** @var NeoxDashFavorite[] $favorites
+             */
             $favorites          = $this->favoriteRepository->findOnlyFavorites();
 
-            $section = (new NeoxDashSection())
-                ->setName("FAVORITE")
-                ->setHeaderColor(ToolsBoxService::getColor())
-                ->setRow(12)
-                ->setSize(NeoxSizeEnum::COL12)
-            ;
 
+//            $section = (new NeoxDashSection())
+//                ->setName("FAVORITE")
+//                ->setHeaderColor(ToolsBoxService::getColor())
+//                ->setRow(12)
+//                ->setSize(NeoxSizeEnum::COL12)
+//            ;
+//            $i = 0;
             foreach ($favorites as $favorite) {
                 foreach ($favorite->getNeoxDashDomains() as $domain) {
-                    $section->addNeoxDashDomain($domain);
+                    $widgetFavorite->getSection()->addNeoxDashDomain($domain);
                 }
             }
-            $class = (new NeoxDashClass())
-                ->addNeoxDashSection($section)
-                ->setName("FAVORITE")
-                ->setType(NeoxDashTypeEnum::TOOLS)
-                ->setIcon("star")
-                ->setMode(NeoxStyleEnum::TABS)
-                ->setHeaderColor(ToolsBoxService::getColor())
-                ->setSize(NeoxSizeEnum::COL12)
+
+//            $class = (new NeoxDashClass())
+//                ->addNeoxDashSection($section)
+//                ->setName("FAVORITE")
+//                ->setType(NeoxDashTypeEnum::TOOLS)
+//                ->setIcon("star")
+//                ->setMode(NeoxStyleEnum::TABS)
+//                ->setHeaderColor(ToolsBoxService::getColor())
+//                ->setSize(NeoxSizeEnum::COL12)
             ; // Retourne toutes les classes sous forme de collection
 
-            return  [$class];
+            return  [$widgetFavorite->getSection()->getClass()];
         }
 
         #[LiveAction]

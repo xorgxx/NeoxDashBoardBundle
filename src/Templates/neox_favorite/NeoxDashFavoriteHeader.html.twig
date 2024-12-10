@@ -13,7 +13,7 @@
     <ul class="nav nav-tabs" >
 
         {% for section in sections %}
-            {#  ==== SET domains =====  #}
+            {#  ==== SET TITLE SECTION =====  #}
             {% set itemsPerPage                 = section.row %} {# 4 columns x 2 rows = 8 items per carousel-item #}
             {% set domains                      = section.neoxDashDomains %}
             {% set chunkedItems                 = domains|batch(itemsPerPage) %}
@@ -35,16 +35,18 @@
                 >
                     {# todo : change name for widget@favorite #}
                     {{ section.name|lower }}
-                    <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ domains|length }}</span>
+                    <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ domains|length}}</span>
                 </a >
             </li >
+
         {% endfor %}
 
-        {# ===== Add management tab | not for "virtual ======== #}
+        {# ===== Add management tab [SECTION TOOLS BAR] | not for "virtual ======== #}
         {% if class.id %}
             <!-- Todo : add menu to manage class -->
             {# Item ADD Tab Title ======== #}
-            {{ neox_macro.navItemBottomStd(class, "plus", 'green') }}
+            {{ classCurrant.NeoxDashSections[0].neoxDashWidgets[0] | default(false) ? null : neox_macro.navItemBottomStd(class, "plus", 'green') }}
+{#            {{ neox_macro.navItemBottomStd(class, "plus", 'green') }}#}
 
             {# Item Main Menu ========= #}
             {{ neox_macro.navItemMenu(class) }}

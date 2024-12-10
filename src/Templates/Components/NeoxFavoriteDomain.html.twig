@@ -15,15 +15,18 @@
 
 {#        {% if class.publish %}#}
             <div class="{{ 'col-12' }}" >
-                {% set classCurrant                 = class %}
-                {% set sections                     = class.neoxDashSections %}     {# List of all items #}
-                {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
+                {% set classCurrant            = class %}
+                {% set sections                = class.neoxDashSections %}     {# List of all items #}
+                {% set idLiveClassContainer    = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}
+{#                {% set widget                  = sections.NeoxDashSections[0].neoxDashWidgets[0]| default(false) ? null : sections.NeoxDashSections[0].neoxDashWidgets[0]%}#}
+
 
                 <!-- Header Section: Title and Navigation Tabs -->
                 {# ===== check if widget is favorite | thi widget is speciale we dont want all "building"
                 at liste
                 #}
-                {% if classCurrant.name is not same as("FAVORITE") %}
+
+                {% if classCurrant.name %}
                     {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}
                 {% endif %}
 

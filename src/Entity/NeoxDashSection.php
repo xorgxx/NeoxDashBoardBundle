@@ -27,8 +27,8 @@ class NeoxDashSection
     #[ORM\Column(length: 100, nullable: true, enumType: NeoxSizeEnum::class)]
     private ?NeoxSizeEnum $size = null;
 
-    #[ORM\Column(type: 'decimal', precision: 4, scale: 2, nullable: true)]
-    private ?string $height = "2.8";
+    #[ORM\Column( nullable: true)]
+    private ?int $count = 0;
 
     #[ORM\Column(nullable: true)]
     private ?bool $content = false;
@@ -108,14 +108,14 @@ class NeoxDashSection
         return $this;
     }
 
-    public function getHeight(): string
+    public function getCount(): ?int
     {
-        return $this->height;
+        return $this->count;
     }
 
-    public function setHeight(string $height): NeoxDashSection
+    public function setCount(?int $count): NeoxDashSection
     {
-        $this->height = $height;
+        $this->count = $count;
         return $this;
     }
     
