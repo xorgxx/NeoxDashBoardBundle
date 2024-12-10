@@ -8,12 +8,8 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashFavorite;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashSection;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget;
-    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxDashTypeEnum;
-    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxSizeEnum;
-    use NeoxDashBoard\NeoxDashBoardBundle\Enum\NeoxStyleEnum;
-    use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
+    use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashClassRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashFavoriteRepository;
-    use NeoxDashBoard\NeoxDashBoardBundle\Services\ToolsBoxService;
     use Random\RandomException;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,6 +38,7 @@
 
 
         public function __construct(
+            private readonly NeoxDashClassRepository $classRepository,
             private readonly NeoxDashFavoriteRepository $favoriteRepository,
             private readonly EntityManagerInterface $entityManager,
             private readonly EventDispatcherInterface $eventDispatcher
@@ -89,8 +86,8 @@
                  * PHP will emit signal to front page, Mercure and TurboStream will all the reste
                  * to update specific section for as.
                  */
-
-                $this->updateFront($domain, $section);
+                $favorite = $this->entityManager->getRepository(NeoxDashWidget::class)->findOneByPublish( "Favorite" );
+                $this->updateFront($domain, $favorite, $section);
             } catch (\Exception $e) {
                 return;
             }
@@ -106,42 +103,31 @@
             /**  ====== Find widget FAVORITE ========
              */
             $widgetFavorite     = $this->entityManager->getRepository(NeoxDashWidget::class)->findOneByPublish("Favorite");
-            
             /** @var NeoxDashFavorite[] $favorites
              */
             $favorites          = $this->favoriteRepository->findOnlyFavorites();
 
-
-//            $section = (new NeoxDashSection())
-//                ->setName("FAVORITE")
-//                ->setHeaderColor(ToolsBoxService::getColor())
-//                ->setRow(12)
-//                ->setSize(NeoxSizeEnum::COL12)
-//            ;
-//            $i = 0;
             foreach ($favorites as $favorite) {
                 foreach ($favorite->getNeoxDashDomains() as $domain) {
                     $widgetFavorite->getSection()->addNeoxDashDomain($domain);
                 }
             }
 
-//            $class = (new NeoxDashClass())
-//                ->addNeoxDashSection($section)
-//                ->setName("FAVORITE")
-//                ->setType(NeoxDashTypeEnum::TOOLS)
-//                ->setIcon("star")
-//                ->setMode(NeoxStyleEnum::TABS)
-//                ->setHeaderColor(ToolsBoxService::getColor())
-//                ->setSize(NeoxSizeEnum::COL12)
-            ; // Retourne toutes les classes sous forme de collection
-
             return  [$widgetFavorite->getSection()->getClass()];
         }
 
+        /**
+         * @throws RandomException
+         */
         #[LiveAction]
         public function refresh(#[LiveArg] string $query="link"): void
         {
-            $this->NeoxDashClass = [$this->entityManager->getRepository(NeoxDashClass::class)->findOneClass( $query)]; ;
+            if (!$NeoxDashClass = $this->entityManager->getRepository(NeoxDashClass::class)->findOneClass( $query )) {
+                $this->NeoxDashClass    = $this->getFavorite();
+            }else{
+                $this->NeoxDashClass    = [$NeoxDashClass];
+            }
+
         }
 
         /**
@@ -153,30 +139,36 @@
             $this->NeoxDashClass = $this->getFavorite(); ;
         }
 
-        private function updateFront($domain, $section): void
-    {
-        if ( $section === "FAVORITE" ) {
-            // TODO : refresh only the favorite
-            $this->dispatchBrowserEvent('favorite:refresh', [
-                "action"        => "refresh",
-                "idComponent"   => "live-NeoxDashBoardContent@" . $domain->getSection()->getClass()->getId(),
-                "idClass"       => $domain->getSection()->getClass()->getId()
-            ]);
-        }else {
-            // refresh content class was select only
-            $this->refresh($domain
-                ->getSection()
-                ->getClass()
-                ->getId());
-
-            $this->dispatchBrowserEvent('favorite:refresh', [
-                "action"      => "refreshFavorite",
-                "idComponent" => "live-NeoxFavorite@0",
-                "idClass"     => $domain
+        /**
+         * @throws RandomException
+         */
+        private function updateFront($domain, $favorite, $section): void
+        {
+            if ( $section === "favorite" ) {
+                // TODO : refresh only the favorite
+                $this->dispatchBrowserEvent('favorite:refresh', [
+                    "action"        => "refresh",
+                    "idComponent"   => "live-NeoxDashBoardContent@" . $domain->getSection()->getClass()->getId(),
+                    "idClass"       => $domain->getSection()->getClass()->getId()
+                ]);
+            }else {
+                // refresh content class was select only
+                $this->refresh($domain
                     ->getSection()
                     ->getClass()
-                    ->getId()
-            ]);
+                    ->getId());
+
+                $this->dispatchBrowserEvent('favorite:refresh', [
+                    "action"      => "refreshFavorite",
+                    "idComponent" => "live-NeoxDashBoardContent@" . $favorite
+                            ->getSection()
+                            ->getClass()
+                            ->getId(),
+                    "idClass"     => $favorite
+                        ->getSection()
+                        ->getClass()
+                        ->getId()
+                ]);
+            }
         }
-    }
     }

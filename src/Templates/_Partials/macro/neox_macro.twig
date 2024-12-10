@@ -111,27 +111,44 @@
                         New Content ...
                     </a >
                 </li >
-            {% endif %}
-            <li >
-                <hr class="dropdown-divider" >
-            </li >
-            <li >
-                {{ include('@NeoxDashBoardBundle/neox_dash_class/_delete_form.html.twig') }}
-                {#                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', { #}
-                {#                    title: 'Delete Content' , #}
-                {#                    text: 'Do you want to continue' , #}
-                {#                    id-element: id-element: path('app_neox_dashboard_home'), #}
-                {#                    url: path('app_neox_dash_class_delete', { id: class.id }) #}
 
-                {#                }) }} #}
-                {#                    data-modal="modal" #}
-                {#                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" #}
-                {#                    class="dropdown-item" #}
-                {#                    href="#" #}
-                {#                > #}
-                {#                    Delete content ... #}
-                {#                </a > #}
-            </li >
+                <li >
+                    <hr class="dropdown-divider" >
+                </li >
+                <li >
+                    {{ include('@NeoxDashBoardBundle/neox_dash_class/_delete_form.html.twig') }}
+                    {#                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', { #}
+                    {#                    title: 'Delete Content' , #}
+                    {#                    text: 'Do you want to continue' , #}
+                    {#                    id-element: id-element: path('app_neox_dashboard_home'), #}
+                    {#                    url: path('app_neox_dash_class_delete', { id: class.id }) #}
+
+                    {#                }) }} #}
+                    {#                    data-modal="modal" #}
+                    {#                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" #}
+                    {#                    class="dropdown-item" #}
+                    {#                    href="#" #}
+                    {#                > #}
+                    {#                    Delete content ... #}
+                    {#                </a > #}
+                </li >
+                {% else %}
+                    <li >
+                        <hr class="dropdown-divider" >
+                    </li >
+                    <li >
+                        <a
+                            class="dropdown-item text-danger"
+                            id="delayedInput"
+                            href="#"
+                            data-action="live#action"
+                            data-live-action-param="mode"
+                            data-live-query-param="145"
+                        >
+                            Hidden Widget
+                        </a>
+                    </li >
+            {% endif %}
             <li >
                 <hr class="dropdown-divider" >
             </li >

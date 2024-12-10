@@ -41,8 +41,8 @@ class NeoxDashClassRepository extends ServiceEntityRepository
                    ->where('c.id = :classId') // Filtrer par ID de NeoxDashClass
                    ->setParameter('classId', $classId) // Passer la valeur de classId
                    ->orderBy('s.position', 'ASC') // Trier par section.position en premier
-                   ->addOrderBy('d.position', 'ASC'); // Trier par domain.position en second
-
+                   ->addOrderBy('d.position', 'ASC') // Trier par domain.position en second
+;
         // Exécuter la requête et retourner une seule entité ou null si aucun résultat
         return $qb->getQuery()->getOneOrNullResult();
     }

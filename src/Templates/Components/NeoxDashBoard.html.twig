@@ -35,8 +35,11 @@
                         {% if class.publish %}
                             {# ===== WIDGET FAVORITE HAVE SPECIAL INIT (because is linking to all Domains, and is onwe component) ==== #}
                             {% if widget == 'Favorite' %}
-                                <turbo-frame  class="{{ class.size.value }}" id="NeoxFavorite-0" >
-                                    <twig:NeoxFavoriteDomain :NeoxDashClass="null"  id="live-NeoxFavorite@0" />
+{#                                <turbo-frame  class="{{ class.size.value }}" id="NeoxFavorite-0" >#}
+{#                                    <twig:NeoxFavoriteDomain :NeoxDashClass="null"  id="live-NeoxFavorite@0" />#}
+{#                                </turbo-frame >#}
+                                <turbo-frame  class="{{ class.size.value }}" id="NeoxDashBoardContent-{{ class.id }}" >
+                                    <twig:NeoxFavoriteDomain :NeoxDashClass="null"  id="live-NeoxDashBoardContent@{{ class.id }}" />
                                 </turbo-frame >
                             {% else %}
                                 <turbo-frame id="NeoxDashBoardContent-{{ class.id }}" class="{{ class.size.value|default('col-12') }}" >
