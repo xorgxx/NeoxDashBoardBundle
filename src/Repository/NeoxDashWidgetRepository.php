@@ -2,6 +2,7 @@
 
     namespace NeoxDashBoard\NeoxDashBoardBundle\Repository;
 
+    use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass;
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget;
     use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
     use Doctrine\Persistence\ManagerRegistry;
@@ -55,6 +56,24 @@
 
             // Utilisez getOneOrNullResult() si vous attendez un seul résultat
             return $query->getOneOrNullResult();
+        }
+
+
+        public function findByWidgetGetClass(string $widgetName = 'Favorite'): ?NeoxDashClass
+        {
+            $dql = "
+                SELECT DISTINCT class
+                FROM NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashClass class
+                JOIN class.neoxDashSections section
+                JOIN section.neoxDashWidgets widget
+                WHERE widget.widget = :widget
+            ";
+
+            $query = $this->getEntityManager()->createQuery($dql);
+            $query->setParameter('widget', $widgetName);
+
+            return $query->getOneOrNullResult();
+
         }
 
         /**

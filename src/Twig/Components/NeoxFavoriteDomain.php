@@ -10,6 +10,7 @@
     use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashWidget;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashClassRepository;
     use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashFavoriteRepository;
+    use NeoxDashBoard\NeoxDashBoardBundle\Services\ToolsBoxService;
     use Random\RandomException;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,31 +26,27 @@
 
 
     #[AsLiveComponent('NeoxFavoriteDomain', template: '@NeoxDashBoardBundle/Components/NeoxFavoriteDomain.html.twig')]
-
-//    #[AsLiveComponent('NeoxFavoriteDomain', template: '@NeoxDashBoardBundle/neox_favorite/widget/NeoxFavoriteDomain.html.twig')]
+    //    #[AsLiveComponent('NeoxFavoriteDomain', template: '@NeoxDashBoardBundle/neox_favorite/widget/NeoxFavoriteDomain.html.twig')]
     final class NeoxFavoriteDomain extends AbstractController
     {
 
-//        use ComponentToolsTrait;
+        //        use ComponentToolsTrait;
         use DefaultActionTrait;
         use ComponentToolsTrait;
-//        #[LiveProp(writable: true)]
-        public  ?array $NeoxDashClass = null;
+
+        //        #[LiveProp(writable: true)]
+        public ?array $NeoxDashClass = null;
 
 
-        public function __construct(
-            private readonly NeoxDashClassRepository $classRepository,
-            private readonly NeoxDashFavoriteRepository $favoriteRepository,
-            private readonly EntityManagerInterface $entityManager,
-            private readonly EventDispatcherInterface $eventDispatcher
-            )
-        {
-        }
+        public function __construct(private readonly NeoxDashClassRepository $classRepository, private readonly NeoxDashFavoriteRepository $favoriteRepository, private readonly EntityManagerInterface $entityManager, private readonly EventDispatcherInterface $eventDispatcher, private readonly ToolsBoxService $toolsBoxService) {}
 
         #[LiveAction]
-        public function mode(#[LiveArg] string $query="link"): void
+        public function mode(#[LiveArg] string $query = "link"): void
         {
-            $entity = $this->entityManager->getRepository(NeoxDashSection::class)->findOneBy(["id" => $query]) ;
+            $entity = $this->entityManager
+                ->getRepository(NeoxDashSection::class)
+                ->findOneBy([ "id" => $query ])
+            ;
 
             if ($entity) {
                 // Reverse the value of the 'edit' field
@@ -59,37 +56,56 @@
                 $this->entityManager->persist($entity);
                 $this->entityManager->flush();
 
-                $this->refresh($entity->getClass()->getId());
+                $this->refresh($entity
+                    ->getClass()
+                    ->getId());
             }
         }
 
         #[LiveAction]
         public function toggleFavorite(#[LiveArg] string $id, #[LiveArg] string $section): void
         {
-            // Récupérer l'entité Favorite à partir de son ID
-            $domain = $this->entityManager->getRepository(NeoxDashDomain::class)->findOneBy(['id' => $id]);
-            $favorite = $domain->getFavorite();
-            if (!$favorite) {
-                $favorite = new NeoxDashFavorite();
-//                $favorite->setFavorite(true);
-            }
-
             try {
-                $favorite->setFavorite(!$favorite->getFavorite());
-                $domain->setFavorite($favorite);
+                // Récupérer l'entité Domain à partir de son ID
+                $domain = $this->entityManager
+                    ->getRepository(NeoxDashDomain::class)
+                    ->find($id)
+                ;
 
-                $this->entityManager->persist($domain);
+                if (!$domain) {
+                    throw new \Exception('Domain not found.');
+                }
+
+                // Récupérer ou initialiser l'entité Favorite associée
+                $favorite = $domain->getFavorite();
+
+                if (!$favorite) {
+                    $favorite = new NeoxDashFavorite();
+                    $favorite->setFavorite(false); // Valeur par défaut
+                }
+
+                // Inverser l'état du champ favorite
+                $favorite->setFavorite(!$favorite->getFavorite());
+
+                // Persister l'entité Favorite
+                $this->entityManager->persist($favorite);
+
+                // Optionnel : Associer l'entité Favorite au Domain si ce n'est pas encore fait
+                if (!$domain->getFavorite()) {
+                    $domain->setFavorite($favorite);
+                    $this->entityManager->persist($domain);
+                }
+
+                // Sauvegarder les changements
                 $this->entityManager->flush();
 
-                /*
-                 * ============== switch to make ux-live more advance as SAP ===========
-                 * PHP will emit signal to front page, Mercure and TurboStream will all the reste
-                 * to update specific section for as.
-                 */
-                $favorite = $this->entityManager->getRepository(NeoxDashWidget::class)->findOneByPublish( "Favorite" );
-                $this->updateFront($domain, $favorite, $section);
+                // Notifier le front-end via Mercure et TurboStream
+                $this->updateFront($domain, $section);
+
             } catch (\Exception $e) {
-                return;
+                // Gérer les erreurs
+                error_log('Error toggling favorite: ' . $e->getMessage());
+                // Vous pourriez également lever une exception ou retourner une réponse adaptée si nécessaire
             }
 
         }
@@ -102,31 +118,42 @@
         {
             /**  ====== Find widget FAVORITE ========
              */
-            $widgetFavorite     = $this->entityManager->getRepository(NeoxDashWidget::class)->findOneByPublish("Favorite");
+            $widgetFavorite = $this->entityManager
+                ->getRepository(NeoxDashWidget::class)
+                ->findOneByPublish("Favorite")
+            ;
             /** @var NeoxDashFavorite[] $favorites
              */
-            $favorites          = $this->favoriteRepository->findOnlyFavorites();
+            $favorites = $this->favoriteRepository->findOnlyFavorites();
 
             foreach ($favorites as $favorite) {
                 foreach ($favorite->getNeoxDashDomains() as $domain) {
-                    $widgetFavorite->getSection()->addNeoxDashDomain($domain);
+                    $widgetFavorite
+                        ->getSection()
+                        ->addNeoxDashDomain($domain)
+                    ;
                 }
             }
 
-            return  [$widgetFavorite->getSection()->getClass()];
+            return [
+                $widgetFavorite
+                    ->getSection()
+                    ->getClass()
+            ];
         }
 
         /**
          * @throws RandomException
          */
         #[LiveAction]
-        public function refresh(#[LiveArg] string $query="link"): void
+        public function refresh(#[LiveArg] string $query = "link"): void
         {
-            if (!$NeoxDashClass = $this->entityManager->getRepository(NeoxDashClass::class)->findOneClass( $query )) {
-                $this->NeoxDashClass    = $this->getFavorite();
-            }else{
-                $this->NeoxDashClass    = [$NeoxDashClass];
-            }
+            $NeoxDashClass = $this->entityManager
+                ->getRepository(NeoxDashClass::class)
+                ->findOneClass($query)
+            ;
+            // $this->NeoxDashClass    = $this->getFavorite();
+            $this->NeoxDashClass = [ $NeoxDashClass ];
 
         }
 
@@ -134,41 +161,56 @@
          * @throws RandomException
          */
         #[LiveAction]
-        public function refreshFavorite(#[LiveArg] string $query="link"): void
+        public function refreshFavorite(#[LiveArg] string $query = "link"): void
         {
-            $this->NeoxDashClass = $this->getFavorite(); ;
+            $this->NeoxDashClass = $this->getFavorite();
         }
 
         /**
          * @throws RandomException
          */
-        private function updateFront($domain, $favorite, $section): void
+        private function updateFront($domain, $section): void
         {
-            if ( $section === "favorite" ) {
-                // TODO : refresh only the favorite
+            $classFavorite = $this->toolsBoxService->getNeoxFavorite();
+
+            if ($section === "Favorite") {
+
+                $this->refreshFavorite();
+
+                // Refresh only the Domain
                 $this->dispatchBrowserEvent('favorite:refresh', [
-                    "action"        => "refresh",
-                    "idComponent"   => "live-NeoxDashBoardContent@" . $domain->getSection()->getClass()->getId(),
-                    "idClass"       => $domain->getSection()->getClass()->getId()
+                    "action"      => "refresh",
+                    "idComponent" => "live-NeoxDashBoardContent@" . $domain
+                            ->getSection()
+                            ->getClass()
+                            ->getId(),
+                    "idClass"     => $domain
+                    ->getSection()
+                    ->getClass()
+                    ->getId(),
                 ]);
-            }else {
+
+            }
+            else {
+
                 // refresh content class was select only
                 $this->refresh($domain
                     ->getSection()
                     ->getClass()
                     ->getId());
 
+                /*
+                * this code will refresh make event on front to refresh only Widget Favorite
+                */
+
+                //            $this->refresh($classFavorite->getId());
                 $this->dispatchBrowserEvent('favorite:refresh', [
                     "action"      => "refreshFavorite",
-                    "idComponent" => "live-NeoxDashBoardContent@" . $favorite
-                            ->getSection()
-                            ->getClass()
-                            ->getId(),
-                    "idClass"     => $favorite
-                        ->getSection()
-                        ->getClass()
-                        ->getId()
+                    "idComponent" => "live-NeoxDashBoardContent@" . $classFavorite->getId(),
+                    "idClass"     => $classFavorite->getId()
                 ]);
+
+
             }
         }
     }

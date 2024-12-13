@@ -65,37 +65,38 @@
             // PreHandle the form creation | meaning that we have check form from request it will return
             // true : form all is good
             // false : form is not good cant be persist §§§
-            $return             = $crudHandleBuilder->handleCreateForm()->preHandleForm($request)->iniHandleNeoxDashModel->getReturn();
+            $return             = $crudHandleBuilder->handleCreateForm()->preHandleForm($request);
 
             // if submit is true we can now add any information before persist and flush !!
-            if ($return[ "submit" ]) {
-                $formData = $request->request->all()["neox_dash_widget"]["widget"];
+            if ($return->iniHandleNeoxDashModel->getReturn()[ "submit" ] ) {
+                $formData = $request->request->all()["neox_dash_widget"];
                 // look in class if it das exist ? if so then we just toggle publish and render
-                if ( $neoxDashWidget = $neoxDashWidgetRepository->findOneByPublish($formData)) {
-                    $neoxDashWidget->setPublish(true);
-                    $neoxDashWidget->getSection()->getClass()->setPublish(true);
-                    $crudHandleBuilder->entityManager->persist($neoxDashWidget);
+                if ( $neoxDashWidget = $neoxDashWidgetRepository->findOneByPublish( $formData["widget"] ) ) {
+                    $neoxDashWidget->setPublish(true );
+                    $neoxDashWidget->getSection()->getClass()->setPublish(true );
+                    $crudHandleBuilder->entityManager->persist( $neoxDashWidget );
                     $crudHandleBuilder->entityManager->flush();
                 }else{
                     $section        = new NeoxDashSection();
-                    $section->setName( $neoxDashWidget->getWidget()->value);
-                    $section->setRow(6);
-                    $section->setPosition(1);
-                    $section->setsize(NeoxSizeEnum::COL12);
-                    $crudHandleBuilder->getEntity()->persist($section);
+                    $section->setName( $formData["widget"] );
+                    $section->setRow(6 );
+                    $section->setPosition(1 );
+                    $section->setsize(NeoxSizeEnum::COL12 );
+                    $crudHandleBuilder->entityManager->persist( $section );
 
                     // if id null then it's a new class
                     $class          = new NeoxDashClass();
-                    $class->addNeoxDashSection( $section);
-                    $class->setName("Widget " . $neoxDashWidget->getWidget()->value);
-                    $class->settype(NeoxDashTypeEnum::TOOLS);
-                    $class->setIcon("puzzle-piece");
-                    $class->setMode(NeoxStyleEnum::TABS);
-                    $class->setPosition(1);
-                    $class->setsize(NeoxSizeEnum::COL3);
-                    $crudHandleBuilder->getEntity()->persist($class);
+                    $class->addNeoxDashSection( $section );
+                    $class->setNeoxDashSetup( $crudHandleBuilder->getNeoxDasSetup() );
+                    $class->setName("Widget " . $formData["widget"] );
+                    $class->settype(NeoxDashTypeEnum::TOOLS );
+                    $class->setIcon("puzzle-piece" );
+                    $class->setMode(NeoxStyleEnum::TABS );
+                    $class->setPosition(1 );
+                    $class->setsize(NeoxSizeEnum::COL6 );
+                    $crudHandleBuilder->entityManager->persist( $class );
 
-                    $crudHandleBuilder->iniHandleNeoxDashModel->getEntity()->setNeoxDashSection($section);
+                    $crudHandleBuilder->iniHandleNeoxDashModel->getEntity()->setSection( $section );
                     $crudHandleBuilder->flushHandleForm();
                 }
 
