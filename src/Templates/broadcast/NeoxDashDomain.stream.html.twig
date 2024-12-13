@@ -1,28 +1,18 @@
 {# Learn how to use Turbo Streams:neox_dash_domain_383 https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="update" method="morph" target="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-        data-neox-idComponent="live-NeoxDashBoardContent@{{ entity.section.class.id }}"
-        data-neox-idClass="{{ entity.section.class.id }}"
-        data-neox-action="refreshFavorite"
-    >
-{#        <template >#}
-{#            {% for class in entity.section.class %}#}
-{#                {% set sections                     = class.neoxDashSections %}     #}{# List of all items #}
-{#                {% set idLiveClassContainer         = "live-NeoxDashBoardContent@" ~ class.id|default(0) %}#}
+    {% set item                 = entity %}
+    {% set section              = item.section %}
+    {% set classWidgetFavotrite = getClassWidgetFavorite() %}
 
-{#                <!-- Header Section: Title and Navigation Tabs -->#}
-{#                {{ include('@NeoxDashBoardBundle/neox_favorite/NeoxDashFavoriteHeader.html.twig') }}#}
-{#            {% endfor %}#}
-{#        </template >#}
+    <turbo-stream action="update" method="morph" target="domainCard{{ section.name }}@{{ id }}">
+        <template >
+            {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
+        </template >
     </turbo-stream >
-
 
 {% endblock %}
 
 {% block update %}
-    {# ====== Check if it's a favorite and it have true =====
-      if favorite is activate then wen have to update also the favorite "virtual"
-    #}
 
     {% set item                 = entity %}
     {% set section              = item.section %}
@@ -37,24 +27,6 @@
             {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }}
         </template >
     </turbo-stream >
-
-    {#    {% if entity.favorite|default(false) %} #}
-    {#        <turbo-stream action="update"  target="domainCardFAVORITE@{{ id }}"> #}
-    {#                    data-neox-id="live-NeoxDashBoardContent@{{ entity.section.class.id }}" #}
-    {#                    data-neox-refresh="false" #}
-    {#            > #}
-    {#            <template> #}
-    {#                {% set item             = entity|setFavorite() %} #}
-    {#                {% set section          = item.section %} #}
-    {#                {% set NeoxDashClass    = section.class %} #}
-
-    {#                {{ include('@NeoxDashBoardBundle/_Partials/dashBoardContent/_TabsCardItem.html.twig') }} #}
-    {#            </template> #}
-    {#        </turbo-stream> #}
-    {#    {% endif %} #}
-
-
-
 {% endblock %}
 
 {% block remove %}

@@ -1,18 +1,39 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
+    
+    static values = {
+        interval: { type: Number, default: 30 } // Default to 30 minutes
+    };
+    
     connect() {
-        console.log(`Controller connected: ${this.identifier}`);
+        const intervalInMilliseconds = this.intervalValue * 60 * 1000; // Convert minutes to milliseconds
+        this.timeout = setTimeout(() => {
+            this.refreshPage();
+            this.logRefreshTime(); // Log the time before refreshing
+        }, intervalInMilliseconds);
+        
         this.setupEventListeners();
     }
     
     disconnect() {
         console.log(`Controller disconnected: ${this.identifier}`);
         this.removeEventListeners();
+        clearTimeout(this.timeout); // Clear the timeout to avoid memory leaks
     }
     
     initialize() {
         console.log("Controller initialized");
+    }
+    
+    refreshPage() {
+        window.location.reload();
+    }
+    
+    logRefreshTime() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString(); // Human-readable format, e.g., "14:30:25"
+        console.log(`Page refreshed at: ${formattedTime}`);
     }
     
     /**
