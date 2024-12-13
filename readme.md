@@ -99,6 +99,20 @@ Check this you have in router.yaml
 ```
     [https//YOURURLWEBSITE]/neox/dash/neox-home
 ```
+## Widget!!
+
+We are excited to introduce the concept of **Widgets**! Currently, we have two available widgets:
+- **Favorite**
+- **Search**
+
+But this is just the beginning! 🚀
+
+We have ambitious plans to expand the range of widgets significantly. In the future, you can expect widgets like:
+- **Weather**
+- **NAS (Network-Attached Storage)**
+- Many more, powered by APIs, URLs, and other integrations.
+
+Stay tuned for more updates as we continue to enhance and grow the widget ecosystem!
 
 ## Documentation (coming soon)
 
