@@ -94,6 +94,7 @@
                     $class->setMode(NeoxStyleEnum::TABS );
                     $class->setPosition(1 );
                     $class->setsize(NeoxSizeEnum::COL6 );
+                    $class->setHeaderColor("#000000");
                     $crudHandleBuilder->entityManager->persist( $class );
 
                     $crudHandleBuilder->iniHandleNeoxDashModel->getEntity()->setSection( $section );

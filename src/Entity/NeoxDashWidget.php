@@ -37,17 +37,17 @@ class NeoxDashWidget
     #[ORM\Column(length: 100, nullable: false, enumType: NeoxWidgetEnum::class)]
     private NeoxWidgetEnum $widget;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $url = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $publish = true;
 
     // Type of widget not use eyt but we can use form typage widget to process later api ....
-    #[ORM\Column(length: 100, nullable: false, enumType: NeoxWidgetTypeEnum::class)]
+    #[ORM\Column(length: 100, nullable: true, enumType: NeoxWidgetTypeEnum::class)]
     private ?NeoxWidgetTypeEnum $type;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $options = null;
 
     public function __construct()
