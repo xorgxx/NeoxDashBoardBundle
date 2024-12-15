@@ -1,6 +1,8 @@
-<div class="d-flex align-items-center">
-    <!-- Icon with left margin -->
 
+
+<div class="d-flex align-items-center">
+
+    <!-- Icon with left margin -->
     <button
         type="button"
         class="btn btn-transparent btn-sm"
@@ -21,6 +23,17 @@
             color="{{ isFavorite ? 'yellow' : color|default('#270116') }}"
         />
     </button>
+
+    <!-- Progress bar aligned to the right -->
+    {% set count = item.cpt %}
+    {% if count %}
+        <div class="d-flex align-items-center" style="width: 6rem;">
+            {% set randomNumber = item.cpt %}
+            <div class="progress" role="progressbar" style="width: 100%; height: 4px; background-color: rgba(255, 255, 255, 0.27);">
+                <div class="progress-bar progress-bar-striped bg-dark" style="width: {{ count }}%;"></div>
+            </div>
+        </div>
+    {% endif %}
 {#    {{  section.edit ~ " ~ " ~ section.name }}#}
 
     {% if section.edit is same as(true) and section.name is not same as('FAVORITE') and neoxSearch|default("true") is same as("true") %}

@@ -28,9 +28,7 @@
     final class NeoxDashDomainController extends AbstractController
     {
 
-        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder, readonly FindIconOnWebSite $findIconOnWebSite)
-        {
-        }
+        public function __construct(readonly private CrudHandleBuilder $crudHandleBuilder, readonly FindIconOnWebSite $findIconOnWebSite) {}
 
         #[Route('/', name: 'app_neox_dash_domain_index', methods: [ 'GET' ])]
         public function index(NeoxDashDomainRepository $neoxDashDomainRepository): Response
@@ -49,7 +47,7 @@
         ])]
         public function new(Request $request, NeoxDashSection $neoxDashSection): Response|JsonResponse
         {
-//            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
+            //            $crudHandleBuilder = $this->setInit("new", [ "id" => $neoxDashSection->getId() ]);
             $content = $request->getContent();
             $data    = json_decode($content, true) ?? null;
 
@@ -111,11 +109,11 @@
                 ->render()
             ;
 
-//            return $crudHandleBuilder
-//                ->handleCreateForm()
-//                ->handleForm($request)
-//                ->render()
-//            ;
+            //            return $crudHandleBuilder
+            //                ->handleCreateForm()
+            //                ->handleForm($request)
+            //                ->render()
+            //            ;
 
         }
 
@@ -144,8 +142,8 @@
             $data    = json_decode($content, true) ?? null;
 
             // S'assurer que `urls` est toujours un tableau
-            if (isset($data['urls']) && is_string($data['urls'])) {
-                $data['urls'] = [$data['urls']];
+            if (isset($data[ 'urls' ]) && is_string($data[ 'urls' ])) {
+                $data[ 'urls' ] = [ $data[ 'urls' ] ];
             }
 
             if ($data && isset($data[ 'urls' ]) || is_array($data[ 'urls' ])) {
@@ -182,12 +180,14 @@
 
                                 $crudHandleBuilder->entityManager->persist($neoxDashDomain);
                                 $r[ "added" ] += 1;
-                            } else {
+                            }
+                            else {
                                 $r[ "error" ] += 1;
                             }
                         }
 
-                    } else {
+                    }
+                    else {
                         echo 'Données URL ou nom manquantes pour l\'index ' . $i . PHP_EOL;
                     }
                 }
@@ -201,7 +201,8 @@
                 ;
 
 
-            } else {
+            }
+            else {
                 echo 'Aucune URL valide trouvée ou le format est incorrect.';
             }
             return $crudHandleBuilder->render();
@@ -227,7 +228,7 @@
             // Determine the template to use for rendering and render the builder !!
             $crudHandleBuilder = $this->setInit("edit", $neoxDashDomain);
 
-//            $icon = $this->findIconOnWebSite->getFaviconUrl($neoxDashDomain->getUrl());
+            //            $icon = $this->findIconOnWebSite->getFaviconUrl($neoxDashDomain->getUrl());
             /*
             * Call to the generic form management service, with support for turbo-stream
             * For kipping this code flexible to return your need
@@ -296,7 +297,7 @@
                     ->getIniHandleNeoxDashModel()
                     ->getNew(), [ 'form' => $form->createView(), ]),
             };
-//            return $this->redirectToRoute('app_neox_dash_domain_index', [], Response::HTTP_SEE_OTHER);
+            //            return $this->redirectToRoute('app_neox_dash_domain_index', [], Response::HTTP_SEE_OTHER);
         }
 
         /**
@@ -341,19 +342,49 @@
             };
         }
 
-//        private function extractDomain($url) {
-//
-//            if (!preg_match('/^(https?|ftp):\/\//', $url)) {
-//                $url = 'http://' . $url; // Ajoute un schéma par défaut
-//            }
-//            $parsedUrl = parse_url($url);
-//
-//            // Vérifier si le domaine existe et retourner le domaine sans www
-//            $domain = isset($parsedUrl['host']) ? preg_replace('/^www\./', '', $parsedUrl['host']) : $_SERVER['HTTP_HOST'];
-//            return  [
-//                "domain"    => $domain,
-//                "host"      => $parsedUrl['host'],
-//            ];
-//
-//        }
+        #[Route('/count/{id}', name: 'app_neox_dash_domain_count', methods: [ 'POST' ])]
+        public function count(Request $request, NeoxDashDomain $neoxDashDomain, EntityManagerInterface $entityManager): JsonResponse
+        {
+            try {
+                // Récupération des données du corps de la requête
+                $data = json_decode($request->getContent(), true);
+
+                if (!is_array($data) || empty($data[ '_token' ])) {
+                    return new JsonResponse([
+                        'success' => false,
+                        'message' => 'Invalid request data'
+                    ], 400);
+                }
+
+                // Vérification du token CSRF
+                if (!$this->isCsrfTokenValid('count-domain' . $neoxDashDomain->getId(), $data[ '_token' ])) {
+                    return new JsonResponse([
+                        'success' => false,
+                        'message' => 'Invalid CSRF token'
+                    ], 403);
+                }
+
+                // Mise à jour du compteur
+                $currentCount = $neoxDashDomain->getCpt();
+                $newCount     = $currentCount + 1; // Incrémente de 1 (ou ajustez selon besoin)
+
+                $neoxDashDomain->setCpt($newCount);
+                $entityManager->persist($neoxDashDomain);
+                $entityManager->flush();
+
+                return new JsonResponse([
+                    'success'  => true,
+                    'newCount' => $newCount
+                ], 200);
+
+            } catch (\Exception $e) {
+                // Gestion des erreurs imprévues
+                return new JsonResponse([
+                    'success' => false,
+                    'message' => 'An error occurred'
+                ], 500);
+            }
+        }
+
+
     }

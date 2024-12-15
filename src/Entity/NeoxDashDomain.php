@@ -36,6 +36,7 @@ class NeoxDashDomain
     #[Gedmo\Slug(fields: ['name', 'url'])]
     private ?string $slug = null;
 
+
     #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'neoxDashDomains')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\SortableGroup()]
@@ -49,6 +50,15 @@ class NeoxDashDomain
     #[ORM\JoinColumn(nullable: true)]
     private ?NeoxDashFavorite $favorite = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $cpt = 0;
+
+//    /**
+//     * @var Collection<int, NeoxDashDomainHistory>
+//     */
+//    #[ORM\OneToMany(targetEntity: NeoxDashDomainHistory::class, mappedBy: 'domain', orphanRemoval: true)]
+//    private Collection $neoxDashDomainsHistory;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $content = null;
 
@@ -57,6 +67,7 @@ class NeoxDashDomain
 
     public function __construct()
     {
+//        $this->neoxDashDomainsHistory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,15 +191,56 @@ class NeoxDashDomain
         return $this;
     }
 
+    public function getCpt(): ?int
+    {
+        return $this->cpt;
+    }
 
-//    public function getFavorite(): ?bool
+    public function setCpt(?int $cpt): NeoxDashDomain
+    {
+        $this->cpt = $cpt;
+        return $this;
+    }
+//    public function getNeoxDashDomainsHistory(): ArrayCollection
 //    {
-//        return $this->favorite;
+//        return $this->neoxDashDomainsHistory;
 //    }
 //
-//    public function setFavorite(?bool $favorite): NeoxDashDomain
+//    public function setNeoxDashDomainsHistory(ArrayCollection $neoxDashDomainsHistory): NeoxDashDomain
 //    {
-//        $this->favorite = $favorite;
+//        $this->neoxDashDomainsHistory = $neoxDashDomainsHistory;
+//        return $this;
+//    }
+
+
+
+//    /**
+//     * @return Collection<int, NeoxDashDomain>
+//     */
+//    public function getNeoxDashDomainsHistory(): Collection
+//    {
+//        return $this->neoxDashDomainsHistory;
+//    }
+//
+//    public function addNeoxDashDomainHistory(NeoxDashDomainHistory $neoxDashDomainHistory): static
+//    {
+//        if (!$this->neoxDashDomainsHistory->contains($neoxDashDomainHistory)) {
+//            $this->neoxDashDomainsHistory->add($neoxDashDomainHistory);
+//            $neoxDashDomainHistory->setDomain($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeNeoxDashDomainHistory(NeoxDashDomainHistory $neoxDashDomainHistory): static
+//    {
+//        if ($this->neoxDashDomainsHistory->removeElement($neoxDashDomainHistory)) {
+//            // set the owning side to null (unless already changed)
+//            if ($neoxDashDomainHistory->getDomain() === $this) {
+//                $neoxDashDomainHistory->setDomain(null);
+//            }
+//        }
+//
 //        return $this;
 //    }
 

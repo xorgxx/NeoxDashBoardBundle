@@ -9,9 +9,19 @@
         <!-- Icon fixed to top-left   padding-left: calc({{ height }} + 45px) -->
         <div class="icon-container" style="position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: {{ height }};">
             <div class="d-flex align-items-center justify-content-center" style="height: 100%; width: {{ height }};">
-                <a href="{{ item.url }}" target="_blank"
+                <a href="{{ item.url }}"
+
+                    data-xorgxx--neox-dashboard-bundle--neox-neox-core-event-target="count"
+                    data-action="click->xorgxx--neox-dashboard-bundle--neox-core-event#increment"
+                    data-id-domain="live-NeoxDashBoardContent@{{ item.id }}"
+                    data-url="{{ path('app_neox_dash_domain_count', { id: item.id }) }}"
+                    data-token={{ csrf_token('count-domain' ~ item.id) }}
+
+                    target="_blank"
                     class="d-flex align-items-center justify-content-center hover-color"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.url }}">
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="{{ item.url }}">
                     {% if item.urlicon|slice(0, 3) == '500' or item.urlicon == null or item.urlicon == "z" %}
                         <twig:ux:icon class="flex-shrink-0 p-1 icon-normal"
                             name="{{ item.url|getShortDomain['icon'] }}"

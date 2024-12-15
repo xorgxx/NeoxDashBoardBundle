@@ -27,9 +27,13 @@ class NeoxDashWidget
     #[Gedmo\Slug(fields: ['widget'])]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne( inversedBy: 'neoxDashDomains' )]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: NeoxDashSection::class, inversedBy: 'neoxDashWidgets')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?NeoxDashSection $section = null;
+
+//    #[ORM\ManyToOne( inversedBy: 'neoxDashDomains' )]
+//    #[ORM\JoinColumn(nullable: true)]
+//    private ?NeoxDashSection $section = null;
 
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
     private ?string $hash = null;
