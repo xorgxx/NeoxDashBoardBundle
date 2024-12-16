@@ -31,7 +31,12 @@
 
         public function getPackages(): array
         {
-            return $this->domainRepository->findByUrl($this->query);
+            // Ce switch:
+            return match (true) {
+                str_starts_with((string)$this->query, '@')  => $this->domainRepository->findByDomainDateTime($this->query) ?? null,
+                default                                     => $this->domainRepository->findByUrl($this->query),
+            };
+
         }
 
         #[LiveAction]

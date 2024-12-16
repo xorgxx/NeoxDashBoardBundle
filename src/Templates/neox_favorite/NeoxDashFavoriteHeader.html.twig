@@ -1,5 +1,4 @@
-
-{% import'@NeoxDashBoardBundle/_Partials/macro/neox_macro.twig' as neox_macro %}
+{% import'@NeoxDashBoardBundle/neox_favorite/_Partials/macro/neox_macro.twig' as neox_macro %}
 
 <!-- Header Section: Title and Navigation Tabs -->
 <div class="d-flex justify-content-between align-items-center p-2 rounded-top" style="background-color: rgba(139,0,0,0.38)" >
@@ -33,23 +32,38 @@
                     class="nav-link {% if loop.first %}show active{% endif %}"
                     data-bs-toggle="tab"
                 >
-                    {# todo : change name for widget@favorite #}
                     {{ section.name|lower }}
-                    <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info'}} ">{{ domains|length}}</span>
+                    <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info' }} " >{{ domains|length }}</span >
                 </a >
             </li >
 
         {% endfor %}
 
-        {# ===== Add management tab [SECTION TOOLS BAR] | not for "virtual ======== #}
+        {# ===== Add management tab [SECTION TOOLS BAR] ====== #}
         {% if class.id %}
-            <!-- Todo : add menu to manage class -->
-            {# Item ADD Tab Title ======== #}
-            {{ classCurrant.NeoxDashSections[0].neoxDashWidgets[0] | default(false) ? null : neox_macro.navItemBottomStd(class, "plus", 'green') }}
-{#            {{ neox_macro.navItemBottomStd(class, "plus", 'green') }}#}
+            {#
+            # ===== Add management tab [SECTION TOOLS BAR]
+            # 1 - Item ADD Tab Title ========
+            # 2 - Item Main Menu for each groupe | Standart; Widget; ....
+            #     With this approch we can add any type Menu of widget
+            # ========
+            #}
 
-            {# Item Main Menu ========= #}
-            {{ neox_macro.navItemMenu(class) }}
+            {# Determine if a widget exists in the first section #}
+            {% set _Widget = classCurrant.NeoxDashSections[0].neoxDashWidgets[0] ?? null %}
+
+            {# Render the Add Tab Title (if a widget exists, show a "plus" button) #}
+            {{ _Widget ? neox_macro.navItemBottomStd(class, "plus", 'green') : '' }}
+
+            {# Render the Main Menu: specific menu for widgets or default menu #}
+            {% if _Widget %}
+                {# ===== Define (switch) presonnal menu for Widget ====== #}
+                {{ include('@NeoxDashBoardBundle/neox_favorite/_Partials/_MenuHeaderWidget.html.twig') }}
+
+            {% else %}
+                {# ===== Define standart for domain ====== #}
+                {{ neox_macro.navItemMenu(class) }}
+            {% endif %}
         {% endif %}
 
     </ul >

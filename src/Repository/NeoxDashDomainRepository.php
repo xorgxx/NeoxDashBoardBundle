@@ -2,6 +2,7 @@
 
 namespace NeoxDashBoard\NeoxDashBoardBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use NeoxDashBoard\NeoxDashBoardBundle\Entity\NeoxDashDomain;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,4 +44,74 @@ class NeoxDashDomainRepository extends ServiceEntityRepository
 
         };
     }
+
+    public function findByDomainDateTime(string $filter, string $order = 'DESC'): ?array
+    {
+        $queryBuilder = $this->createQueryBuilder("d");
+        $queryBuilder->orderBy('d.updatedAt', $order);
+        if (str_starts_with($filter, '@')) {
+            [$type, $value] = explode(':', substr($filter, 1)) + [null, 0];
+            $value          = (int)$value;
+
+            if ($value > 0) {
+                $currentDate = new \DateTime();
+
+                switch ($type) {
+                    case 'hours':
+                        $this->addRangeCondition(
+                            $queryBuilder,
+                            'd.updatedAt',
+                            'HOUR',
+                            max(0, (int)$currentDate->format('H') - $value),
+                            (int)$currentDate->format('H')
+                        );
+                        break;
+                    case 'days':
+                        $this->addDateRangeCondition(
+                            $queryBuilder,
+                            'd.updatedAt',
+                            (clone $currentDate)->modify("-{$value} days"),
+                            $currentDate
+                        );
+                        break;
+                    case 'weeks':
+                        $this->addDateRangeCondition(
+                            $queryBuilder,
+                            'd.updatedAt',
+                            (clone $currentDate)->modify("-{$value} weeks"),
+                            $currentDate
+                        );
+                        break;
+                    default:
+                        return [];
+                }
+            }else{
+                return [];
+            }
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * Ajoute une condition de plage horaire au QueryBuilder.
+     */
+    private function addRangeCondition($queryBuilder, string $field, string $unit, int $start, int $end): void
+    {
+        $queryBuilder->andWhere("{$unit}({$field}) BETWEEN :start AND :end")
+                     ->setParameter('start', $start)
+                     ->setParameter('end', $end);
+    }
+
+    /**
+     * Ajoute une condition de plage de dates au QueryBuilder.
+     */
+    private function addDateRangeCondition($queryBuilder, string $field, \DateTime $startDate, \DateTime $endDate): void
+    {
+        $queryBuilder->andWhere("{$field} BETWEEN :startDate AND :endDate")
+                     ->setParameter('startDate', $startDate)
+                     ->setParameter('endDate', $endDate);
+    }
+
+
 }

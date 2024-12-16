@@ -77,6 +77,7 @@
                     $crudHandleBuilder->entityManager->persist( $neoxDashWidget );
                     $crudHandleBuilder->entityManager->flush();
                 }else{
+
                     $section        = new NeoxDashSection();
                     $section->setName( $formData["widget"] );
                     $section->setRow(6 );

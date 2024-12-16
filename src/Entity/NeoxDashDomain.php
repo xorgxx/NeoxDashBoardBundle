@@ -2,6 +2,7 @@
 
 namespace NeoxDashBoard\NeoxDashBoardBundle\Entity;
 
+use NeoxDashBoard\NeoxDashBoardBundle\Entity\Traits\TimeStampable;
 use NeoxDashBoard\NeoxDashBoardBundle\Repository\NeoxDashDomainRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: NeoxDashDomainRepository::class)]
 class NeoxDashDomain
 {
+    use TimeStampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

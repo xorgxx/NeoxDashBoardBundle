@@ -1,0 +1,169 @@
+{% macro navItemBottomSimple(class, color, bColor) %}
+
+    <twig:ux:icon name="fa6-solid:{{ class.icon|default('link') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+    <span style="color:{{ color|default('red') }}" >{{ class.name }}</span >
+
+{% endmacro %}
+
+{% macro navItemBottom(class, color, bColor) %}
+    <li class="nav-item bg-opacity-50 {{ bColor }}" role="presentation" >
+
+        <button class="nav-link" type="button" aria-selected="false" class="text-red" >
+            <twig:ux:icon name="fa6-solid:{{ class.icon|default('link') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+            <span style="color:{{ color|default('red') }}" >{{ class.name }}</span >
+        </button >
+    </li >
+{% endmacro %}
+
+{% macro navItemBottomStd(class, plus, color, bcolor) %}
+    <li class="nav-item bg-opacity-50 {{ bColor|default('green') }}" role="presentation" >
+        <button
+            data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+            data-title='New Section'
+            data-text='Do you want to continue'
+            data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
+            data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
+            data-modal="modal"
+            data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+            class="nav-link"
+            type="button"
+            aria-selected="false" >
+            <twig:ux:icon name="fa6-solid:{{ plus|default('plus') }}" width="20" height="20" color="{{ color|default('red') }}" class="mx-2" />
+        </button >
+    </li >
+{% endmacro %}
+
+{% macro navItemBottomHeader(section, class, loop) %}
+    {% set headerC = section.name|replace({' ': ''})|lower %}
+    {% set sectionC             = section.name|replace({' ': ''})|u.camel.title %}
+    {% set sectionId            = (section.id ~ "-" ~ sectionC)|u.camel.title %}
+
+    {#  HERE import neox_drag_tabs stimulus take control !!!  #}
+    {#    <li {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox_drag_tabs') }} #}
+    <li
+        class="nav-item"
+        id="neox_dash_tab_{{ section.id }}"
+        data-xorgxx--neox-dashboard-bundle--neox-drag-drop-target="item"
+        data-type="section"
+        data-id="{{ section.id }}"
+        data-idclass="{{ class.id }}"
+        data-api="{{ path('app_neox_dash_section_exchange') }}"
+        draggable="true"
+        role="presentation" >
+        {% set n = section.NeoxDashDomains|length %}
+        <button class="nav-link {{ loop.first ? 'active' : '' }}"
+            id="alert-{{ sectionC }}-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#{{ sectionId }}"
+            type="button"
+            role="tab"
+            aria-controls="{{ section.name }}"
+            aria-selected="{{ loop.first ? 'true' : '' }}" >
+            {{ section.name }}
+            <span class="badge rounded-pill  text-dark {{ section.edit ? 'bg-warning' : 'bg-info' }} " >{{ n }}</span >
+
+        </button >
+    </li >
+{% endmacro %}
+
+{% macro navItemMenu(class) %}
+    <li class="nav-item ms-auto dropdown" >
+        <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" >
+            <twig:ux:icon name="fa6-solid:bars" width="16" height="16" color="red" class="mx-2" />
+        </a >
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" >
+            <li >
+                {#                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', { #}
+                {#                    title: 'Edit class' , #}
+                {#                    text: 'Do you want to continue' , #}
+                {#                    id-element: "live-NeoxDashBoardContent@" ~ class.id, #}
+                {#                    url: path('app_neox_dash_class_edit', { id: class.id }) #}
+
+                {#                }) }} #}
+                <a
+                    data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                    data-modal="modal"
+                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                    data-title="Edit class xorg"
+                    data-text="Do you want to continue"
+                    data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
+                    data-url="{{ path('app_neox_dash_class_edit', { id: class.id }) }}"
+                    class="dropdown-item"
+                    href="#"
+                >
+                    Setup "{{ class.name }}"
+                </a >
+            </li >
+            {# ===== ADD condition WIDGET [SECTION TOOLS BAR] ======= #}
+            {% if class.NeoxDashSections[0].neoxDashWidgets[0] | default(false) is same as false %}
+                <li >
+                    <a
+                        data-xorgxx--neox-dashboard-bundle--neox-modal-target="link"
+                        data-title='New Section'
+                        data-text='Do you want to continue'
+                        data-id-element="live-NeoxDashBoardContent@{{ class.id }}"
+                        data-url="{{ path('app_neox_dash_section_new',{id: class.id}) }}"
+                        data-modal="modal"
+                        data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal"
+                        class="dropdown-item"
+                        href="#"
+                    >
+                        New Content ...
+                    </a >
+                </li >
+
+                <li >
+                    <hr class="dropdown-divider" >
+                </li >
+                <li >
+                    {{ include('@NeoxDashBoardBundle/neox_dash_class/_delete_form.html.twig') }}
+                    {#                <a {{ stimulus_controller('@xorgxx/neox-dashboard-bundle/neox-modal', { #}
+                    {#                    title: 'Delete Content' , #}
+                    {#                    text: 'Do you want to continue' , #}
+                    {#                    id-element: id-element: path('app_neox_dashboard_home'), #}
+                    {#                    url: path('app_neox_dash_class_delete', { id: class.id }) #}
+
+                    {#                }) }} #}
+                    {#                    data-modal="modal" #}
+                    {#                    data-action="click->xorgxx--neox-dashboard-bundle--neox-modal#modal" #}
+                    {#                    class="dropdown-item" #}
+                    {#                    href="#" #}
+                    {#                > #}
+                    {#                    Delete content ... #}
+                    {#                </a > #}
+                </li >
+                {% else %}
+                    <li >
+                        <hr class="dropdown-divider" >
+                    </li >
+                    <li >
+                        <a
+                            class="dropdown-item text-danger"
+                            id="delayedInput"
+                            href="#"
+                            data-action="live#action"
+                            data-live-action-param="mode"
+                            data-live-query-param="145"
+                        >
+                            Hidden Widget
+                        </a>
+                    </li >
+            {% endif %}
+            <li >
+                <hr class="dropdown-divider" >
+            </li >
+            {#            <li > #}
+            {#                <a #}
+            {#                    class="dropdown-item" #}
+            {#                    id="delayedInput" #}
+            {#                    href="#" #}
+            {#                    data-action="live#action" #}
+            {#                    data-live-action-param="mode" #}
+            {#                    data-live-query-param="145" #}
+            {#                > #}
+            {#                    Edit mode #}
+            {#                </a> #}
+            {#            </li > #}
+        </ul >
+    </li >
+{% endmacro %}
