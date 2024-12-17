@@ -2,7 +2,7 @@ import {Controller} from '@hotwired/stimulus';
 import PageRefresher from './inc/page-refresher.js';    // Importer la classe PageRefresher
 import EventHandler from './inc/event-handler.js';      // Importer la classe EventHandler
 import ClickCounter from './inc/click-counter.js';      // Importer la classe externalisée
-
+import SearchBrowser from './inc/search-browser.js';    // Importer la classe externalisée
 
 export default class extends Controller {
     
@@ -10,9 +10,12 @@ export default class extends Controller {
         interval: {type: Number, default: 30} // Default to 30 minutes
     };
     
-    static targets = ['count'];
+    static targets = ['count', 'browser'];
     
     connect(){
+        
+        console.log("control to pilot | start the ignition 🚀");
+        
         // Créer une instance de PageRefresher et démarrer
         this.pageRefresher = new PageRefresher(this, this.intervalValue);
         this.pageRefresher.start();
@@ -23,6 +26,8 @@ export default class extends Controller {
         
         this.clickCounter = new ClickCounter(this); // Crée une instance de ClickCounter
         this.clickCounter.reset();
+        
+        this.searchBrowser = new SearchBrowser(this); // Crée une instance de SearchBrowser
     }
     
     disconnect(){
@@ -61,5 +66,20 @@ export default class extends Controller {
         
         // Exemple : envoyer les clics au serveur
         this.clickCounter.sendClickToServer(jsonData);
+    }
+    
+    /**
+     * Méthode de recherche qui est déclenchée par l'action du formulaire
+     * Cette méthode vérifie si l'instance de `SearchBrowser` est disponible et
+     * appelle ensuite la méthode `search()` de l'instance.
+     */
+    search(event) {
+        event.preventDefault(); // Empêche la soumission normale du formulaire
+        
+        if (this.searchBrowser) {
+            this.searchBrowser.search(event); // Appel de la méthode search() dans SearchBrowser
+        } else {
+            console.warn("SearchBrowser instance not found.");
+        }
     }
 }

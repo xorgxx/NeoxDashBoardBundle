@@ -10,7 +10,9 @@
     enum NeoxSearchEnum: string implements TranslatableInterface
     {
         case GOOGLE     = 'Google';
-        case BRING      = 'bring';
+        case BRING      = 'Bring';
+        case DUCKDUCKGO = 'Duckduckgo';
+        case YAHOO      = 'Yahoo';
 
         public function trans(TranslatorInterface $translator, ?string $locale = null): string
         {
