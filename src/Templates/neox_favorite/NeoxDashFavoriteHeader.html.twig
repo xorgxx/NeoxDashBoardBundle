@@ -53,7 +53,7 @@
             {% set _Widget = classCurrant.NeoxDashSections[0].neoxDashWidgets[0] ?? null %}
 
             {# Render the Add Tab Title (if a widget exists, show a "plus" button) #}
-            {{ _Widget ? neox_macro.navItemBottomStd(class, "plus", 'green') : '' }}
+            {{ _Widget ? "" : neox_macro.navItemBottomStd(class, "plus", 'green') }}
 
             {# Render the Main Menu: specific menu for widgets or default menu #}
             {% if _Widget %}
